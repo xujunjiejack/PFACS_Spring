@@ -1,0 +1,1 @@
+../software/mongodb/bin/mongo

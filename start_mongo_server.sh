@@ -1,0 +1,1 @@
+../software/mongodb/bin/mongod --dbpath="../software/mongo_data/db"
