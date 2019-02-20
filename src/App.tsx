@@ -10,8 +10,6 @@ import logo from './logo.svg';
 import StudentDetailedView from "./StudentDetailedView";
 import {StudentOverview} from "./StudentOverview";
 
-
-
 interface IAppState {
   studentChosen?: string ,
   response?: GoogleLoginResponse,

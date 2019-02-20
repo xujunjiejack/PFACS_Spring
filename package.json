@@ -13,6 +13,7 @@
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-google-login": "^5.0.2",
+    "@types/styled-components": "^4.1.6",
     "react-scripts-ts": "3.1.0",
     "react-tooltip": "^3.9.2",
     "semantic-ui-css": "^2.4.1",
