@@ -3,10 +3,11 @@ import styled from "styled-components";
 
 class StudentDetailedView extends React.Component{
 
-    // This detailed view will include the gameplay and 
+    // This detailed view will include the table view of using different view
 
     public render(){
         return (<div/>)
+
     }
 
 }
