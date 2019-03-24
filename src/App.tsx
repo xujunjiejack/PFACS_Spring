@@ -47,13 +47,16 @@ class App extends React.Component <any, IAppState> {
           <Route exact={true} path="/" render={
             props=>
                 { if (this.state.userName !== "")
-                    {return <div>Welcome</div>} 
+                    {
+                      
+                      this.historyPush("/sessions")
+                      return <div>Welcome</div>} 
                   else
                     {return this.historyPush("/login")}}
           }/> 
 
           <Route exact={true} path="/login" 
-                render={ props => 
+                render={props => 
                 <UserContext.Provider value={{ ...this.state}}  >
                 <LoginPage history={history} setUser={this.setUser}/>
               </UserContext.Provider>
