@@ -7,18 +7,18 @@ import {Student, StudentStatus} from "./data_structure/Student";
 function generateColorBasedOnStatus(status: StudentStatus){
     switch (status) {
         case StudentStatus.InProgress:
-            return "green"
+            return "#DAF8FF"
             break;
         
         case StudentStatus.Idle:
-            return "yellow"
+            return "#EFEFEF"
             break;
 
         case StudentStatus.Absent:
-            return "grey"   
+            return "#EFEFEF"   
 
         case StudentStatus.Stuck: 
-            return "purple"
+            return "#E2DAFF"
 
         default:
             return "#000000"
@@ -29,14 +29,14 @@ const Rectangular = styled.div <{status: StudentStatus}>`
     background-color: ${props => generateColorBasedOnStatus(props.status)};
     // min-width: 40px;
     font-size: 20px;
-    color: white;
+    color: black;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 10px;
     width: 3.5em;
     height: 3.5em;
-
+    
     // &: focus {
     //     border: 5px solid red;
     //     outline: none;
