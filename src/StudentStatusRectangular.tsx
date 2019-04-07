@@ -34,8 +34,8 @@ const Rectangular = styled.div <{status: StudentStatus}>`
     align-items: center;
     justify-content: center;
     margin: 10px;
-    width: 3.5em;
-    height: 3.5em;
+    width: 4.5em;
+    height: 4.5em;
     
     // &: focus {
     //     border: 5px solid red;
@@ -46,10 +46,10 @@ const Rectangular = styled.div <{status: StudentStatus}>`
         border: 5px solid red;
         outline: none;
     }
+
     // display:box;
     // width: 100px;
     // padding-top: 100%;
-
 `
 
 interface IStudentStatusRectProps{
@@ -67,8 +67,7 @@ class StudentStatusRect extends React.Component<IStudentStatusRectProps, IStuden
         super(props)
         console.log(props)
         const ref = React.createRef();
-        this.state = {rectActive: false} 
-        
+        this.state = {rectActive: false}         
         // ReactToolTip.show(this.state.rectRef)
     }
 
@@ -108,7 +107,7 @@ class StudentStatusRect extends React.Component<IStudentStatusRectProps, IStuden
             case StudentStatus.Idle:
                 return "Idle"
 
-            default:
+                default:
                 return ""
         }
     }

@@ -5,13 +5,28 @@ import { Student, StudentStatus } from "./data_structure/Student";
 import StudentStatusRectangular from "./StudentStatusRectangular";
 import StudentStatusRect from './StudentStatusRectangular';
 
-const currentData = [ new Student("lili", StudentStatus.InProgress, "lili"),
-                      new Student("mimi", StudentStatus.InProgress, "mimi"),
-                      new Student("ben", StudentStatus.Idle, "ben"),
-                      new Student("josh", StudentStatus.Absent, "josh"),
-                      new Student("kuku", StudentStatus.Stuck, "kuku"),
-                      new Student("liz", StudentStatus.InProgress, "liz"),
-                      new Student("jojo", StudentStatus.InProgress, "jojo")                      
+const currentData = [ new Student("Alice", StudentStatus.InProgress, "lili"),
+                      new Student("Bob", StudentStatus.InProgress, "mimi"),
+                      new Student("Charlie", StudentStatus.Idle, "ben"),
+                      new Student("Donny", StudentStatus.Absent, "josh"),
+                      new Student("Elise", StudentStatus.Stuck, "kuku"),
+                      new Student("Frank", StudentStatus.InProgress, "liz"),
+                      new Student("Gigi", StudentStatus.InProgress, "jojo"),
+                      new Student("Hadi", StudentStatus.InProgress, "Hadi"),
+                      new Student("Iris", StudentStatus.InProgress, "Iris"),
+                      new Student("Jojo", StudentStatus.InProgress, "Jojo"),
+                      new Student("Kiki", StudentStatus.InProgress, "Kiki"),
+                      new Student("Lala", StudentStatus.InProgress, "Lala"),
+                      new Student("Mimi", StudentStatus.InProgress, "Mimi"),
+                      new Student("Norb", StudentStatus.InProgress, "Norb"),
+                      new Student("Onno", StudentStatus.InProgress, "Onno"),
+                      new Student("Poppy", StudentStatus.InProgress, "Poppy"),
+                      new Student("Quinn", StudentStatus.InProgress, "Quinn"),
+                      new Student("Rog", StudentStatus.InProgress, "Rog"),
+                      new Student("Sisko", StudentStatus.InProgress, "Sisko"),
+                      new Student("Tom", StudentStatus.Stuck, "Tom"),
+                      new Student("Josh", StudentStatus.InProgress, "Josh"),
+                      new Student("Yan", StudentStatus.InProgress, "Yan"),
 ]
 
 interface IStudentOverviewProps{
@@ -26,7 +41,7 @@ export class StudentOverview extends React.Component <IStudentOverviewProps ,any
 
     public render(){
         return(
-             <div>
+             <React.Fragment>
 
                 {this.createGridFromData(currentData)}
                 {/* <GridRow>
@@ -46,7 +61,7 @@ export class StudentOverview extends React.Component <IStudentOverviewProps ,any
 
 
                 </GridRow> */}
-            </div>
+            </React.Fragment>
         )
 
     }
@@ -54,7 +69,7 @@ export class StudentOverview extends React.Component <IStudentOverviewProps ,any
     private createGridFromData(studentData: Student[])  {
         
         // Decide on Row and column
-        const elementNumberOneRow = 6;
+        const elementNumberOneRow = 5;
 
         const rowNum = Math.round(studentData.length / elementNumberOneRow) + 1
 
@@ -64,7 +79,7 @@ export class StudentOverview extends React.Component <IStudentOverviewProps ,any
             a.push(i)
         }
 
-        return (<Grid columns="6" padded={true} verticalAlign="middle" style={{flexWrap: "wrap"}}>
+        return (<Grid padded={true} verticalAlign="middle" style={{flexWrap: "wrap"}}>
             {/* {
                 a.map((r,rowIndex) => { 
                     console.log(rowIndex)

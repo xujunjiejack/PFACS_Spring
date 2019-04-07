@@ -2,15 +2,39 @@ import axios from "axios"
 import * as React from 'react';
 import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
 import {Route, Router} from "react-router"
-import {Button, Card, CardContent,CardHeader, Grid, GridColumn, GridRow, Header } from "semantic-ui-react"
+import {Button, ButtonGroup, Card, CardContent,CardHeader, Grid, GridColumn, GridRow, Header } from "semantic-ui-react"
 import styled from "styled-components";
 import './App.css'
 import {HeaderText, TitleText} from "./AppStyle";
-import {Student} from './data_structure/Student';
+import {Student, StudentStatus} from './data_structure/Student';
 import {Layout} from "./Layout"
 import StudentDetailedView from "./StudentDetailedView";
 import StudentGraphUsage from "./StudentGraphUsage";
 import {StudentOverview} from "./StudentOverview";
+
+
+
+function generateColorBasedOnStatus(status: StudentStatus){
+  switch (status) {
+      case StudentStatus.InProgress:
+          return "#DAF8FF"
+          break;
+      
+      case StudentStatus.Idle:
+          return "#EFEFEF"
+          break;
+
+      case StudentStatus.Absent:
+          return "#EFEFEF"   
+
+      case StudentStatus.Stuck: 
+          return "#E2DAFF"
+
+      default:
+          return "#000000"
+  }
+} 
+
 
 const HeaderContainer = styled.div`
   position: relative;
@@ -18,20 +42,22 @@ const HeaderContainer = styled.div`
   height: 102px;
   left: 143px;
   top: 0px;
-
+  display: flex;
+  align-items: center;
   background: #FFFFFF;
+  justify-content: flex-end;  
+  padding: 10px 20px 10px 20px;
 `
 
 const Title = styled.label`
   position: absolute;
   left: 4.29%;
-  right: 81.19%;
   top: 25.49%;
   bottom: 50%;
   font-family: Roboto;
   font-style: normal;
-  font-weight: normal;
-  font-size: 21px;
+  font-weight: bold;
+  font-size: 30px;
   line-height: normal;
 
   color: #000000;
@@ -46,67 +72,101 @@ const StartTime = styled.div`
 
   font-family: Roboto;
   font-style: normal;
-  font-weight: normal;
+  font-weight: light;
   font-size: 18px;
   line-height: normal;
 
-  color: #565656;
+  color: #9C9C9C;
 `
 
+const StyledButtonGroup = styled(ButtonGroup)`
+  && {
+    height: 62px;
+    width: 400px;
 
-const ReportButton = styled.div`
-  position: absolute;
-  left: 59.84%;
-  right: 21.78%;
-  top: 20.59%;
-  bottom: 24.51%;
-
-  background: #FFFFFF;
-  border: 1px solid #D8D8D8;
-  box-sizing: border-box;
-  box-shadow: 0px 4px 4px rgba(197, 197, 197, 0.25);
-  border-radius: 6px;
-
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 20px;
-  line-height: normal;
-  
-  color: #5A9AF8;
-
-  display: flex;
-  justify-content: center;
-  align-items:center;
-  cursor: pointer;
+  }
 `
 
-const EndSessionButton = styled.div`
-  position: absolute;
-  left: 79.7%;
-  right: 0.96%;
-  top: 20.59%;
-  bottom: 24.51%;
+// Why using && can bump the specificty
+// using && to boop the specificty. It is an inherent problem 
+const ReportButton = styled(Button)`
+  && {
+    background: #F5F5F5;
+    // border: 1px solid #D8D8D8;
+    // box-sizing: border-box;
+    // box-shadow: 0px 4px 4px rgba(197, 197, 197, 0.25);
+    border-radius: 6px;
 
-  background: #FFFFFF;
-  border: 1px solid #D8D8D8;
-  box-sizing: border-box;
-  box-shadow: 0px 4px 4px rgba(222, 215, 215, 0.25);
-  border-radius: 4px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: normal;
+    
+    // color: #5A9AF8;
 
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 20px;
-  line-height: normal;
-  text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    cursor: pointer;
 
-  color: #F85A5A;
+    :hover{
+      background-color: #5A9AF8;
+      color: white;
+    }
 
-  display: flex;
-  justify-content: center;
-  align-items:center;
-  cursor: pointer;
+
+    &.active {
+     
+      :hover{
+        background-color: #357AE0;
+        color: white;
+      }
+
+      background-color: #5A9AF8;
+      color: white;
+    }
+  }
+`
+
+const EndSessionButton = styled(Button)`
+  && {
+    background: #F5F5F5;
+    // border: 1px solid #D8D8D8;
+    // box-sizing: border-box;
+    // box-shadow: 0px 4px 4px rgba(222, 215, 215, 0.25);
+    border-radius: 4px;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: normal;
+    text-align: center;
+
+    // color: #F85A5A;
+
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    cursor: pointer;
+
+    :hover{
+      background-color: #5A9AF8;
+      color: white;
+    }
+
+    &.active {
+      
+      :hover{
+        background-color: #357AE0;
+        color: white;
+      }
+      background-color: #5A9AF8;
+      color: white;
+    }
+
+  }
 `
 
 const GridHeaderStyle = {
@@ -134,25 +194,45 @@ const TotalStudentLabel = styled.div`
   padding-left:50%;
 `
 
+const Rect = styled.div <{status: StudentStatus}> `
+  
+
+    &:first-of-type{
+      margin-left:4px;
+    }
+
+    width:15px;
+    height:15px;
+    background-color: ${props=>generateColorBasedOnStatus(props.status)};
+    margin-right: 6px;
+    margin-left: 30px;
+    // display: block;
+    display: inline-block;   
+`
+
 
 interface ILoginState {
     studentChosen?: string ,
     response?: GoogleLoginResponse,
     accessToken? : string
+    currentView: string  // "dashboard" or "report"
   }
+
+// Next step, I need to decouple the livedashboard with its base layout.
 
 
 class LiveDashboard extends React.Component  <any, ILoginState>{
 
     public constructor(prop: any) {
         super(prop)
-        this.state = {studentChosen: undefined, response: undefined, accessToken: undefined }
+        this.state = {studentChosen: undefined, response: undefined, accessToken: undefined, currentView: "dashboard"}
         this.onSuccess = this.onSuccess.bind(this)
       }
 
     public render(){
         return (
-            <Layout history={this.props.history}>
+            // <Layout history={this.props.history}>
+            <React.Fragment>
                 {/* Header */}
                 {/* <header className="App-header"> */}
                 {/* <img src={logo} className="App-logo" alt="logo" /> */}
@@ -175,16 +255,12 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
                 </Grid.Row>
                 </Grid>
                 </header> */}
-
-                
-
-
-                <p className="App-intro" style={{height: `5vh`}}>
+                {/* <p className="App-intro" style={{height: `5vh`}}> */}
                 {/* To get started, edit <code>src/App.tsx</code> and save to reload. */}
                 {/* <GoogleLogin clientId="908046556011-80kbve0btf4nnn1o4vd010a0ag59tfj5.apps.googleusercontent.com" 
                         scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.rosters.readonly"
                 onSuccess={this.onSuccess} onFailure={this.onFailure}/> */}
-                </p>
+                {/* </p> */}
 {/* 
                 <Grid style={{height: `10vh`}}>
                 <GridRow>
@@ -205,26 +281,51 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
                 </GridRow>
                 </Grid> */}
 
-                <HeaderContainer>
+                {/* <HeaderContainer>
                   <Title>
                     Spring 2019 Math
                   </Title>
 
                   <StartTime>
-                  Start: 5 pm 03/20/2019 
-                  </StartTime>
+                    Start: 5pm, 03/20/2019 
+                  </StartTime> */}
 
-                  <ReportButton>
-                    Detailed report
-                  </ReportButton>
+                  {/* Create two buttons. These two button stuff is a switch. Left is one and right is detailed report*/}
+                  {/* I think semantic UI Probably has it. That thing is called UI buttons. UI Buttons are stacked buttons within a group. 
+                      So I can add two buttons, one for detailed report and one for live dashboard. Each button corresponds to one page of the content. Clicking on one will trigger the switch. 
+                      I also need to apply style on it to make it big, and the color conforms to my own design 
+                  
+                      I meet a problem of having to style button of React semantic UI, however, I still can't do it with styled componenet. I don't know how I can change it though. It does not respond to the change I made hmmm  
+                      I see the problem. It stems from that it has a button class, and its css seems to have a higher specificy than my styled compoenent stuff, leading to the css be overwritten. 
+                       
+                      One way: add everything into the style. However, one thing is how to add :hover in style 
 
-                  <EndSessionButton>
-                    End the session
-                  </EndSessionButton>
+
+                  */}
+                  
+                  {/* <StyledButtonGroup>
+                                      
+                    <ReportButton onClick={this.dashboardClick} className={ this.state.currentView === "dashboard" ? "active": "" }>
+                      Dashboard
+                    </ReportButton>
+
+                    <EndSessionButton onClick={this.reportClick} className={this.state.currentView === "report" ? "active": ""}>
+                      Report
+                    </EndSessionButton>
+                  </StyledButtonGroup>
 
                 </HeaderContainer>
                 
-                <br/>
+                <br/> */}
+                
+                {/* Anything above this will be extracted from this code
+                    It will be put in a new base layout componenet, with livedashboard and detailed report as its children
+                    I need to create one. I will call it session componenet. alright? What does this include? 
+
+                    It will include the header, and the top bar. The header contains the buttons, and title and time. Anything below 
+                    that will be included two stuff
+
+                */}
 
                 <Grid style={{position: "relative", left: "143px"}}>
                 <Grid.Row>
@@ -235,9 +336,40 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
                         <div style={{display: "inline"}}> STUDENT </div>
                         <TotalStudentLabel> Total student 24</TotalStudentLabel>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent style={{padding: "50px"}}>
                     <StudentOverview showDetailed={this.showDetailed}/>
                     </CardContent>
+
+                    {/* The problem is that the three legends stack together, not arranged in a row. I usually use a row to solve this problem 
+                      But row isn't the right way. 
+
+                      I think it might have problem with style. 
+
+                      What I will do is to lay these three as I have done before. And then carefully arrange the three componenets. 
+                    */}
+
+                    <div style={{fontSize: "20px", paddingLeft:"50px" , textAlign: "left", position:"absolute", bottom:"100px"}}>
+
+                        <Rect status={StudentStatus.InProgress}/>
+                        Engaged
+                    
+                        <Rect status={StudentStatus.Stuck}/>
+                        Stuck
+                        
+                        <Rect status={StudentStatus.Absent}/>
+                        Disconnected
+                    </div>
+
+                        {/* <div style={{width: "33%"}}>
+                          <Rect/>
+                          Engaged
+                        </div>
+
+                        <div style={{width: "33%"}}>
+                          <Rect/>
+                          Engaged
+                  </div> */}                                                                                                                                                
+
                     </Card>
                 </Grid.Column>
 
@@ -258,7 +390,7 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
                 </Grid.Column>
                 </Grid.Row>      
             </Grid>
-            </Layout>
+            </React.Fragment>
 
         )
     }
@@ -304,6 +436,20 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
       private onFailure = (error: any) =>{
         console.log(error)
       }
+
+      // add private functions for clicking the dashboard button
+      // change the state to dashboard
+      private dashboardClick = () =>{
+        this.setState({currentView: "dashboard"})
+      }
+
+      private reportClick = () =>{
+        this.setState({currentView: "report"})
+      }
+
+      // add private functions for clicking the report button
+      // how to add active. add classname with active, and use .active
+
 }
 
 export default LiveDashboard

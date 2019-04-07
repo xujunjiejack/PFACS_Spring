@@ -27,7 +27,7 @@ const CreateAssessmentLabel = styled.div`
     display: flex;
     justify-content: left;
     align-items:center;
-    cursor: pointer;
+cursor: pointer;
 `
 
 const SessionTitleLabel = styled.div`

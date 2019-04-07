@@ -14,6 +14,28 @@ const Ellipse = styled.div`
     background: #000
 `
 
+const ColorText = styled.div`
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 27px;
+    line-height: normal;
+    text-align: center;
+
+    color: #5A9AF8;
+	font-variant-numeric: proportional-nums;
+`
+
+
+const CustomizedTableCell = styled(Table.Cell)`
+    justify-content: center;
+`
+
+// const CustomizedTableHeaderCell = styled(Table.HeaderCell)`
+//     display: flex
+//     justify-content: center;
+// `
+
 class StudentGraphUsage extends React.Component{
 
     // Use very basic
@@ -31,30 +53,34 @@ class StudentGraphUsage extends React.Component{
                         <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell/> 
-                            <Table.HeaderCell>Use it often</Table.HeaderCell>
-                            <Table.HeaderCell>Use it less often</Table.HeaderCell>
-                            <Table.HeaderCell>Not use at all</Table.HeaderCell>
+                            {/* <CustomizedTableHeaderCell>Use it often</CustomizedTableHeaderCell>
+                            <CustomizedTableHeaderCell>Use it less often</CustomizedTableHeaderCell>
+                            <CustomizedTableHeaderCell>Not use at all</CustomizedTableHeaderCell> */}
+                            <Table.HeaderCell> Use it often </Table.HeaderCell>
+                            <Table.HeaderCell> Use it less often </Table.HeaderCell>
+                            <Table.HeaderCell> Not use at all   </Table.HeaderCell>
+
                         </Table.Row>
                         </Table.Header>
 
                         <Table.Body>
                         <Table.Row>
                             <Table.Cell>Bar</Table.Cell>
-                            <Table.Cell> <Ellipse>10</Ellipse> </Table.Cell>
-                            <Table.Cell> <Ellipse>15</Ellipse> </Table.Cell>
-                            <Table.Cell> <Ellipse>15</Ellipse> </Table.Cell>
+                            <CustomizedTableCell> <ColorText>10</ColorText> </CustomizedTableCell>
+                            <CustomizedTableCell> <ColorText>15</ColorText> </CustomizedTableCell>
+                            <CustomizedTableCell> <ColorText>10</ColorText> </CustomizedTableCell>
                         </Table.Row>
                         <Table.Row>
                             <Table.Cell>Line</Table.Cell>
-                            <Table.Cell> <Ellipse>15</Ellipse> </Table.Cell>
-                            <Table.Cell> <Ellipse>5</Ellipse> </Table.Cell>
-                            <Table.Cell> <Ellipse>0</Ellipse> </Table.Cell>
+                            <Table.Cell> <ColorText>15</ColorText> </Table.Cell>
+                            <Table.Cell> <ColorText>5</ColorText> </Table.Cell>
+                            <Table.Cell> <ColorText>0</ColorText> </Table.Cell>
                         </Table.Row>
                         <Table.Row>
                             <Table.Cell>Heat map</Table.Cell>
-                            <Table.Cell> <Ellipse>15</Ellipse> </Table.Cell>
-                            <Table.Cell> <Ellipse>5</Ellipse> </Table.Cell>
-                            <Table.Cell> <Ellipse>3</Ellipse> </Table.Cell>
+                            <Table.Cell> <ColorText>15</ColorText> </Table.Cell>
+                            <Table.Cell> <ColorText>5</ColorText> </Table.Cell>
+                            <Table.Cell> <ColorText>3</ColorText> </Table.Cell>
                         </Table.Row>
                         </Table.Body>
                     </Table>

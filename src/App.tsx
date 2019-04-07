@@ -13,7 +13,7 @@ import LiveDashboard from "./LiveDashboard";
 import LoginPage from "./Login";
 import logo from './logo.svg';
 import {Session} from "./Session";
-
+import SessionView from "./SessionView";
 
 const history = createHashHistory()
 
@@ -24,13 +24,13 @@ interface IAppState{
 } 
 
 class App extends React.Component <any, IAppState> { 
-
+ 
   public constructor(props: any){
     super(props)
     this.state = initialUser
   }
 
-  public setUser = (userName: string, userAccessToken:string, userIdToken:string ) => {
+  public setUser = (userName: string, userAccessToken: string, userIdToken: string ) => {
     this.setState({userName, userAccessToken, userIdToken})
   }
 
@@ -46,11 +46,12 @@ class App extends React.Component <any, IAppState> {
           <div>
           <Route exact={true} path="/" render={
             props=>
-                { if (this.state.userName !== "")
-                    {
-                      
+                { 
+                  if (this.state.userName !== "")
+                    {  
                       this.historyPush("/sessions")
-                      return <div>Welcome</div>} 
+                      return <div>Welcome</div>
+                    } 
                   else
                     {return this.historyPush("/login")}}
           }/> 
@@ -76,20 +77,30 @@ class App extends React.Component <any, IAppState> {
               }
           />
 
+          {/* I have QUESTION: how would this the session shown related to the session the user chose*/}
+          {/* I postpone the change of path later. It will be another task in to-do list */}
+          {/* Let's test now */}
+          {/* It tests pretty well */}
+          {/* Now what is the next step? 
+              1: write the detailed report component 
+              2: fix the current live dashboard. 
+                  Include added an "End the assessment" button
+
+              For the sake of tomorrow's meeting. I need to finish the detailed report
+
+
+            */}
           <Route exact={true} path="/livedashboard"
               render = {
                   props => 
-                  <LiveDashboard history={props.history}/>                          
+                  <SessionView history={props.history}/>                          
               }
           />
-
         </div>
         </Router> 
-        
+
         {/* <Session history={history}/>
         <CreateSession history={history}/>  */}
-
-
        </div>
     );
   }
