@@ -46,7 +46,6 @@ export class ChooseStudentsRow extends React.Component<IChooseStudentContainerPr
 
       
         if (prevProps.allStudentsCheckitems !== this.props.allStudentsCheckitems){
-            console.log("here")
             const valueArray = this.props.classInfo.studentName.map(s=> this.props.allStudentsCheckitems.get(s))
             const none = valueArray.every(x=> x === false)
             const all = valueArray.every(x=> x === true)
@@ -71,10 +70,10 @@ export class ChooseStudentsRow extends React.Component<IChooseStudentContainerPr
             <GridRow style={{marginTop: 0}}>
                 {
                     this.props.classInfo.studentName.map(
-                    s => { 
+                    (s,i) => { 
                         return (
-                        <GridColumn width="4" key={s} textAlign="left" style={{marginBottom: "10px"}}> 
-                            <Checkbox key={s} label={s} checked={this.state.studentCheckbox.get(s)}  onChange={this.changeSpecificStudent}/>
+                        <GridColumn width="4" key={`${s}_${i}`} textAlign="left" style={{marginBottom: "10px"}}> 
+                            <Checkbox key={`${s}_${i}`} label={s} checked={this.state.studentCheckbox.get(s)}  onChange={this.changeSpecificStudent}/>
                         </GridColumn>
                     )
                     })

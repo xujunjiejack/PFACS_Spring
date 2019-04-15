@@ -6,6 +6,8 @@ import styled from "styled-components"
 import { HeaderText, TitleText } from "./AppStyle";
 import {UserContext} from "./Context"
 
+
+
 const TopBarBackground = styled.div`
     position: absolute;
     left: 0%;

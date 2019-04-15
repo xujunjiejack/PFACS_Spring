@@ -65,7 +65,6 @@ class StudentStatusRect extends React.Component<IStudentStatusRectProps, IStuden
 
     constructor(props: any){
         super(props)
-        console.log(props)
         const ref = React.createRef();
         this.state = {rectActive: false}         
         // ReactToolTip.show(this.state.rectRef)

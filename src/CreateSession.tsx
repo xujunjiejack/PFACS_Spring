@@ -105,18 +105,22 @@ const BackgroundContainer = styled.div`
 
 export class CreateSession extends React.Component<any, any>{
 
+  
     public constructor(props: any){
         super(props)
         let m = Map<string, boolean>()
-        dummyData.forEach( d => {
-            d.studentName.forEach(s =>{
-                m = m.set(s, false)
-            })
-        }
+        dummyData.forEach(
+            d => {
+                d.studentName.forEach(s =>{
+                    m = m.set(s, false)
+                })
+            }
         )
-
-        this.state = {allStudentCheckbox: m}
+        this.state = {allStudentCheckbox: m, title: ''}
     }
+    // What this idea does is to store each entry in the state. 
+    // change the state when onChange
+    // and send the state when submit
 
     public render(){
         
@@ -131,7 +135,7 @@ export class CreateSession extends React.Component<any, any>{
                 <StyledForm>
                     <Form.Field>
                         <label style={{display: "flex", justifyContent:"left", marginBottom:"10px"}}>Session Title</label>
-                        <input placeholder='Session Title' />
+                        <input placeholder='Session Title' value={this.state.title} name="title" onChange={this.formOnChange}/>
                     </Form.Field>
 
                     <div style={{height: "24px"}}/>  
@@ -150,23 +154,52 @@ export class CreateSession extends React.Component<any, any>{
                         
                     </Form.Field>   
                     <Form.Field>
-                    <Button onClick={this.createSession} style={{position:"absolute", left: `0px`}}>
-                        Create Session
-                    </Button>
+                        <Button onClick={this.createSession} style={{position:"absolute", left: `0px`}}>
+                            Create Session
+                        </Button>
                     </Form.Field>
 
                 </StyledForm>
-                
             </Layout>    
         )
     }
 
+    private formOnChange = (e:any) =>{
+        console.log(this.state)
+        this.setState({[e.target.name]: e.target.value})
+    }
+
     private createSession = () => {
+        // Now I need to add the session to the top level data
+        // First, let me prepare the data 
+        // the first data is title. I can get from the state
+        // the second data is the student ids. I need to extract from student checkboxes
+        // the third data is timestamps
+        // the fourth is the ongoing 
+        // the fifth is the student number, collected by the student checkbox 
+        // Now the problem is that the title seems not readable hmm. Alright, I see. it is related to the sessions, probably not related to here.
+        // Now I want to figure out the warning of duplicate keys. How should I get rid of it?
+        // The problem might exist in the Choose student row. The function for key generation might not be smart enough
+        // TODO: More user validation with some micro-interactions.
+         
+        const sessionName = this.state.title
+        const studentMaps: Map<string, boolean> = this.state.allStudentCheckbox
+        const studentIds = studentMaps.filter((v,k) => v === true).keySeq().toArray()
+        const studentNumber = studentIds.length
+        const ongoing = true;
+        const startTime = "time-need-format"
+        const sessionId = Math.random().toString(36)
+        const newSessionEntry = {
+            ongoing, startTime, studentNumber, studentIds, sessionName, sessionId,
+        }
+
+        console.log(newSessionEntry)
+        this.props.addNewSession(newSessionEntry)
+        this.props.changeCurrentSession(sessionId, "dashboard")
         this.props.history.push("/livedashboard")
     }
 
     private setAllStudentItems = (newAllStudentItems: Map<string, boolean> ) => {
-
         this.setState({allStudentCheckbox: newAllStudentItems})
     }
 

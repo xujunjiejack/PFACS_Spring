@@ -30,7 +30,8 @@ const currentData = [ new Student("Alice", StudentStatus.InProgress, "lili"),
 ]
 
 interface IStudentOverviewProps{
-    showDetailed: (studentId: string) => void
+    showDetailed: (studentId: string) => void,
+    studentData: Student[]
 }
 
 export class StudentOverview extends React.Component <IStudentOverviewProps ,any> {
@@ -38,12 +39,17 @@ export class StudentOverview extends React.Component <IStudentOverviewProps ,any
     // How to create a mutual exclusive design
     
     // I need a way to track the current. Hmm. Redux?????? Too complicated? 
+    public constructor(props: any){
+        super(props)
+        this.state = {studentData: this.props.studentData}
+    }
+
 
     public render(){
         return(
              <React.Fragment>
 
-                {this.createGridFromData(currentData)}
+                {this.createGridFromData(this.state.studentData)}
                 {/* <GridRow>
                     <GridColumn width="2"/>
 
@@ -64,6 +70,12 @@ export class StudentOverview extends React.Component <IStudentOverviewProps ,any
             </React.Fragment>
         )
 
+    }
+
+    public componentDidUpdate(prevProps: any){
+        if (prevProps.studentData !== this.props.studentData){
+            this.setState({studentData: this.props.studentData})
+        }
     }
 
     private createGridFromData(studentData: Student[])  {

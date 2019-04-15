@@ -6,6 +6,7 @@ import {Button, ButtonGroup, Card, CardContent,CardHeader, Grid, GridColumn, Gri
 import styled from "styled-components";
 import './App.css'
 import {HeaderText, TitleText} from "./AppStyle";
+import {ISession, UserContext} from "./Context"
 import {Student, StudentStatus} from './data_structure/Student';
 import {Layout} from "./Layout"
 import StudentDetailedView from "./StudentDetailedView";
@@ -13,6 +14,30 @@ import StudentGraphUsage from "./StudentGraphUsage";
 import {StudentOverview} from "./StudentOverview";
 
 
+
+const currentData = [ new Student("Alice", StudentStatus.InProgress, "lili"),
+                      new Student("Bob", StudentStatus.InProgress, "mimi"),
+                      new Student("Charlie", StudentStatus.Idle, "ben"),
+                      new Student("Donny", StudentStatus.Absent, "josh"),
+                      new Student("Elise", StudentStatus.Stuck, "kuku"),
+                      new Student("Frank", StudentStatus.InProgress, "liz"),
+                      new Student("Gigi", StudentStatus.InProgress, "jojo"),
+                      new Student("Hadi", StudentStatus.InProgress, "Hadi"),
+                      new Student("Iris", StudentStatus.InProgress, "Iris"),
+                      new Student("Jojo", StudentStatus.InProgress, "Jojo"),
+                      new Student("Kiki", StudentStatus.InProgress, "Kiki"),
+                      new Student("Lala", StudentStatus.InProgress, "Lala"),
+                      new Student("Mimi", StudentStatus.InProgress, "Mimi"),
+                      new Student("Norb", StudentStatus.InProgress, "Norb"),
+                      new Student("Onno", StudentStatus.InProgress, "Onno"),
+                      new Student("Poppy", StudentStatus.InProgress, "Poppy"),
+                      new Student("Quinn", StudentStatus.InProgress, "Quinn"),
+                      new Student("Rog", StudentStatus.InProgress, "Rog"),
+                      new Student("Sisko", StudentStatus.InProgress, "Sisko"),
+                      new Student("Tom", StudentStatus.Stuck, "Tom"),
+                      new Student("Josh", StudentStatus.InProgress, "Josh"),
+                      new Student("Yan", StudentStatus.InProgress, "Yan"),
+]
 
 function generateColorBasedOnStatus(status: StudentStatus){
   switch (status) {
@@ -215,7 +240,9 @@ interface ILoginState {
     studentChosen?: string ,
     response?: GoogleLoginResponse,
     accessToken? : string
-    currentView: string  // "dashboard" or "report"
+    currentView: string,  // "dashboard" or "report"
+    sessionData: ISession,
+    studentData: Student[]
   }
 
 // Next step, I need to decouple the livedashboard with its base layout.
@@ -223,15 +250,17 @@ interface ILoginState {
 
 class LiveDashboard extends React.Component  <any, ILoginState>{
 
-    public constructor(prop: any) {
-        super(prop)
-        this.state = {studentChosen: undefined, response: undefined, accessToken: undefined, currentView: "dashboard"}
+    public constructor(props: any) {
+        super(props)
+        this.state = {studentChosen: undefined, response: undefined, accessToken: undefined, currentView: "dashboard", sessionData: this.props.sessionData, 
+        studentData: this.props.studentData}
         this.onSuccess = this.onSuccess.bind(this)
       }
 
     public render(){
         return (
-            // <Layout history={this.props.history}>
+            <UserContext.Consumer>
+            { value => 
             <React.Fragment>
                 {/* Header */}
                 {/* <header className="App-header"> */}
@@ -337,7 +366,7 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
                         <TotalStudentLabel> Total student 24</TotalStudentLabel>
                     </CardHeader>
                     <CardContent style={{padding: "50px"}}>
-                    <StudentOverview showDetailed={this.showDetailed}/>
+                      <StudentOverview showDetailed={this.showDetailed} studentData={this.state.studentData}/>
                     </CardContent>
 
                     {/* The problem is that the three legends stack together, not arranged in a row. I usually use a row to solve this problem 
@@ -391,8 +420,17 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
                 </Grid.Row>      
             </Grid>
             </React.Fragment>
+             
+            }
+            </UserContext.Consumer>
 
         )
+    }
+
+    public componentDidUpdate(prevProps: any) {
+        if (prevProps.studentData !== this.props.studentData ){
+          this.setState( {studentData: this.props.studentData} )
+        }
     }
 
     private showDetailed = (studentId: string) => {
@@ -405,8 +443,8 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
         this.setState({accessToken: response.getAuthResponse().access_token})
         
         // The course data looks like {courses: {id, name}}
-        
         // axios({url:`https://classroom.googleapis.com/v1/courses/${firstId}/students`, method:"list"}).then(console.log).catch(console.log)
+
         const email = await this.getStudentEmailList(response.getAuthResponse().access_token)
     
         return ;
