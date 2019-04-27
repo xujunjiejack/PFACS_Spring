@@ -1,15 +1,10 @@
 import axios from "axios"
 import * as React from 'react';
-import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
-import {Route, Router} from "react-router"
-import {Button, ButtonGroup, Card, CardContent,CardHeader, Grid, GridColumn, GridRow, Header, Label } from "semantic-ui-react"
+
+import {Button, Label } from "semantic-ui-react"
 import * as openSocket from 'socket.io-client';
 import styled from "styled-components";
 import './App.css'
-import {HeaderText, TitleText} from "./AppStyle";
-import {Student, StudentStatus} from './data_structure/Student';
-import {Layout} from "./Layout"
-
 
 const DataTestGround = styled.div`
     position: absolute;
@@ -389,36 +384,19 @@ const LegendText = styled.div`
 
 const IndividualLegend = styled.div`
     
-
-
 `
 
 
 class DetailedReport extends React.Component<any, any> {
-    
-    // Let me write down my thoughts about how to tackle this situation 
-    // It has two big components based on my design: 
-    // Overall class performance 
-    // Individual performance 
 
-    // So my first question is to have an estimate difficulty:
-    // 1: It includes stacked bar charts, although I'm pretty can be done by div and CSS  
-    // 2: relatively easily because its' just a table with different dots 
-
-    // Let me prioritize the individual one so that I can show off tomorrow
     constructor (props: any){
         super(props)
-        // What do I want to do again? receive a data for what?
-        // Another way of using socket is to include the socket at any place 
         this.state = { socketData: "placeholder" }
         socket.on("message", (message: string)=>{
             console.log("Receiving: " + message)
             this.setState( {socketData: message} ) 
           })
     }
-
-    // Next step is to use the data, when the database changes
-
 
     public render(){
         return(
