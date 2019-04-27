@@ -3,17 +3,6 @@ import { Card, CardHeader, Table, TableBody, TableCell, TableHeader} from "seman
  
 import styled from "styled-components";
 
-const Ellipse = styled.div`
-    width: 49px;
-    --height: 49px;
-    border-radius: 50%;
-    font-size: 16px;
-    color: #fff; 
-    text-align: center;
-    line-height: var(--height);
-    background: #000
-`
-
 const ColorText = styled.div`
     font-family: Roboto;
     font-style: normal;
@@ -31,14 +20,8 @@ const CustomizedTableCell = styled(Table.Cell)`
     justify-content: center;
 `
 
-// const CustomizedTableHeaderCell = styled(Table.HeaderCell)`
-//     display: flex
-//     justify-content: center;
-// `
-
 class StudentGraphUsage extends React.Component{
 
-    // Use very basic
     // This detailed view will include the table view of using different view
     public render(){
         return (
@@ -53,9 +36,6 @@ class StudentGraphUsage extends React.Component{
                         <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell/> 
-                            {/* <CustomizedTableHeaderCell>Use it often</CustomizedTableHeaderCell>
-                            <CustomizedTableHeaderCell>Use it less often</CustomizedTableHeaderCell>
-                            <CustomizedTableHeaderCell>Not use at all</CustomizedTableHeaderCell> */}
                             <Table.HeaderCell> Use it often </Table.HeaderCell>
                             <Table.HeaderCell> Use it less often </Table.HeaderCell>
                             <Table.HeaderCell> Not use at all   </Table.HeaderCell>

@@ -1,9 +1,11 @@
 import axios from "axios";
 import * as React from "react";
 import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
-import styled from "styled-components"
+import * as openSocket from 'socket.io-client';
+import styled from "styled-components";
 import { HeaderText, TitleText } from "./AppStyle";
 import {UserContext} from "./Context"
+import {GoogleClassroomInfo} from "./data_structure/GoogleClassroomInfo";
 
 const GoogleLoginButton = styled(GoogleLogin)`
     position: absolute;
@@ -12,17 +14,16 @@ const GoogleLoginButton = styled(GoogleLogin)`
     left: 468px;
     top: 495px;
 
-    // text-align: center;
     justify-content: center;
 `
 
-interface ILogin {
+interface ILoginProps {
     studentChosen?: string ,
     response?: GoogleLoginResponse,
     accessToken? : string
   }
 
-class LoginPage extends React.Component <any, any> {
+class LoginPage extends React.Component <any, ILoginProps> {
 
     public constructor(prop: any) {
         super(prop)
@@ -48,50 +49,51 @@ class LoginPage extends React.Component <any, any> {
             </UserContext.Consumer>
         )
     }
+    
+    // use this to get data https://developers.google.com/classroom/reference/rest/
+    private async onSuccess (response: GoogleLoginResponse) {
+      
+      // The course data looks like {courses: {id, name}}
+      // setUser(userName: string, userAccessToken:string, userIdToken:string )
+      this.props.setUser(response.getId, response.getAuthResponse().access_token, response.getAuthResponse().id_token) 
 
-    private showDetailed = (studentId: string) => {
-        return this.setState({studentChosen: studentId}) ;
-      }
-    
-      // use this to get data https://developers.google.com/classroom/reference/rest/
-      private async onSuccess (response: GoogleLoginResponse) {
-        // this.setState({response})
-        // this.setState({accessToken: response.getAuthResponse().access_token})
-        
-        // The course data looks like {courses: {id, name}}
-        // setUser(userName: string, userAccessToken:string, userIdToken:string )
-        this.props.setUser(response.getId, response.getAuthResponse().access_token, response.getAuthResponse().id_token) 
-        // axios({url:`https://classroom.googleapis.com/v1/courses/${firstId}/students`, method:"list"}).then(console.log).catch(console.log)
-        const email = await this.getStudentEmailList(response.getAuthResponse().access_token)
-        this.props.history.push("/") 
+      // Need to save the things in the cookie. 
+      // axios({url:`https://classroom.googleapis.com/v1/courses/${firstId}/students`, method:"list"}).then(console.log).catch(console.log)
+      const email = await this.getStudentEmailList(response.getAuthResponse().access_token)
+      this.props.history.push("/") 
+
+      return ;
+    }
   
-        return ;
-      }
-    
-      private async getStudentEmailList(accessToken: string): Promise<string[]> {
+    private async getStudentEmailList(accessToken: string): Promise<string[]> {
+      
+      try {
+        const googleCourseResponse = await axios.get("https://classroom.googleapis.com/v1/courses ", {headers:{Authorization:`Bearer  ${accessToken}`}})
+        const data = googleCourseResponse.data ;
+        const firstId = data.courses[0].id
+
+        const googleStudentResponse = await axios.get(`https://classroom.googleapis.com/v1/courses/${firstId}/students`, {headers:{Authorization:`Bearer  ${accessToken}`}})
+        const studentData: any[] = googleStudentResponse.data.students
+        // data structure: {students: [{courseId:"", profile: { emailAddress:"", name:{familyName:"", givenName:"" }}}]}
+        console.log(googleStudentResponse.data.students[0].profile)
+        const studentEmailList = studentData.map(s => s.profile.emailAddress)
         
-        try {
-          const googleCourseResponse = await axios.get("https://classroom.googleapis.com/v1/courses ", {headers:{Authorization:`Bearer  ${accessToken}`}})
-          const data = googleCourseResponse.data ;
-          const firstId = data.courses[0].id
-          console.log(data.courses[0].id)
-          const googleStudentResponse = await axios.get(`https://classroom.googleapis.com/v1/courses/${firstId}/students`, {headers:{Authorization:`Bearer  ${accessToken}`}})
-          const studentData: any[] = googleStudentResponse.data.students
-          // data structure: {students: [{courseId:"", profile: { emailAddress:"", name:{first:"", last:"" }}}]}
-          console.log(googleStudentResponse.data.students[0].profile.emailAddress)
-          const studentEmailList = studentData.map(s => s.profile.emailAddress)
-          return new Promise((resolve, reject) => {resolve(studentEmailList)}) 
-    
-        } catch(error){
-          console.log("function end:" + error)
-        }
-        
-        return await Promise.reject("error")
+        const classroomInfo = new GoogleClassroomInfo()
+        classroomInfo.className = "Course"
+        classroomInfo.studentName = studentData.map(s=> s.givenName)
+
+        return new Promise((resolve, reject) => {resolve(studentEmailList)}) 
+      } catch(error){
+
+        console.log("function end:" + error)
       }
-    
-      private onFailure = (error: any) =>{
-        console.log(error)
-      }
+      
+      return await Promise.reject("error")
+    }
+  
+    private onFailure = (error: any) =>{
+      console.log(error)
+    }
 }
 
 export default LoginPage

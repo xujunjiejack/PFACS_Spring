@@ -1,12 +1,6 @@
-import axios from "axios";
 import {History} from "history";
 import * as React from "react";
-import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
 import styled from "styled-components"
-import { HeaderText, TitleText } from "./AppStyle";
-import {UserContext} from "./Context"
-
-
 
 const TopBarBackground = styled.div`
     position: absolute;

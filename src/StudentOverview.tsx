@@ -36,9 +36,6 @@ interface IStudentOverviewProps{
 
 export class StudentOverview extends React.Component <IStudentOverviewProps ,any> {
 
-    // How to create a mutual exclusive design
-    
-    // I need a way to track the current. Hmm. Redux?????? Too complicated? 
     public constructor(props: any){
         super(props)
         this.state = {studentData: this.props.studentData}
@@ -48,25 +45,7 @@ export class StudentOverview extends React.Component <IStudentOverviewProps ,any
     public render(){
         return(
              <React.Fragment>
-
                 {this.createGridFromData(this.state.studentData)}
-                {/* <GridRow>
-                    <GridColumn width="2"/>
-
-                    <GridColumn width="2">
-
-                        <Rectangular status={StudentStatus.Idle}> Hello </Rectangular>
-                
-                    </GridColumn>
-
-                    <GridColumn width="2">
-
-                            <Rectangular status={StudentStatus.Idle}> Hello </Rectangular>
-
-                    </GridColumn>
-
-
-                </GridRow> */}
             </React.Fragment>
         )
 
@@ -80,7 +59,6 @@ export class StudentOverview extends React.Component <IStudentOverviewProps ,any
 
     private createGridFromData(studentData: Student[])  {
         
-        // Decide on Row and column
         const elementNumberOneRow = 5;
 
         const rowNum = Math.round(studentData.length / elementNumberOneRow) + 1
@@ -92,36 +70,13 @@ export class StudentOverview extends React.Component <IStudentOverviewProps ,any
         }
 
         return (<Grid padded={true} verticalAlign="middle" style={{flexWrap: "wrap"}}>
-            {/* {
-                a.map((r,rowIndex) => { 
-                    console.log(rowIndex)
-                    const slicedColumn = studentData.slice(rowIndex*6, rowIndex*6 + 6)
-                    return (
-                        <GridRow key={`row${r}`}>
-                        
-                            { slicedColumn.map( (s, index) => {
-                                return (
-                                    <GridColumn key={`row${r}_column${index}`} style={{paddingLeft: `5px`, paddingRight:`5px`}}>
-                                        <Rectangular status={s.status}>
-                                            {s.name}
-                                        </Rectangular> 
-                                    </GridColumn>
-                                )
-                            }  ) }
-                        </GridRow>
-                        )
-                    }
-             
-                )  
-            } */}
 
             {
                 studentData.map((s, index) => {
                 return (
-                    // <GridColumn key={`student_column${index}`} style={{paddingLeft: `5px`, paddingRight:`5px`}}>
+                
                     <StudentStatusRect key={`student_${s.name}_rect`} showDetailed={this.props.showDetailed} 
                                 student={s}/>
-                    // </GridColumn>
                 )  
                 }
                 )

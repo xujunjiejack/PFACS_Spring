@@ -43,5 +43,6 @@
     "@types/react": "^16.7.22",
     "@types/react-dom": "^16.0.11",
     "typescript": "^3.2.4"
-  }
+  },
+  "proxy": "http://localhost:3001"
 }

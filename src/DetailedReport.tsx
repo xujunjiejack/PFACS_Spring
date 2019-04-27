@@ -2,12 +2,25 @@ import axios from "axios"
 import * as React from 'react';
 import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
 import {Route, Router} from "react-router"
-import {Button, ButtonGroup, Card, CardContent,CardHeader, Grid, GridColumn, GridRow, Header } from "semantic-ui-react"
+import {Button, ButtonGroup, Card, CardContent,CardHeader, Grid, GridColumn, GridRow, Header, Label } from "semantic-ui-react"
+import * as openSocket from 'socket.io-client';
 import styled from "styled-components";
 import './App.css'
 import {HeaderText, TitleText} from "./AppStyle";
 import {Student, StudentStatus} from './data_structure/Student';
 import {Layout} from "./Layout"
+
+
+const DataTestGround = styled.div`
+    position: absolute;
+    width: 1143px;
+    height: 441px;
+    left: 147px;
+    top: 800px;
+    background: #FFFFFF;
+`
+
+const socket = openSocket("http://localhost:8080")
 
 const OverallClassPerformanceContainer = styled.div`
     position: absolute;
@@ -393,6 +406,19 @@ class DetailedReport extends React.Component<any, any> {
     // 2: relatively easily because its' just a table with different dots 
 
     // Let me prioritize the individual one so that I can show off tomorrow
+    constructor (props: any){
+        super(props)
+        // What do I want to do again? receive a data for what?
+        // Another way of using socket is to include the socket at any place 
+        this.state = { socketData: "placeholder" }
+        socket.on("message", (message: string)=>{
+            console.log("Receiving: " + message)
+            this.setState( {socketData: message} ) 
+          })
+    }
+
+    // Next step is to use the data, when the database changes
+
 
     public render(){
         return(
@@ -485,13 +511,32 @@ class DetailedReport extends React.Component<any, any> {
                         </IndividualLegend>
 
                     </LegendContainer>
+
                 </OverallClassPerformanceContainer>
+                
+                <DataTestGround>
+                <Button onClick={this.getGraphUsage}>
+                        Click me to get data 
+                    </Button>
+
+                <Label>
+                    {this.state.socketData}
+                </Label>
+                </DataTestGround>
+
                 
 
                 {/* Individual Performance componenet */}
                 {/* Now my goal is to write out the component that has no responsive ability. It will  */}
             </React.Fragment>
         )
+    }
+
+    private getGraphUsage = () =>{
+        axios.get("/mongodata/graphusage").then( res =>
+            this.setState({socketData:JSON.stringify(res.data)}) 
+        )
+        return 
     }
 }
 

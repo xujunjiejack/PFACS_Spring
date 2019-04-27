@@ -27,12 +27,6 @@ export class ChooseStudentsRow extends React.Component<IChooseStudentContainerPr
     
     constructor(props: IChooseStudentContainerProps){
         super(props)
-        // this.props.classInfo.studentName.forEach(
-        //     s => {
-        //         this.props.allStudentsCheckitems.set(s, false)
-        //     }
-        // )
-
         this.state = {
             all: false,
             chosenStudents: [],
@@ -61,10 +55,6 @@ export class ChooseStudentsRow extends React.Component<IChooseStudentContainerPr
                 <Checkbox label={this.props.classInfo.className}  indeterminate={!this.state.none && !this.state.all} checked={this.decideMasterCheckbox()}
                     onChange = {this.masterClick}
                 />
-                {/* What does this master checkbox do ?
-                    It turns to intermediate if not all and not none
-                    Click on it will lead to all select and all deselect
-                    */}
             </GridRow>
             
             <GridRow style={{marginTop: 0}}>
