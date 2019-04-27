@@ -1,13 +1,10 @@
 import axios from "axios";
 import { Map } from "immutable";
 import * as React from "react";
-import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
-import { Button, Checkbox, Container, Form, Grid, GridColumn, GridRow } from 'semantic-ui-react'
+import { Button, Form, Grid} from 'semantic-ui-react'
 import styled from "styled-components"
-import { HeaderText, TitleText } from "./AppStyle";
 import {ChooseStudentsRow} from "./ChooseStudentContainer"
-import {UserContext} from "./Context"
-import {Layout} from "./Layout"
+import {Layout} from "../Layout"
 
 
 const CreateAssessmentLabel = styled.div`
@@ -27,23 +24,7 @@ const CreateAssessmentLabel = styled.div`
     display: flex;
     justify-content: left;
     align-items:center;
-cursor: pointer;
-`
-
-const SessionTitleLabel = styled.div`
-    position: absolute;
-    width: 92px;
-    height: 19px;
-    left: 318px;
-    top: 211px;
-
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: normal;
-
-    color: #000000;
+    cursor: pointer;
 `
 
 const StyledForm = styled(Form) `
@@ -105,7 +86,6 @@ const BackgroundContainer = styled.div`
 
 export class CreateSession extends React.Component<any, any>{
 
-  
     public constructor(props: any){
         super(props)
         let m = Map<string, boolean>()
@@ -116,11 +96,8 @@ export class CreateSession extends React.Component<any, any>{
                 })
             }
         )
-        this.state = {allStudentCheckbox: m, title: ''}
+        this.state = {allStudentCheckStatusMap: m, title: ''}
     }
-    // What this idea does is to store each entry in the state. 
-    // change the state when onChange
-    // and send the state when submit
 
     public render(){
         
@@ -133,12 +110,16 @@ export class CreateSession extends React.Component<any, any>{
                 </CreateAssessmentLabel>
 
                 <StyledForm>
+                    
+                    {/* Session title */}
                     <Form.Field>
                         <label style={{display: "flex", justifyContent:"left", marginBottom:"10px"}}>Session Title</label>
                         <input placeholder='Session Title' value={this.state.title} name="title" onChange={this.formOnChange}/>
                     </Form.Field>
 
                     <div style={{height: "24px"}}/>  
+
+                     {/* Session check box */}
                     <Form.Field>
                         <label style={{display: "flex", justifyContent:"left", marginBottom:"10px"}}>
                             Students (From Google Classroom)
@@ -147,12 +128,15 @@ export class CreateSession extends React.Component<any, any>{
                         {/* Given the data and generate it*/}
                         <ChooseStudentContainer>                        
                             <Grid padded="horizontally" style={{marginTop: 0}}>
-                                <ChooseStudentsRow classInfo={dummyData1} allStudentsCheckitems={this.state.allStudentCheckbox} setAllStudentCheckitems={this.setAllStudentItems}/>
-                                <ChooseStudentsRow classInfo={dummyData2} allStudentsCheckitems={this.state.allStudentCheckbox} setAllStudentCheckitems={this.setAllStudentItems}/>
+                                {/* this is for adding the class info */}
+                                <ChooseStudentsRow classInfo={dummyData1} allStudentsCheckitems={this.state.allStudentCheckStatusMap} setAllStudentCheckitems={this.setAllStudentItems}/>
+                                <ChooseStudentsRow classInfo={dummyData2} allStudentsCheckitems={this.state.allStudentCheckStatusMap} setAllStudentCheckitems={this.setAllStudentItems}/>
                             </Grid>
                         </ChooseStudentContainer>
                         
                     </Form.Field>   
+
+                    {/* Create Session */}
                     <Form.Field>
                         <Button onClick={this.createSession} style={{position:"absolute", left: `0px`}}>
                             Create Session
@@ -170,20 +154,9 @@ export class CreateSession extends React.Component<any, any>{
     }
 
     private createSession = () => {
-        // Now I need to add the session to the top level data
-        // First, let me prepare the data 
-        // the first data is title. I can get from the state
-        // the second data is the student ids. I need to extract from student checkboxes
-        // the third data is timestamps
-        // the fourth is the ongoing 
-        // the fifth is the student number, collected by the student checkbox 
-        // Now the problem is that the title seems not readable hmm. Alright, I see. it is related to the sessions, probably not related to here.
-        // Now I want to figure out the warning of duplicate keys. How should I get rid of it?
-        // The problem might exist in the Choose student row. The function for key generation might not be smart enough
-        // TODO: More user validation with some micro-interactions.
          
         const sessionName = this.state.title
-        const studentMaps: Map<string, boolean> = this.state.allStudentCheckbox
+        const studentMaps: Map<string, boolean> = this.state.allStudentCheckStatusMap
         const studentIds = studentMaps.filter((v,k) => v === true).keySeq().toArray()
         const studentNumber = studentIds.length
         const ongoing = true;
@@ -200,24 +173,6 @@ export class CreateSession extends React.Component<any, any>{
     }
 
     private setAllStudentItems = (newAllStudentItems: Map<string, boolean> ) => {
-        this.setState({allStudentCheckbox: newAllStudentItems})
+        this.setState({allStudentCheckStatusMap: newAllStudentItems})
     }
-
-    private generateClassCheckboxes(data: IGoogleClassroomInfo) {
-        return (
-            <Grid>
-                <GridRow style={{height:"51px", background:"#F4F4F4"}}>
-                    <Checkbox label={data.className}/>
-                </GridRow>
-                
-                <GridRow style={{height:"51px"}}>
-                    { data.studentName.map(s => { return (<Checkbox key={s} label={s}/>)
-                     })}
-                </GridRow>
-            </Grid>
-        )
-    }
-
-    
-
 }

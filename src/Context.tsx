@@ -1,3 +1,6 @@
+// This file is used to save the context of React, which is a set of global variable which can be 
+// accessed by any component in the app.
+
 import * as React from 'react';
 
 export interface ISession {

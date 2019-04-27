@@ -1,23 +1,25 @@
+/*********************
+ * App.tsx
+ * 
+ * This file, a central piece of the application, manages the router of each page. It also provides 
+ * the other coponent the context they might share in the future
+ *
+ * 
+ **********************/
+
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faFileAlt } from "@fortawesome/free-regular-svg-icons";
 import { faTachometerAlt } from '@fortawesome/free-solid-svg-icons'
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import  axios from "axios"
 import {createHashHistory} from "history"
 import * as React from 'react';
-import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
-import {MemoryRouter, Route, Router} from "react-router"
-import * as openSocket from 'socket.io-client';
-import styled from "styled-components";
+import {Route, Router} from "react-router"
 
 import './App.css'
-import {initialUser,ISession, IUserContext, UserContext} from "./Context"
-import {CreateSession} from "./CreateSession"
+import {initialUser, IUserContext, UserContext} from "./Context"
+import {CreateSession} from "./sessionManagement/CreateSession"
 import LoginPage from "./Login";
-import logo from './logo.svg';
-import {Session} from "./Session";
-import SessionView from "./SessionView";
+import {Session} from "./sessionManagement/SessionManagementPage";
+import SessionView from "./specificSession/SpecificSessionView";
 
 library.add(faTachometerAlt)
 library.add(faFileAlt)
@@ -62,9 +64,6 @@ const dummyData=[dummyData1, dummyData2]
 
 class App extends React.Component <any, IAppState> { 
   
-
-
-
   public constructor(props: any){
     super(props)
     this.state = {...initialUser, userSessions: dummyData, currentSessionId: "", currentView: "dashboard"} 
@@ -146,7 +145,7 @@ class App extends React.Component <any, IAppState> {
 
        </div>
     );
-    
+
   }
   private changeCurrentSession = (sessionId: string, sessionCurrentView: string ) => {
     this.setState({

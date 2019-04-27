@@ -4,16 +4,12 @@ import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
 import {Route, Router} from "react-router"
 import {Button, ButtonGroup, Card, CardContent,CardHeader, Grid, GridColumn, GridRow, Header } from "semantic-ui-react"
 import styled from "styled-components";
-import './App.css'
-import {HeaderText, TitleText} from "./AppStyle";
-import {ISession, UserContext} from "./Context"
-import {Student, StudentStatus} from './data_structure/Student';
-import {Layout} from "./Layout"
-import StudentDetailedView from "./StudentDetailedView";
+import {HeaderText, TitleText} from "../AppStyle";
+import {Student, StudentStatus} from '../data_structure/Student';
+import {ISession, UserContext} from "../Context"
+import {Layout} from "../Layout"
 import StudentGraphUsage from "./StudentGraphUsage";
 import {StudentOverview} from "./StudentOverview";
-
-
 
 const currentData = [ new Student("Alice", StudentStatus.InProgress, "lili"),
                       new Student("Bob", StudentStatus.InProgress, "mimi"),
@@ -37,7 +33,7 @@ const currentData = [ new Student("Alice", StudentStatus.InProgress, "lili"),
                       new Student("Tom", StudentStatus.Stuck, "Tom"),
                       new Student("Josh", StudentStatus.InProgress, "Josh"),
                       new Student("Yan", StudentStatus.InProgress, "Yan"),
-]
+                    ]
 
 function generateColorBasedOnStatus(status: StudentStatus){
   switch (status) {

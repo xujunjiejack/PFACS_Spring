@@ -1,14 +1,10 @@
 import axios from "axios";
 import { Map, update } from "immutable";
 import * as React from "react";
-import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
-import { Button, Checkbox, CheckboxProps, Container, Form, Grid, GridColumn, GridRow, Label} from 'semantic-ui-react'
-import styled from "styled-components"
-import { HeaderText, TitleText } from "./AppStyle";
-import {UserContext} from "./Context"
+import { Checkbox, GridColumn, GridRow} from 'semantic-ui-react'
+
 import {IGoogleClassroomInfo} from "./CreateSession"
-import {GoogleClassroomInfo} from "./data_structure/GoogleClassroomInfo"
-import {Layout} from "./Layout";
+import {Layout} from "../Layout";
 
 interface IChooseStudentContainerProps {
     classInfo: IGoogleClassroomInfo,
@@ -38,7 +34,6 @@ export class ChooseStudentsRow extends React.Component<IChooseStudentContainerPr
     public componentDidUpdate(prevProps: IChooseStudentContainerProps) {
         // Typical usage (don't forget to compare props):
 
-      
         if (prevProps.allStudentsCheckitems !== this.props.allStudentsCheckitems){
             const valueArray = this.props.classInfo.studentName.map(s=> this.props.allStudentsCheckitems.get(s))
             const none = valueArray.every(x=> x === false)

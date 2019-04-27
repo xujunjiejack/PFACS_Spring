@@ -4,7 +4,6 @@ import * as React from 'react';
 import {Button, Label } from "semantic-ui-react"
 import * as openSocket from 'socket.io-client';
 import styled from "styled-components";
-import './App.css'
 
 const DataTestGround = styled.div`
     position: absolute;

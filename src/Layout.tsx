@@ -1,3 +1,13 @@
+/*********************
+ * Layout.tsx
+ * 
+ * This file provides a standard layout for header for all of the page. It can also be used in the future
+ * to add the footer to all of the files.
+ *
+ * 
+ **********************/
+
+
 import {History} from "history";
 import * as React from "react";
 import styled from "styled-components"
@@ -64,7 +74,6 @@ export class Layout extends React.Component<ILayoutProps, any> {
 
     public render(){
         return (
-            
             <TopBarContainer>
                 <TopBarBackground/>
                 <SessionButton onClick={this.navigateToSessions}> Sessions </SessionButton>

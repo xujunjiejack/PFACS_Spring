@@ -3,10 +3,9 @@ import axios from "axios";
 import * as React from "react";
 import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
 import styled from "styled-components"
-import { HeaderText, TitleText } from "./AppStyle";
-import {ISession, UserContext} from "./Context"
-import {Layout} from "./Layout"
-
+import {HeaderText, TitleText} from "../AppStyle";
+import {ISession, UserContext} from "../Context"
+import {Layout} from "../Layout"
 
 const dummySessionNumbers:number = 1
 
@@ -158,60 +157,6 @@ const StartTime = styled.div`
     color: #8F8F8F;
 `
 
-const OngoingLabel = styled.div`
-    position: absolute;
-    left: 31.47%;
-    right: 57.43%;
-    top: 4.92%;
-    bottom: 54.1%;
-
-    background: #E1E1E1;
-    border-radius: 8px;
-
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: normal;
-
-    color: #000000;
-    display: flex;
-    justify-content: center;
-    align-items:center;
-    cursor: pointer;
-`
-
-const SessionName = styled.div`
-    position: absolute;
-    left: 0%;
-    right: 72.71%;
-    top: 0%;
-    bottom: 60.66%;
-
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 20px;
-    line-height: normal;
-
-    color: #176FBF;
-`
-
-const StudentNumber = styled.div`
-    position: absolute;
-    left: 65.23%;
-    right: 11%;
-    top: 1.64%;
-    bottom: 62.3%;
-
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 18px;
-    line-height: normal;
-    color: #000000;
-`
-
 const SessionRowContainer2 = styled.div`
     position: relative;
     top: 250px;
@@ -334,6 +279,7 @@ export class Session extends React.Component <any, any> {
         return(
             <div>
                 {dummyDataList.map(dummy => 
+                
                     <SessionRowContainer2 key={dummy.sessionName}>
 
                         <div style={{display: "flex", alignItems:"center"}}>
