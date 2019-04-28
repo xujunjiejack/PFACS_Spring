@@ -1,11 +1,10 @@
 import axios from "axios";
 import * as React from "react";
 import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
-import * as openSocket from 'socket.io-client';
 import styled from "styled-components";
-import { HeaderText, TitleText } from "./AppStyle";
+import {TitleText} from "./AppStyle";
 import {UserContext} from "./Context"
-import {GoogleClassroomInfo} from "./data_structure/GoogleClassroomInfo";
+import {IGoogleClassroomInfo} from "./data_structure/GoogleClassroomInfo";
 
 const GoogleLoginButton = styled(GoogleLogin)`
     position: absolute;
@@ -44,6 +43,7 @@ class LoginPage extends React.Component <any, ILoginProps> {
                   <GoogleLoginButton clientId="908046556011-80kbve0btf4nnn1o4vd010a0ag59tfj5.apps.googleusercontent.com" 
                           scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.rosters.readonly"
                   onSuccess={this.onSuccess} onFailure={this.onFailure}/>
+                  
                 </div>
               }
             </UserContext.Consumer>
@@ -60,13 +60,13 @@ class LoginPage extends React.Component <any, ILoginProps> {
       // Need to save the things in the cookie. 
       // axios({url:`https://classroom.googleapis.com/v1/courses/${firstId}/students`, method:"list"}).then(console.log).catch(console.log)
       const email = await this.getStudentEmailList(response.getAuthResponse().access_token)
-      this.props.history.push("/") 
-
+      this.props.history.push("/")
+      
       return ;
     }
   
+
     private async getStudentEmailList(accessToken: string): Promise<string[]> {
-      
       try {
         const googleCourseResponse = await axios.get("https://classroom.googleapis.com/v1/courses ", {headers:{Authorization:`Bearer  ${accessToken}`}})
         const data = googleCourseResponse.data ;
@@ -75,16 +75,19 @@ class LoginPage extends React.Component <any, ILoginProps> {
         const googleStudentResponse = await axios.get(`https://classroom.googleapis.com/v1/courses/${firstId}/students`, {headers:{Authorization:`Bearer  ${accessToken}`}})
         const studentData: any[] = googleStudentResponse.data.students
         // data structure: {students: [{courseId:"", profile: { emailAddress:"", name:{familyName:"", givenName:"" }}}]}
-        console.log(googleStudentResponse.data.students[0].profile)
+        
         const studentEmailList = studentData.map(s => s.profile.emailAddress)
         
-        const classroomInfo = new GoogleClassroomInfo()
-        classroomInfo.className = "Course"
+        const classroomInfo: IGoogleClassroomInfo = {className:"",  studentName:[]}
+        classroomInfo.className = "Course" // how to get this one 
         classroomInfo.studentName = studentData.map(s=> s.givenName)
+        // I need to find a way for the classroomInfo unique id as well. It definitely is 
+        // better than the name which can have duplicate
+        // I probably should change the 
 
-        return new Promise((resolve, reject) => {resolve(studentEmailList)}) 
+        return new Promise((resolve, reject) => {resolve(studentEmailList)})
+
       } catch(error){
-
         console.log("function end:" + error)
       }
       

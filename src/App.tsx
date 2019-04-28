@@ -10,7 +10,7 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faFileAlt } from "@fortawesome/free-regular-svg-icons";
 import { faTachometerAlt } from '@fortawesome/free-solid-svg-icons'
-import {createHashHistory} from "history"
+import { createHashHistory } from "history"
 import * as React from 'react';
 import {Route, Router} from "react-router"
 
@@ -20,6 +20,7 @@ import {CreateSession} from "./sessionManagement/CreateSession"
 import LoginPage from "./Login";
 import {Session} from "./sessionManagement/SessionManagementPage";
 import SessionView from "./specificSession/SpecificSessionView";
+import {IGoogleClassroomInfo} from "./data_structure/GoogleClassroomInfo"
 
 library.add(faTachometerAlt)
 library.add(faFileAlt)
@@ -31,7 +32,11 @@ interface IControlState {
   currentSessionId: string
 }
 
-type IAppState = IUserContext & IControlState;
+interface IClassroomControl {
+  classrooms: IGoogleClassroomInfo[]
+}
+
+type IAppState = IUserContext & IControlState & IClassroomControl;
 
 interface ISessionData {
   startTime: string,
@@ -62,11 +67,23 @@ const dummyData2: ISessionData = {
 
 const dummyData=[dummyData1, dummyData2]
 
+const dummyClassroomData1: IGoogleClassroomInfo = {
+  className: "2018 Spring",
+  studentName: ["Mike", "Charles", "Anna", "Dan", "Dan", "Dan", "Ben", "Anna"]
+}
+
+const dummyClassroomData2: IGoogleClassroomInfo = {
+  className: "Fall 2018 Math",
+  studentName: ["Anna", "Charles", "Steve", "Jack"]
+}
+
+const dummyClassroomData = [dummyClassroomData1, dummyClassroomData2]
+
 class App extends React.Component <any, IAppState> { 
   
   public constructor(props: any){
     super(props)
-    this.state = {...initialUser, userSessions: dummyData, currentSessionId: "", currentView: "dashboard"} 
+    this.state = {...initialUser, userSessions: dummyData, currentSessionId: "", currentView: "dashboard", classrooms: dummyClassroomData} 
   }
 
   public addNewSession = ( newSession: ISessionData ) => {
@@ -127,7 +144,7 @@ class App extends React.Component <any, IAppState> {
               render = {
                   props => 
                       <UserContext.Provider value={{ ...this.state}}  >
-                        <CreateSession history={props.history} addNewSession={this.addNewSession} changeCurrentSession={this.changeCurrentSession}/>                          
+                        <CreateSession history={props.history} addNewSession={this.addNewSession} changeCurrentSession={this.changeCurrentSession} classroomInfoData={this.state.classrooms}/>                          
                       </UserContext.Provider>
               }
           />

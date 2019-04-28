@@ -29,7 +29,7 @@ It only runs the frontend, so if you want to make it actually usable, run the ba
 
 
 ###  3:  How to survive JJ's code 
-**Calm down** Prepare to see some interesting work around and confusing variable naming. If you are familiar with the technology stack especially React, watch some videos first or read the tutorial first.It has an interesting mechanism to pass the data and write the call back function, and HTML. 
+**Calm down** Prepare to see some interesting work around and confusing variable naming. If you are familiar with the technology stack especially React, watch some videos first or read the tutorial first. It has an interesting mechanism to pass the data and write the call back function, and HTML. 
  
 Typescript is not hard to pick up as long as you have some basic understanding of Java and Javascript ES6. The typing will help you avoid some basic, minor but annoying mistakes like assigning a string to a number. Remember, compiler is your best friend and not enemy. 
 

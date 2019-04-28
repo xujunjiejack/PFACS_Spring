@@ -3,8 +3,7 @@ import { Map, update } from "immutable";
 import * as React from "react";
 import { Checkbox, GridColumn, GridRow} from 'semantic-ui-react'
 
-import {IGoogleClassroomInfo} from "./CreateSession"
-import {Layout} from "../Layout";
+import {IGoogleClassroomInfo} from "../data_structure/GoogleClassroomInfo"
 
 interface IChooseStudentContainerProps {
     classInfo: IGoogleClassroomInfo,
@@ -35,14 +34,13 @@ export class ChooseStudentsRow extends React.Component<IChooseStudentContainerPr
         // Typical usage (don't forget to compare props):
 
         if (prevProps.allStudentsCheckitems !== this.props.allStudentsCheckitems){
-            const valueArray = this.props.classInfo.studentName.map(s=> this.props.allStudentsCheckitems.get(s))
-            const none = valueArray.every(x=> x === false)
-            const all = valueArray.every(x=> x === true)
+            const everyStudentCheckedArray = this.props.classInfo.studentName.map(s=> this.props.allStudentsCheckitems.get(s))
+            const none = everyStudentCheckedArray.every(x=> x === false)
+            const all = everyStudentCheckedArray.every(x=> x === true)
             this.setState({studentCheckbox: this.props.allStudentsCheckitems, all, none} )
         }
       } 
 
-// checked={this.decideMasterCheckbox()}
     public render(){
         return(
             <React.Fragment>
@@ -76,9 +74,8 @@ export class ChooseStudentsRow extends React.Component<IChooseStudentContainerPr
 
     private masterClick = (e: any, data: any) => {
         const isChecked = data.checked
-        console.log(`is checked ${isChecked}`)
-        if (isChecked){
 
+        if (isChecked){
             // set all students checkbox to true 
             const studentCheckbox = this.state.studentCheckbox
             let updatedMap = studentCheckbox
@@ -88,7 +85,7 @@ export class ChooseStudentsRow extends React.Component<IChooseStudentContainerPr
             this.props.setAllStudentCheckitems(updatedMap)
 
             this.setState({all: true, studentCheckbox: updatedMap, none: false})
-            console.log("clicked true")
+        
         } else {
             // set all students checkbox to false
             const studentCheckbox = this.state.studentCheckbox
@@ -97,9 +94,7 @@ export class ChooseStudentsRow extends React.Component<IChooseStudentContainerPr
                 s => {updatedMap= updatedMap.set(s, false)}
             )
             this.props.setAllStudentCheckitems(updatedMap)
-
             this.setState({none: true, studentCheckbox: updatedMap, all: false})
-            console.log("clicked false")
         }
         
     }

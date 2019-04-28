@@ -5,7 +5,7 @@ import { Button, Form, Grid} from 'semantic-ui-react'
 import styled from "styled-components"
 import {ChooseStudentsRow} from "./ChooseStudentContainer"
 import {Layout} from "../Layout"
-
+import {IGoogleClassroomInfo} from "../data_structure/GoogleClassroomInfo"
 
 const CreateAssessmentLabel = styled.div`
     position: absolute;
@@ -45,22 +45,22 @@ const StyledForm = styled(Form) `
 `
 
 // Class Name. Dummy data 
-export interface IGoogleClassroomInfo {
-    className: string; 
-    studentName: string[];
-}
+// export interface IGoogleClassroomInfo {
+//     className: string; 
+//     studentName: string[];
+// }
 
-const dummyData1: IGoogleClassroomInfo = {
-    className: "2018 Spring",
-    studentName: ["Mike", "Charles", "Anna", "Dan", "Dan", "Dan", "Ben", "Anna"]
-}
+// const dummyData1: IGoogleClassroomInfo = {
+//     className: "2018 Spring",
+//     studentName: ["Mike", "Charles", "Anna", "Dan", "Dan", "Dan", "Ben", "Anna"]
+// }
 
-const dummyData2: IGoogleClassroomInfo = {
-    className: "Fall 2018 Math",
-    studentName: ["Anna", "Charles", "Steve", "Jack"]
-}
+// const dummyData2: IGoogleClassroomInfo = {
+//     className: "Fall 2018 Math",
+//     studentName: ["Anna", "Charles", "Steve", "Jack"]
+// }
 
-const dummyData = [dummyData1, dummyData2]
+// const dummyData = [dummyData1, dummyData2]
 
 const ChooseStudentContainer = styled.div`
     position: relative;
@@ -89,14 +89,34 @@ export class CreateSession extends React.Component<any, any>{
     public constructor(props: any){
         super(props)
         let m = Map<string, boolean>()
-        dummyData.forEach(
-            d => {
+
+        // the only problem right now is this:
+        // at the initial stage of the (before login), the classroomInfodata in the props will be null
+        // so how do I change it later. Repopulate the allStudentCheckStatusMap???
+
+        props.classroomInfoData.forEach(
+            (d: IGoogleClassroomInfo) => {
                 d.studentName.forEach(s =>{
                     m = m.set(s, false)
                 })
             }
         )
-        this.state = {allStudentCheckStatusMap: m, title: ''}
+        this.state = {allStudentCheckStatusMap: m, title: '', googleClassroomDataInfo: props.classroomInfoData}
+    }
+    
+    public componentDidUpdate(prevProps: any){
+        if (prevProps.allStudentCheckStatusMap !== this.props.allStudentCheckStatusMap){
+            let m = Map<string, boolean>()
+            this.props.classroomInfoData.forEach(
+                (d: IGoogleClassroomInfo) => {
+                    d.studentName.forEach(s =>{
+                        m = m.set(s, false)
+                    })
+                }
+            )
+             
+            this.setState({allStudentCheckStatusMap: m})
+        }
     }
 
     public render(){
@@ -128,9 +148,15 @@ export class CreateSession extends React.Component<any, any>{
                         {/* Given the data and generate it*/}
                         <ChooseStudentContainer>                        
                             <Grid padded="horizontally" style={{marginTop: 0}}>
-                                {/* this is for adding the class info */}
-                                <ChooseStudentsRow classInfo={dummyData1} allStudentsCheckitems={this.state.allStudentCheckStatusMap} setAllStudentCheckitems={this.setAllStudentItems}/>
-                                <ChooseStudentsRow classInfo={dummyData2} allStudentsCheckitems={this.state.allStudentCheckStatusMap} setAllStudentCheckitems={this.setAllStudentItems}/>
+                                {/* this is for adding the class info and it needs to be dynamically generated*/}
+                                {/* <ChooseStudentsRow classInfo={dummyData1} allStudentsCheckitems={this.state.allStudentCheckStatusMap} setAllStudentCheckitems={this.setAllStudentItems}/>
+                                <ChooseStudentsRow classInfo={dummyData2} allStudentsCheckitems={this.state.allStudentCheckStatusMap} setAllStudentCheckitems={this.setAllStudentItems}/> */}
+                                { this.state.googleClassroomDataInfo.map(
+                                    (data: IGoogleClassroomInfo) => {
+                                        return <ChooseStudentsRow key={data.className} classInfo={data} allStudentsCheckitems={this.state.allStudentCheckStatusMap} setAllStudentCheckitems={this.setAllStudentItems}/>
+                                    }
+
+                                )} 
                             </Grid>
                         </ChooseStudentContainer>
                         
