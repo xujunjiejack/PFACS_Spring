@@ -5,6 +5,9 @@ import { Checkbox, GridColumn, GridRow} from 'semantic-ui-react'
 
 import {IGoogleClassroomInfo} from "../data_structure/GoogleClassroomInfo"
 
+
+
+/* Interface for props and states */
 interface IChooseStudentContainerProps {
     classInfo: IGoogleClassroomInfo,
     allStudentsCheckitems: Map<string, boolean>,
@@ -18,6 +21,12 @@ interface IChooseStudentContainerStates {
     studentCheckbox: Map<string, boolean>
 }
 
+
+/***
+ *  Main Class  
+ *  This is used in the create session to ask users to choose students to participate in the row 
+ * 
+ */
 export class ChooseStudentsRow extends React.Component<IChooseStudentContainerProps, IChooseStudentContainerStates>{
     
     constructor(props: IChooseStudentContainerProps){
@@ -44,24 +53,24 @@ export class ChooseStudentsRow extends React.Component<IChooseStudentContainerPr
     public render(){
         return(
             <React.Fragment>
-            <GridRow style={{height:"51px", background:"#F4F4F4", marginTop: 0}}>
-                <Checkbox label={this.props.classInfo.className}  indeterminate={!this.state.none && !this.state.all} checked={this.decideMasterCheckbox()}
-                    onChange = {this.masterClick}
-                />
-            </GridRow>
-            
-            <GridRow style={{marginTop: 0}}>
-                {
-                    this.props.classInfo.studentName.map(
-                    (s,i) => { 
-                        return (
-                        <GridColumn width="4" key={`${s}_${i}`} textAlign="left" style={{marginBottom: "10px"}}> 
-                            <Checkbox key={`${s}_${i}`} label={s} checked={this.state.studentCheckbox.get(s)}  onChange={this.changeSpecificStudent}/>
-                        </GridColumn>
-                    )
-                    })
-                }
-            </GridRow>
+                <GridRow style={{height:"51px", background:"#F4F4F4", marginTop: 0}}>
+                    <Checkbox label={this.props.classInfo.className}  indeterminate={!this.state.none && !this.state.all} checked={this.decideMasterCheckbox()}
+                        onChange = {this.masterClick}
+                    />
+                </GridRow>
+                
+                <GridRow style={{marginTop: 0}}>
+                    {
+                        this.props.classInfo.studentName.map(
+                        (s,i) => { 
+                            return (
+                            <GridColumn width="4" key={`${s}_${i}`} textAlign="left" style={{marginBottom: "10px"}}> 
+                                <Checkbox key={`${s}_${i}`} label={s} checked={this.state.studentCheckbox.get(s)}  onChange={this.changeSpecificStudent}/>
+                            </GridColumn>
+                        )
+                        })
+                    }
+                </GridRow>
             </React.Fragment>
         )
     }

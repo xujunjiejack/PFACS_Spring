@@ -7,6 +7,7 @@ import {ChooseStudentsRow} from "./ChooseStudentContainer"
 import {Layout} from "../Layout"
 import {IGoogleClassroomInfo} from "../data_structure/GoogleClassroomInfo"
 
+/* CSS for the component */
 const CreateAssessmentLabel = styled.div`
     position: absolute;
     width: 842px;
@@ -83,7 +84,7 @@ const BackgroundContainer = styled.div`
     background: #FFFFFF;
 `
 
-
+/* Main Component */
 export class CreateSession extends React.Component<any, any>{
 
     public constructor(props: any){
@@ -192,7 +193,6 @@ export class CreateSession extends React.Component<any, any>{
             ongoing, startTime, studentNumber, studentIds, sessionName, sessionId,
         }
 
-        console.log(newSessionEntry)
         this.props.addNewSession(newSessionEntry)
         this.props.changeCurrentSession(sessionId, "dashboard")
         this.props.history.push("/livedashboard")

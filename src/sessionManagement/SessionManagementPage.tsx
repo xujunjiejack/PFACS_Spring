@@ -7,8 +7,8 @@ import {HeaderText, TitleText} from "../AppStyle";
 import {ISession, UserContext} from "../Context"
 import {Layout} from "../Layout"
 
-const dummySessionNumbers:number = 1
 
+/* CSS For the components */
 const DashboardIcon = styled(FontAwesomeIcon)`
     position: relative;
     width: 29px;
@@ -228,6 +228,7 @@ const OngoingLabel2 = styled.div`
     border-radius: 8px;
 `
 
+/* Main Component */
 export class Session extends React.Component <any, any> {
 
     public render(){

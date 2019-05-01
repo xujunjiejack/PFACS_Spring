@@ -5,6 +5,9 @@ import {Button, Label } from "semantic-ui-react"
 import * as openSocket from 'socket.io-client';
 import styled from "styled-components";
 
+const socket = openSocket("http://localhost:8080")
+
+/* CSS For different componenets*/
 const DataTestGround = styled.div`
     position: absolute;
     width: 1143px;
@@ -13,8 +16,6 @@ const DataTestGround = styled.div`
     top: 800px;
     background: #FFFFFF;
 `
-
-const socket = openSocket("http://localhost:8080")
 
 const OverallClassPerformanceContainer = styled.div`
     position: absolute;
@@ -385,6 +386,7 @@ const IndividualLegend = styled.div`
     
 `
 
+/* The component */
 
 class DetailedReport extends React.Component<any, any> {
 

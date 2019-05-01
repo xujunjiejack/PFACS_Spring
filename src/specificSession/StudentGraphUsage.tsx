@@ -3,6 +3,7 @@ import { Card, CardHeader, Table, TableBody, TableCell, TableHeader} from "seman
  
 import styled from "styled-components";
 
+/* CSS For Component */
 const ColorText = styled.div`
     font-family: Roboto;
     font-style: normal;
@@ -15,11 +16,11 @@ const ColorText = styled.div`
 	font-variant-numeric: proportional-nums;
 `
 
-
 const CustomizedTableCell = styled(Table.Cell)`
     justify-content: center;
 `
 
+/* Main Component */
 class StudentGraphUsage extends React.Component{
 
     // This detailed view will include the table view of using different view

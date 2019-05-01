@@ -11,6 +11,7 @@ import {Layout} from "../Layout"
 import LiveDashboard from "./LiveDashboard";  
 
 
+/* CSS For Component */
 const HeaderContainer = styled.div`
   position: relative;
   width: 1143px;
@@ -134,6 +135,8 @@ const EndSessionButton = styled(Button)`
   }
 `
 
+
+/* Main Component */
 class SessionView extends React.Component <any, any> {
 
     public constructor(props: any){

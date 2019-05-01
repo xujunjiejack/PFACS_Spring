@@ -11,51 +11,7 @@ import {Layout} from "../Layout"
 import StudentGraphUsage from "./StudentGraphUsage";
 import {StudentOverview} from "./StudentOverview";
 
-const currentData = [ new Student("Alice", StudentStatus.InProgress, "lili"),
-                      new Student("Bob", StudentStatus.InProgress, "mimi"),
-                      new Student("Charlie", StudentStatus.Idle, "ben"),
-                      new Student("Donny", StudentStatus.Absent, "josh"),
-                      new Student("Elise", StudentStatus.Stuck, "kuku"),
-                      new Student("Frank", StudentStatus.InProgress, "liz"),
-                      new Student("Gigi", StudentStatus.InProgress, "jojo"),
-                      new Student("Hadi", StudentStatus.InProgress, "Hadi"),
-                      new Student("Iris", StudentStatus.InProgress, "Iris"),
-                      new Student("Jojo", StudentStatus.InProgress, "Jojo"),
-                      new Student("Kiki", StudentStatus.InProgress, "Kiki"),
-                      new Student("Lala", StudentStatus.InProgress, "Lala"),
-                      new Student("Mimi", StudentStatus.InProgress, "Mimi"),
-                      new Student("Norb", StudentStatus.InProgress, "Norb"),
-                      new Student("Onno", StudentStatus.InProgress, "Onno"),
-                      new Student("Poppy", StudentStatus.InProgress, "Poppy"),
-                      new Student("Quinn", StudentStatus.InProgress, "Quinn"),
-                      new Student("Rog", StudentStatus.InProgress, "Rog"),
-                      new Student("Sisko", StudentStatus.InProgress, "Sisko"),
-                      new Student("Tom", StudentStatus.Stuck, "Tom"),
-                      new Student("Josh", StudentStatus.InProgress, "Josh"),
-                      new Student("Yan", StudentStatus.InProgress, "Yan"),
-                    ]
-
-function generateColorBasedOnStatus(status: StudentStatus){
-  switch (status) {
-      case StudentStatus.InProgress:
-          return "#DAF8FF"
-          break;
-      
-      case StudentStatus.Idle:
-          return "#EFEFEF"
-          break;
-
-      case StudentStatus.Absent:
-          return "#EFEFEF"   
-
-      case StudentStatus.Stuck: 
-          return "#E2DAFF"
-
-      default:
-          return "#000000"
-  }
-} 
-
+/* CSS for components */
 const GridHeaderStyle = {
 
   paddingLeft: "25px",
@@ -97,19 +53,63 @@ const Rect = styled.div <{status: StudentStatus}> `
     display: inline-block;   
 `
 
+const currentData = [ new Student("Alice", StudentStatus.InProgress, "lili"),
+    new Student("Bob", StudentStatus.InProgress, "mimi"),
+    new Student("Charlie", StudentStatus.Idle, "ben"),
+    new Student("Donny", StudentStatus.Absent, "josh"),
+    new Student("Elise", StudentStatus.Stuck, "kuku"),
+    new Student("Frank", StudentStatus.InProgress, "liz"),
+    new Student("Gigi", StudentStatus.InProgress, "jojo"),
+    new Student("Hadi", StudentStatus.InProgress, "Hadi"),
+    new Student("Iris", StudentStatus.InProgress, "Iris"),
+    new Student("Jojo", StudentStatus.InProgress, "Jojo"),
+    new Student("Kiki", StudentStatus.InProgress, "Kiki"),
+    new Student("Lala", StudentStatus.InProgress, "Lala"),
+    new Student("Mimi", StudentStatus.InProgress, "Mimi"),
+    new Student("Norb", StudentStatus.InProgress, "Norb"),
+    new Student("Onno", StudentStatus.InProgress, "Onno"),
+    new Student("Poppy", StudentStatus.InProgress, "Poppy"),
+    new Student("Quinn", StudentStatus.InProgress, "Quinn"),
+    new Student("Rog", StudentStatus.InProgress, "Rog"),
+    new Student("Sisko", StudentStatus.InProgress, "Sisko"),
+    new Student("Tom", StudentStatus.Stuck, "Tom"),
+    new Student("Josh", StudentStatus.InProgress, "Josh"),
+    new Student("Yan", StudentStatus.InProgress, "Yan"),
+]
 
+function generateColorBasedOnStatus(status: StudentStatus){
+    switch (status) {
+    case StudentStatus.InProgress:
+    return "#DAF8FF"
+    break;
+
+    case StudentStatus.Idle:
+    return "#EFEFEF"
+    break;
+
+    case StudentStatus.Absent:
+    return "#EFEFEF"   
+
+    case StudentStatus.Stuck: 
+    return "#E2DAFF"
+
+    default:
+    return "#000000"
+    }
+} 
+
+/* Interface for the state */
 interface ILoginState {
-    studentChosen?: string ,
-    response?: GoogleLoginResponse,
-    accessToken? : string
-    currentView: string,  // "dashboard" or "report"
-    sessionData: ISession,
-    studentData: Student[]
-  }
-
-// Next step, I need to decouple the livedashboard with its base layout.
+  studentChosen?: string ,
+  response?: GoogleLoginResponse,
+  accessToken? : string
+  currentView: string,  // "dashboard" or "report"
+  sessionData: ISession,
+  studentData: Student[]
+}
 
 
+/* Main component */
 class LiveDashboard extends React.Component  <any, ILoginState>{
 
     public constructor(props: any) {

@@ -12,6 +12,7 @@ import {History} from "history";
 import * as React from "react";
 import styled from "styled-components"
 
+/* CSS For different componenets*/
 const TopBarBackground = styled.div`
     position: absolute;
     left: 0%;
@@ -66,10 +67,12 @@ const TopBarContainer = styled.div`
     top: 0px;
 `
 
+/* Props interface  */
 interface ILayoutProps{ 
     history: History
 }
 
+/* Main Class  */
 export class Layout extends React.Component<ILayoutProps, any> {
 
     public render(){

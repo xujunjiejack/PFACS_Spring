@@ -6,6 +6,7 @@ import {TitleText} from "./AppStyle";
 import {UserContext} from "./Context"
 import {IGoogleClassroomInfo} from "./data_structure/GoogleClassroomInfo";
 
+/* CSS For different componenets*/
 const GoogleLoginButton = styled(GoogleLogin)`
     position: absolute;
     width: 508px;
@@ -16,12 +17,14 @@ const GoogleLoginButton = styled(GoogleLogin)`
     justify-content: center;
 `
 
+/* Interface */
 interface ILoginProps {
     studentChosen?: string ,
     response?: GoogleLoginResponse,
     accessToken? : string
   }
 
+/* Main Component Class*/
 class LoginPage extends React.Component <any, ILoginProps> {
 
     public constructor(prop: any) {
