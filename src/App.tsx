@@ -27,6 +27,11 @@ library.add(faFileAlt)
 
 const history = createHashHistory()
 
+
+/***
+ * Interface
+ */
+
 interface IControlState {
   currentView: string,
   currentSessionId: string
@@ -47,6 +52,9 @@ interface ISessionData {
   sessionId: string
 }
 
+/*** 
+ * Dummy data two for sessions 
+ */
 const dummyData1: ISessionData = {
   startTime: "23 July, 2017 - Started at 4:50pm",
   ongoing: true,
@@ -67,6 +75,11 @@ const dummyData2: ISessionData = {
 
 const dummyData=[dummyData1, dummyData2]
 
+
+/*** 
+ * Dummy data two for Google classroom
+ */
+
 const dummyClassroomData1: IGoogleClassroomInfo = {
   className: "2018 Spring",
   studentName: ["Mike", "Charles", "Anna", "Dan", "Dan", "Dan", "Ben", "Anna"]
@@ -79,6 +92,10 @@ const dummyClassroomData2: IGoogleClassroomInfo = {
 
 const dummyClassroomData = [dummyClassroomData1, dummyClassroomData2]
 
+
+/***
+ * Main class
+ */
 class App extends React.Component <any, IAppState> { 
   
   public constructor(props: any){
@@ -98,6 +115,10 @@ class App extends React.Component <any, IAppState> {
   public setUser = (userName: string, userAccessToken: string, userIdToken: string ) => {
     // TODO: grab data in for user sessions from the database.
     this.setState({userName, userAccessToken, userIdToken, userSessions: dummyData})
+  }
+
+  public setClassroom = (classroomInfo: IGoogleClassroomInfo[]) =>{
+    this.setState({classrooms: classroomInfo})
   }
 
   public historyPush(path: string){
@@ -120,13 +141,13 @@ class App extends React.Component <any, IAppState> {
                     } 
                   else
                     {return this.historyPush("/login")}}
-          }/> 
+                }/> 
 
           <Route exact={true} path="/login" 
                 render={
                     props => 
                       <UserContext.Provider value={{ ...this.state}}  >
-                        <LoginPage history={props.history} setUser={this.setUser}/>
+                        <LoginPage history={props.history} setUser={this.setUser} setClassroom={this.setClassroom}/>
                       </UserContext.Provider>
               }
           />

@@ -68,27 +68,38 @@ class LoginPage extends React.Component <any, ILoginProps> {
       return ;
     }
   
+    private async getStudentDataFromCourseId(data, accessToken){
+      
+      const result = data.courses.map(async course => {
+        const classroomInfo: IGoogleClassroomInfo = {className:"",  studentName:[]}
+        classroomInfo.className = course.name
+        
+        const courseId = course.id
+        const googleStudentResponse = await axios.get(`https://classroom.googleapis.com/v1/courses/${courseId}/students`, {headers:{Authorization:`Bearer  ${accessToken}`}})
+        const studentData: any[] = googleStudentResponse.data.students
+        
+        // data structure: {students: [{courseId:"", profile: { emailAddress:"", name:{familyName:"", givenName:"" }}}]}
+        classroomInfo.studentID = studentData.map(s => s.profile.emailAddress)
+        classroomInfo.studentName = studentData.map(s=> s.profile.name.givenName)
+        // I need to find a way for the classroomInfo unique id as well. It definitely is 
+        // better than the name which can have duplicate. I probably should change the 
+        console.log(classroomInfo)
+        return classroomInfo
+      } ) 
+      return await Promise.all(result)
+    }
 
     private async getStudentEmailList(accessToken: string): Promise<string[]> {
       try {
         const googleCourseResponse = await axios.get("https://classroom.googleapis.com/v1/courses ", {headers:{Authorization:`Bearer  ${accessToken}`}})
-        const data = googleCourseResponse.data ;
-        const firstId = data.courses[0].id
-
-        const googleStudentResponse = await axios.get(`https://classroom.googleapis.com/v1/courses/${firstId}/students`, {headers:{Authorization:`Bearer  ${accessToken}`}})
-        const studentData: any[] = googleStudentResponse.data.students
-        // data structure: {students: [{courseId:"", profile: { emailAddress:"", name:{familyName:"", givenName:"" }}}]}
+        const data = googleCourseResponse.data;
         
-        const studentEmailList = studentData.map(s => s.profile.emailAddress)
-        
-        const classroomInfo: IGoogleClassroomInfo = {className:"",  studentName:[]}
-        classroomInfo.className = "Course" // how to get this one 
-        classroomInfo.studentName = studentData.map(s=> s.givenName)
-        // I need to find a way for the classroomInfo unique id as well. It definitely is 
-        // better than the name which can have duplicate
-        // I probably should change the 
+        const classrooms = await this.getStudentDataFromCourseId(data, accessToken)
 
-        return new Promise((resolve, reject) => {resolve(studentEmailList)})
+        // I need to change something here to map course into different GoogleClassroomInfo for App.tsx
+        this.props.setClassroom(classrooms)
+
+        return new Promise((resolve, reject) => {resolve(["OK"])})
 
       } catch(error){
         console.log("function end:" + error)

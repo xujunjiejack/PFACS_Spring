@@ -10,6 +10,11 @@ import {ISession, UserContext} from "../Context"
 import {Layout} from "../Layout"
 import StudentGraphUsage from "./StudentGraphUsage";
 import {StudentOverview} from "./StudentOverview";
+import * as openSocket from 'socket.io-client'; 
+
+// Now I'm totally lost about how I should approach this problem
+// the problem that I need to reflect the data in the server onto the frontend. 
+const socket = openSocket("http://localhost:8080/studentstatus")
 
 /* CSS for components */
 const GridHeaderStyle = {
@@ -116,6 +121,61 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
         super(props)
         this.state = {studentChosen: undefined, response: undefined, accessToken: undefined, currentView: "dashboard", sessionData: this.props.sessionData, 
         studentData: this.props.studentData}
+
+        socket.on("live status update", message => {
+          // convert data from the backend. 
+          const newStudentData: Student[] = []
+
+          // Another way is to understand the 
+
+          Object.keys(message).forEach(k => {
+            // no need for external function wrap
+            let status = StudentStatus.InProgress;
+            
+            switch (message[k]) {
+              case 0:
+                status = StudentStatus.InProgress;
+                break;
+              
+              case 1:
+                status = StudentStatus.Stuck;
+                break;
+            
+              case 2: 
+              case 3:
+                status = StudentStatus.Absent
+                break
+
+              default:
+                break;
+            }
+            newStudentData.push(new Student(k, status, k))
+          })
+
+          this.setState({studentData: newStudentData})
+        })
+      }
+      
+      public componentWillMount(){
+      
+        const students = this.props.studentData.map(s=>s.name)
+        console.log(students)
+      
+        socket.emit('listen to live data', {students})
+      }
+      
+      public componentDidMount(){
+        window.onbeforeunload = () =>{
+          socket.emit('stop listening student status')
+        }
+      }
+
+      public componentWillUnmount(){
+        // close connection
+        // axios.post("/mongodata/endlivedata").then(res => {
+        //   console.log(res.data)
+        // });
+        socket.emit('stop listening student status')
       }
 
     public render(){

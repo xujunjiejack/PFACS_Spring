@@ -111,9 +111,7 @@ export class ChooseStudentsRow extends React.Component<IChooseStudentContainerPr
 
     private changeSpecificStudent = (e: any, data: any) => {
         const studentName =  data.label
-        console.log(`student name is ${studentName}`)
         const isChecked = data.checked
-        console.log(`is checked ${isChecked}`)
         const updatedCheckItems: Map<string,boolean> = this.state.studentCheckbox.set(studentName, isChecked)
 
         // Check whether all students or none students
@@ -124,7 +122,6 @@ export class ChooseStudentsRow extends React.Component<IChooseStudentContainerPr
         this.setState( {studentCheckbox: updatedCheckItems, all, none} )
         
         // this.props.enrolledStudent.push(studentName)
-        console.log(this.state.studentCheckbox)
     }
 
 

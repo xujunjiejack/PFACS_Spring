@@ -9,7 +9,9 @@ import {Student, StudentStatus} from '../data_structure/Student';
 import DetailedReport from "./DetailedReport"
 import {Layout} from "../Layout"
 import LiveDashboard from "./LiveDashboard";  
+import * as openSocket from 'socket.io-client'; 
 
+// const socket = openSocket("http://localhost:8080/studentstatus")
 
 /* CSS For Component */
 const HeaderContainer = styled.div`
@@ -141,10 +143,9 @@ class SessionView extends React.Component <any, any> {
 
     public constructor(props: any){
         super(props) 
-        this.state = {studentData: this.wrapData(["anna","hemmingway"]), currentView: this.props.currentSessionView, currentSessionId: this.props.currentSessionId} 
+        this.state = {studentData: this.wrapData(["anna","hemmingway"]), currentView: this.props.currentSessionView, currentSessionId: this.props.currentSessionId}
     }
 
-    
     public wrapData = (studentIds: string[]): Student[] => {
         // the name and the progress will be done here
         return studentIds.map(s => new Student(s, StudentStatus.InProgress, s))
@@ -192,7 +193,9 @@ class SessionView extends React.Component <any, any> {
                        </HeaderContainer>
                        <br/>
                        
-                       {this.state.currentView === "dashboard"? <LiveDashboard studentData={this.getStudentData(value.userSessions, this.state.currentSessionId)} sessionData={this.getSessionData(value.userSessions, this.state.currentSessionId)}/> : <DetailedReport sessionData={this.getSessionData(value.userSessions, this.state.currentSessionId)}> Detailed report </DetailedReport>}  
+                       {this.state.currentView === "dashboard"? <LiveDashboard studentData={this.getStudentData(value.userSessions, this.state.currentSessionId)} sessionData={this.getSessionData(value.userSessions, this.state.currentSessionId)}/> 
+                       : 
+                       <DetailedReport sessionData={this.getSessionData(value.userSessions, this.state.currentSessionId)}> Detailed report </DetailedReport>}  
                        </Layout>
                 }
             </UserContext.Consumer>
