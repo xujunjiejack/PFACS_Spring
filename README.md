@@ -28,8 +28,5 @@ Now, you are good to go by opening the browser.
 It only runs the frontend, so if you want to make it actually usable, run the backend. It connects the frontend and the backend with web service. 
 
 
-###  3:  How to survive JJ's code 
-
-
 
 
