@@ -17,7 +17,7 @@ import {Route, Router} from "react-router"
 import './App.css'
 import {initialUser, IUserContext, UserContext} from "./Context"
 import {CreateSession} from "./sessionManagement/CreateSession"
-import LoginPage from "./Login";
+import LoginPage from "./loginPage/Login";
 import {Session} from "./sessionManagement/SessionManagementPage";
 import SessionView from "./specificSession/SpecificSessionView";
 import {IGoogleClassroomInfo} from "./data_structure/GoogleClassroomInfo"

@@ -20,6 +20,12 @@ const CustomizedTableCell = styled(Table.Cell)`
     justify-content: center;
 `
 
+const dummyData = {
+    bar: [10,15,10],
+    line: [15,5,0],
+    heatmap: [15,5,3]
+} 
+
 /* Main Component */
 class StudentGraphUsage extends React.Component{
 
@@ -47,21 +53,24 @@ class StudentGraphUsage extends React.Component{
                         <Table.Body>
                         <Table.Row>
                             <Table.Cell>Bar</Table.Cell>
-                            <CustomizedTableCell> <ColorText>10</ColorText> </CustomizedTableCell>
-                            <CustomizedTableCell> <ColorText>15</ColorText> </CustomizedTableCell>
-                            <CustomizedTableCell> <ColorText>10</ColorText> </CustomizedTableCell>
+                            {/* This needs to be changed to a more data driven process */}
+                            { dummyData.bar.map( (num,index) => 
+                                <CustomizedTableCell key={num + " "+ index}> <ColorText>{num}</ColorText> </CustomizedTableCell>)                             
+                            }    
                         </Table.Row>
+
                         <Table.Row>
                             <Table.Cell>Line</Table.Cell>
-                            <Table.Cell> <ColorText>15</ColorText> </Table.Cell>
-                            <Table.Cell> <ColorText>5</ColorText> </Table.Cell>
-                            <Table.Cell> <ColorText>0</ColorText> </Table.Cell>
+                            { dummyData.line.map( (num,index) => 
+                                <CustomizedTableCell key={num + " "+ index}> <ColorText>{num}</ColorText> </CustomizedTableCell>)                             
+                            }
                         </Table.Row>
+
                         <Table.Row>
                             <Table.Cell>Heat map</Table.Cell>
-                            <Table.Cell> <ColorText>15</ColorText> </Table.Cell>
-                            <Table.Cell> <ColorText>5</ColorText> </Table.Cell>
-                            <Table.Cell> <ColorText>3</ColorText> </Table.Cell>
+                            { dummyData.heatmap.map( (num,index) => 
+                                <CustomizedTableCell key={num + " "+ index}> <ColorText>{num}</ColorText> </CustomizedTableCell>)                             
+                            }
                         </Table.Row>
                         </Table.Body>
                     </Table>

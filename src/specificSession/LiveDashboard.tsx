@@ -4,7 +4,6 @@ import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
 import {Route, Router} from "react-router"
 import {Button, ButtonGroup, Card, CardContent,CardHeader, Grid, GridColumn, GridRow, Header } from "semantic-ui-react"
 import styled from "styled-components";
-import {HeaderText, TitleText} from "../AppStyle";
 import {Student, StudentStatus} from '../data_structure/Student';
 import {ISession, UserContext} from "../Context"
 import {Layout} from "../Layout"
@@ -43,8 +42,6 @@ const TotalStudentLabel = styled.div`
 `
 
 const Rect = styled.div <{status: StudentStatus}> `
-  
-
     &:first-of-type{
       margin-left:4px;
     }

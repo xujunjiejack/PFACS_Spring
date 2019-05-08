@@ -13,7 +13,11 @@ Typescript is an improved version of Javascript to ensure a good standard of the
 
 Semantic UI React similar to bootstrap is the UI styling framework I used to quickly create a ok looking website
 
-Styled Component is small, simple library that allows the person to embed the styling sheet in each componenet. It saves the need to create a bunch of stylesheet in the code
+Styled Component is small, simple library that embeds the styling sheet in each componenet. It saves the need to create a bunch of stylesheet in the code. 
+
+React Router is used to make sure that users can click back to navigate the websites
+
+Currently, no cookie implemented, but definitely in the future
 
 ### 2:   How to run
 
@@ -25,8 +29,24 @@ type: ```npm run```
 
 Now, you are good to go by opening the browser. 
 
-It only runs the frontend, so if you want to make it actually usable, run the backend. It connects the frontend and the backend with web service. 
+It only runs the frontend on port 3000, so if you want to make it actually usable, run the backend. Frontend connects to the backend with web service. 
 
 
+### 3:   The structure of main components
+- Context (It's a mechanism for all components to get data, but it doesn't really help too much)
+- Login  
+- Sessions
+    - Create new sessions 
+    - Manage sessions
+- Specific session
+    - Live Dashboard
+        - Live student status
+        - Class Overview 
+    - Dashboard Report
 
+Couple data structures, mostly interface, are created to ensure the communication between different components:
+- Student 
+    - It's the data structure that defines the essential property for a student
+- GoogleClassroomInfo  
+    - For creating session, a wrapper for google classroom data
 

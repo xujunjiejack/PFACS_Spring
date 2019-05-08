@@ -18,7 +18,6 @@ export class StudentOverview extends React.Component <IStudentOverviewProps ,any
         this.state = {studentData: this.props.studentData}
     }
 
-
     public render(){
 
         const elementNumberOneRow = 5;

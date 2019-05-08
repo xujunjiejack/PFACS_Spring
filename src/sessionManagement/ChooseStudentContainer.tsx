@@ -5,8 +5,6 @@ import { Checkbox, GridColumn, GridRow} from 'semantic-ui-react'
 
 import {IGoogleClassroomInfo} from "../data_structure/GoogleClassroomInfo"
 
-
-
 /* Interface for props and states */
 interface IChooseStudentContainerProps {
     classInfo: IGoogleClassroomInfo,
