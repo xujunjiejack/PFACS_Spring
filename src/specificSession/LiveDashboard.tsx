@@ -1,18 +1,15 @@
 import axios from "axios"
 import * as React from 'react';
-import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
-import {Route, Router} from "react-router"
 import {Button, ButtonGroup, Card, CardContent,CardHeader, Grid, GridColumn, GridRow, Header } from "semantic-ui-react"
+import {GoogleLoginResponse} from "react-google-login"
 import styled from "styled-components";
 import {Student, StudentStatus} from '../data_structure/Student';
 import {ISession, UserContext} from "../Context"
 import {Layout} from "../Layout"
 import ClassGraphUsageOverview from "./ClassGraphUsageOverview";
-import {StudentStatusOverview} from "./StudentOverview";
+import {StudentStatusOverview} from "./StudentStatusOverview";
 import * as openSocket from 'socket.io-client'; 
 
-// Now I'm totally lost about how I should approach this problem
-// the problem that I need to reflect the data in the server onto the frontend. 
 const socket = openSocket("http://localhost:8080/studentstatus")
 
 /* CSS for components */
@@ -154,7 +151,6 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
       }
       
       public componentWillMount(){
-      
         const students = this.props.studentData.map(s=>s.name)
         console.log(students)
       
@@ -182,6 +178,8 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
             <React.Fragment>
                 <Grid style={{position: "relative", left: "143px"}}>
                 <Grid.Row>
+
+                  {/* Left part */}
                   <Grid.Column width="8">
                       <Card style={{width:"100%",  height:"70vh"}} >
 
@@ -208,9 +206,11 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
                       </Card>
                   </Grid.Column>
 
+                  {/* Right part */}
                   <Grid.Column width="7" style={{display:"flex", justifyContent: "center", color:"#00000"}}>
-                      <ClassGraphUsageOverview/>
+                      <ClassGraphUsageOverview sessionData={this.props.sessionData}/>
                   </Grid.Column>
+
                 </Grid.Row>      
                 </Grid>
             </React.Fragment>

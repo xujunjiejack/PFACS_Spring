@@ -1,7 +1,6 @@
 import * as React from "react";
-import {Grid, GridColumn, GridRow} from "semantic-ui-react";
-import styled from "styled-components";
-import { Student, StudentStatus } from "../data_structure/Student";
+import {Grid} from "semantic-ui-react";
+import { Student } from "../data_structure/Student";
 import StudentStatusRect from './StudentStatusRectangular';
 
 /* Interface */
@@ -32,20 +31,18 @@ export class StudentStatusOverview extends React.Component <IStudentOverviewProp
                 <React.Fragment>
                 <Grid padded={true} verticalAlign="middle" style={{flexWrap: "wrap"}}>
 
-                     {/* Create the status grid */}
-                      {
+                    {/* Create the status grid with a bunch of rectangulars */}
+                        {
                             this.state.studentData.map((s: Student) => {
                                 return (
                                     <StudentStatusRect
                                         key={`student_${s.name}_rect`}
                                         showDetailed={this.props.showDetailed} 
                                         student={s}
-                                    />
-                                )  
-                        }
-                        )        
+                                    />)
+                        })        
                     }
-
+                    
                 </Grid>
                 </React.Fragment>
         )

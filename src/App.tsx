@@ -27,7 +27,6 @@ library.add(faFileAlt)
 
 const history = createHashHistory()
 
-
 /***
  * Interface
  */
