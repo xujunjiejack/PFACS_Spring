@@ -45,6 +45,8 @@ class ClassGraphUsageOverview extends React.Component<any, any>{
         super(props)
         if (props.sessionData !== undefined){
             this.state = {overviewData: dummyData, sessionId: props.sessionData.sessionId}
+        }else{
+            this.state = {overviewData: dummyData, sessionId: "helloworld"}
         }
 
         socket.on("live class overview update", message => {
