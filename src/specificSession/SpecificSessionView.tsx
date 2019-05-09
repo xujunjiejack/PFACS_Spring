@@ -202,7 +202,7 @@ class SessionView extends React.Component <any, any> {
         )
     }
 
-    private getStudentData = (allSessions: ISession[], currentSessionId: string) => {
+    private getStudentData = (allSessions: ISession[], currentSessionId: string): Student[] => {
         const session = this.getSessionData(allSessions, currentSessionId)
         if (session){
           const wrappedData = this.wrapData(session.studentIds)

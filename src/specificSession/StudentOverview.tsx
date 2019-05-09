@@ -11,7 +11,7 @@ interface IStudentOverviewProps{
 }
 
 /* Main Component */
-export class StudentOverview extends React.Component <IStudentOverviewProps ,any> {
+export class StudentStatusOverview extends React.Component <IStudentOverviewProps ,any> {
 
     public constructor(props: any){
         super(props)

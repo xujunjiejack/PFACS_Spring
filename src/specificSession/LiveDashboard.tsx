@@ -7,8 +7,8 @@ import styled from "styled-components";
 import {Student, StudentStatus} from '../data_structure/Student';
 import {ISession, UserContext} from "../Context"
 import {Layout} from "../Layout"
-import StudentGraphUsage from "./StudentGraphUsage";
-import {StudentOverview} from "./StudentOverview";
+import ClassGraphUsageOverview from "./ClassGraphUsageOverview";
+import {StudentStatusOverview} from "./StudentOverview";
 import * as openSocket from 'socket.io-client'; 
 
 // Now I'm totally lost about how I should approach this problem
@@ -191,7 +191,7 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
                         </CardHeader>
 
                         <CardContent style={{padding: "50px"}}>
-                          <StudentOverview showDetailed={this.showDetailed} studentData={this.state.studentData}/>
+                          <StudentStatusOverview showDetailed={this.showDetailed} studentData={this.state.studentData}/>
                         </CardContent>
 
                         <div style={{fontSize: "20px", paddingLeft:"50px" , textAlign: "left", position:"absolute", bottom:"100px"}}>
@@ -209,7 +209,7 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
                   </Grid.Column>
 
                   <Grid.Column width="7" style={{display:"flex", justifyContent: "center", color:"#00000"}}>
-                      <StudentGraphUsage/>
+                      <ClassGraphUsageOverview/>
                   </Grid.Column>
                 </Grid.Row>      
                 </Grid>

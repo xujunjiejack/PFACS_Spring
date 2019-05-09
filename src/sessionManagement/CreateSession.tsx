@@ -6,6 +6,7 @@ import styled from "styled-components"
 import {ChooseStudentsRow} from "./ChooseStudentContainer"
 import {Layout} from "../Layout"
 import {IGoogleClassroomInfo} from "../data_structure/GoogleClassroomInfo"
+import * as moment from "moment"
 
 /* CSS for the component */
 const CreateAssessmentLabel = styled.div`
@@ -187,7 +188,7 @@ export class CreateSession extends React.Component<any, any>{
         const studentIds = studentMaps.filter((v,k) => v === true).keySeq().toArray()
         const studentNumber = studentIds.length
         const ongoing = true;
-        const startTime = "time-need-format"
+        const startTime = moment().format('MMMM Do YYYY, h:mm:ss a');
         const sessionId = Math.random().toString(36)
         const newSessionEntry = {
             ongoing, startTime, studentNumber, studentIds, sessionName, sessionId,

@@ -1,7 +1,11 @@
+
 import * as React from "react";
 import { Card, CardHeader, Table, TableBody, TableCell, TableHeader} from "semantic-ui-react";
  
 import styled from "styled-components";
+
+// this class needs session id to query he data from the backend, pass the session data as a props
+
 
 /* CSS For Component */
 const ColorText = styled.div`
@@ -27,7 +31,7 @@ const dummyData = {
 } 
 
 /* Main Component */
-class StudentGraphUsage extends React.Component{
+class ClassGraphUsageOverview extends React.Component{
 
     // This detailed view will include the table view of using different view
     public render(){
@@ -81,4 +85,4 @@ class StudentGraphUsage extends React.Component{
 
 }
 
-export default StudentGraphUsage
+export default ClassGraphUsageOverview
