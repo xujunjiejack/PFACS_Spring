@@ -17,7 +17,7 @@ import {Route, Router} from "react-router"
 import './App.css'
 import {initialUser, IUserContext, UserContext} from "./Context"
 import {CreateSession} from "./sessionManagement/CreateSession"
-import LoginPage from "./loginPage/Login";
+import LoginPage from "./Login";
 import {Session} from "./sessionManagement/SessionManagementPage";
 import SessionView from "./specificSession/SpecificSessionView";
 import {IGoogleClassroomInfo} from "./data_structure/GoogleClassroomInfo"
@@ -26,6 +26,7 @@ library.add(faTachometerAlt)
 library.add(faFileAlt)
 
 const history = createHashHistory()
+
 
 /***
  * Interface
@@ -153,54 +154,28 @@ class App extends React.Component <any, IAppState> {
 
           <Route exact={true} path="/sessions"
                 render={
-                    props => {
-                      if (this.state.userName !== "")
-                      {  return (
-                        <UserContext.Provider value={{ ...this.state}}  >
-                            <Session history={props.history} changeCurrentSession={this.changeCurrentSession}/>
-                        </UserContext.Provider>)
-                      } 
-                      else
-                        {
-                          return this.historyPush("/login")
-                        }
-                    }
+                    props =>
+                      <UserContext.Provider value={{ ...this.state}}  >
+                          <Session history={props.history} changeCurrentSession={this.changeCurrentSession}/>
+                      </UserContext.Provider>
                 }
             />
 
           <Route exact={true} path="/createsession"
               render = {
-                  props => {
-                    if (this.state.userName !== "")
-                    {  return (
+                  props => 
                       <UserContext.Provider value={{ ...this.state}}  >
                         <CreateSession history={props.history} addNewSession={this.addNewSession} changeCurrentSession={this.changeCurrentSession} classroomInfoData={this.state.classrooms}/>                          
                       </UserContext.Provider>
-                    )
-                    }
-                    else
-                     {
-                        return this.historyPush("/login")
-                    }
-                }
               }
           />
           
           <Route exact={true} path="/livedashboard"
               render = {
-                  props => {
-                  if (this.state.userName !== "")
-                  {  return (
+                  props => 
                     <UserContext.Provider value={{ ...this.state}}  >
                       <SessionView history={props.history} currentSessionId={this.state.currentSessionId} currentSessionView={this.state.currentView} changeCurrentSession={this.changeCurrentSession}/>
                     </UserContext.Provider>
-                    )
-                  }
-                  else
-                   {
-                      return this.historyPush("/login")
-                  }
-                }
               }
              />
           </div>

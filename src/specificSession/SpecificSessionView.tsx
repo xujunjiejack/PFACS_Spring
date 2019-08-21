@@ -165,13 +165,13 @@ class SessionView extends React.Component <any, any> {
         return (
             <UserContext.Consumer>
                 {value => 
-                        <Layout history={this.props.history}>
+                       <Layout history={this.props.history}>
 
-                        <p style={{height: `5vh`}}>    
-                          {/*  */}
-                        </p>
+                       <p style={{height: `5vh`}}>    
+                        {/*  */}
+                       </p>
        
-                        <HeaderContainer>
+                       <HeaderContainer>
                          <Title>
                            { this.getSessionTitle(value.userSessions, this.state.currentSessionId) }
                          </Title>
@@ -190,21 +190,19 @@ class SessionView extends React.Component <any, any> {
                            </EndSessionButton>
                          </StyledButtonGroup>
        
-                        </HeaderContainer>
-                        <br/>
+                       </HeaderContainer>
+                       <br/>
                        
-                        {this.state.currentView === "dashboard"? 
-                          <LiveDashboard studentData={this.getStudentData(value.userSessions, this.state.currentSessionId)} sessionData={this.getSessionData(value.userSessions, this.state.currentSessionId)}/> 
-                          : 
-                          <DetailedReport sessionData={this.getSessionData(value.userSessions, this.state.currentSessionId)}> Detailed report </DetailedReport>
-                        }  
-                        </Layout>
-                    }
+                       {this.state.currentView === "dashboard"? <LiveDashboard studentData={this.getStudentData(value.userSessions, this.state.currentSessionId)} sessionData={this.getSessionData(value.userSessions, this.state.currentSessionId)}/> 
+                       : 
+                       <DetailedReport sessionData={this.getSessionData(value.userSessions, this.state.currentSessionId)}> Detailed report </DetailedReport>}  
+                       </Layout>
+                }
             </UserContext.Consumer>
         )
     }
 
-    private getStudentData = (allSessions: ISession[], currentSessionId: string): Student[] => {
+    private getStudentData = (allSessions: ISession[], currentSessionId: string) => {
         const session = this.getSessionData(allSessions, currentSessionId)
         if (session){
           const wrappedData = this.wrapData(session.studentIds)

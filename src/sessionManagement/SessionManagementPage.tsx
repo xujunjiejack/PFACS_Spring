@@ -3,6 +3,7 @@ import axios from "axios";
 import * as React from "react";
 import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
 import styled from "styled-components"
+import {HeaderText, TitleText} from "../AppStyle";
 import {ISession, UserContext} from "../Context"
 import {Layout} from "../Layout"
 
