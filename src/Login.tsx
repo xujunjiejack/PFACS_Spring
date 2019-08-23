@@ -2,29 +2,9 @@ import axios from "axios";
 import * as React from "react";
 import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
 import styled from "styled-components";
-import {UserContext} from "../Context"
-import {IGoogleClassroomInfo} from "../data_structure/GoogleClassroomInfo";
-
-
-export const TitleText= styled.div`
-  position: absolute;
-  // width: 950px;
-  height: 94px;
-  left: 247px;
-  top: 303px;
-
-  font-family: Roboto, sans-serif;
-  font-style: normal;
-  font-weight: normal;
-  line-height: normal;
-  font-size: 80px;
-
-  @media only screen and (min-width: 1600px) {
-    font-size: 100px
-  }
-
-  color: #000000;
-`
+import {TitleText} from "./AppStyle";
+import {UserContext} from "./Context"
+import {IGoogleClassroomInfo} from "./data_structure/GoogleClassroomInfo";
 
 /* CSS For different componenets*/
 const GoogleLoginButton = styled(GoogleLogin)`

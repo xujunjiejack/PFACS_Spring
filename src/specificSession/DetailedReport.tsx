@@ -5,7 +5,7 @@ import {Button, Label } from "semantic-ui-react"
 import * as openSocket from 'socket.io-client';
 import styled from "styled-components";
 
-const socket = openSocket("http://localhost:8080")
+const socket = openSocket("http://localhost:3001")
 
 /* CSS For different componenets*/
 const DataTestGround = styled.div`

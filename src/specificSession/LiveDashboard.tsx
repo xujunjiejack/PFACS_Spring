@@ -1,16 +1,20 @@
 import axios from "axios"
 import * as React from 'react';
+import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
+import {Route, Router} from "react-router"
 import {Button, ButtonGroup, Card, CardContent,CardHeader, Grid, GridColumn, GridRow, Header } from "semantic-ui-react"
-import {GoogleLoginResponse} from "react-google-login"
 import styled from "styled-components";
+import {HeaderText, TitleText} from "../AppStyle";
 import {Student, StudentStatus} from '../data_structure/Student';
 import {ISession, UserContext} from "../Context"
 import {Layout} from "../Layout"
-import ClassGraphUsageOverview from "./ClassGraphUsageOverview";
-import {StudentStatusOverview} from "./StudentStatusOverview";
+import StudentGraphUsage from "./StudentGraphUsage";
+import {StudentOverview} from "./StudentOverview";
 import * as openSocket from 'socket.io-client'; 
 
-const socket = openSocket("http://localhost:8080/studentstatus")
+// Now I'm totally lost about how I should approach this problem
+// the problem that I need to reflect the data in the server onto the frontend. 
+const socket = openSocket("http://localhost:3001/studentstatus")
 
 /* CSS for components */
 const GridHeaderStyle = {
@@ -39,6 +43,8 @@ const TotalStudentLabel = styled.div`
 `
 
 const Rect = styled.div <{status: StudentStatus}> `
+  
+
     &:first-of-type{
       margin-left:4px;
     }
@@ -52,11 +58,11 @@ const Rect = styled.div <{status: StudentStatus}> `
     display: inline-block;   
 `
 
-const currentData = [ new Student("Alice", StudentStatus.InProgress, "lili"),
-    new Student("Bob", StudentStatus.InProgress, "mimi"),
-    new Student("Charlie", StudentStatus.Idle, "ben"),
-    new Student("Donny", StudentStatus.Absent, "josh"),
-    new Student("Elise", StudentStatus.Stuck, "kuku"),
+const currentData = [ new Student("Matthew", StudentStatus.InProgress, "lili"),
+    new Student("Vishesh", StudentStatus.InProgress, "mimi"),
+    new Student("Reina", StudentStatus.Idle, "ben"),
+    new Student("Nathan", StudentStatus.Absent, "josh"),
+    new Student("Daisy", StudentStatus.Stuck, "kuku"),
     new Student("Frank", StudentStatus.InProgress, "liz"),
     new Student("Gigi", StudentStatus.InProgress, "jojo"),
     new Student("Hadi", StudentStatus.InProgress, "Hadi"),
@@ -118,6 +124,8 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
 
         socket.on("live status update", message => {
           // convert data from the backend. 
+          console.log(message);
+
           const newStudentData: Student[] = []
 
           // Another way is to understand the 
@@ -143,16 +151,72 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
               default:
                 break;
             }
-            newStudentData.push(new Student(k, status, k))
+            newStudentData.push(new Student(k, status, k, 10000))
           })
 
-          this.setState({studentData: newStudentData})
-        })
+          this.setState({studentData: newStudentData});
+        });
+
+        socket.on("live2", message => {
+          // convert data from the backend. 
+
+          // console.log(message.fullDocument);
+          // console.log("state");
+          // console.log(this.state.studentData);
+
+          // const newStudentData: Student[] = [];
+
+          // Another way is to understand the 
+
+          const k = message.fullDocument;
+          let status = StudentStatus.InProgress;
+          const newStudentData = this.state.studentData;
+          const studentName = k.userEmail.slice(0,8);
+
+          let newStudent = true;
+
+          for (const s of Object.keys(newStudentData)) {
+            const timeGap = ((new Date()).getTime()/1000) - newStudentData[s].lastActTime;
+            // console.log(k.lastActTime + " " + ((new Date()).getTime()/1000));
+            console.log(newStudentData[s].lastActTime);
+            console.log(timeGap);
+            if (timeGap < 1000){
+              status = StudentStatus.InProgress;
+            }
+            else if (timeGap < 10000) {
+              status = StudentStatus.Stuck;
+            }
+            else{
+              status = StudentStatus.Absent;
+            }  
+            
+            if (newStudentData[s].name === studentName) {
+              newStudent = false;
+            }
+            newStudentData[s].setStatus(status);
+          }
+
+          if (newStudent){
+            newStudentData.push(new Student(studentName, status, k.userId, k.lastActTime));
+          }
+                   
+          newStudentData.filter(x => x.name === studentName);
+          
+          // newStudentData.studentUser = status;
+
+          this.setState({studentData: newStudentData});
+
+        });
       }
+
       
       public componentWillMount(){
-        const students = this.props.studentData.map(s=>s.name)
-        console.log(students)
+      
+        // const students = this.props.studentData.map(s=>s.name)
+        // const students = {"Vishesh": 0 , "Nathan": 0 ,  "Matthew": 0  , "Reina": 0 , "Daisy": 0  };
+        const students = ["Vishesh", "Nathan", "Matthew", "Reina", "Daisy"];
+
+        console.log(students);
       
         socket.emit('listen to live data', {students})
       }
@@ -178,8 +242,6 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
             <React.Fragment>
                 <Grid style={{position: "relative", left: "143px"}}>
                 <Grid.Row>
-
-                  {/* Left part */}
                   <Grid.Column width="8">
                       <Card style={{width:"100%",  height:"70vh"}} >
 
@@ -189,7 +251,7 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
                         </CardHeader>
 
                         <CardContent style={{padding: "50px"}}>
-                          <StudentStatusOverview showDetailed={this.showDetailed} studentData={this.state.studentData}/>
+                          <StudentOverview showDetailed={this.showDetailed} studentData={this.state.studentData}/>
                         </CardContent>
 
                         <div style={{fontSize: "20px", paddingLeft:"50px" , textAlign: "left", position:"absolute", bottom:"100px"}}>
@@ -206,11 +268,9 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
                       </Card>
                   </Grid.Column>
 
-                  {/* Right part */}
                   <Grid.Column width="7" style={{display:"flex", justifyContent: "center", color:"#00000"}}>
-                      <ClassGraphUsageOverview sessionData={this.props.sessionData}/>
+                      <StudentGraphUsage/>
                   </Grid.Column>
-
                 </Grid.Row>      
                 </Grid>
             </React.Fragment>
