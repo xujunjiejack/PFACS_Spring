@@ -26,14 +26,34 @@ function generateColorBasedOnStatus(status: StudentStatus){
 const Rectangular = styled.div <{status: StudentStatus}>`
     background-color: ${props => generateColorBasedOnStatus(props.status)};
     // min-width: 40px;
-    font-size: 20px;
+    font-size: 1.2em;
     color: black;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 10px;
-    width: 4.5em;
-    height: 4.5em;
+    margin-bottom: 16px;
+    margin-left: 3px;
+    width: 85px;
+    height: 60px;
+    
+    &.active1 {
+        border: 5px solid red;
+        outline: none;
+    }
+`
+
+const GhostRectangular = styled.div <{status: StudentStatus}>`
+    background-color: transparent;
+    // min-width: 40px;
+    font-size: 1.2em;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    margin-left: 3px;
+    width: 85px;
+    height: 60px;
     
     &.active1 {
         border: 5px solid red;
@@ -43,11 +63,20 @@ const Rectangular = styled.div <{status: StudentStatus}>`
 
 interface IStudentStatusRectProps{
     student: Student,
-    showDetailed: (studentId:string) => void 
+    showDetailed: (studentId:string) => void,
+    onMouseOverASpecificStudentEvent: (studentData: Student) => void,
+    onMouseOutASpecificStudentEvent: () => void,
 }
 
 interface IStudentStatusRectState{
     rectActive: boolean
+}
+
+function GhostStatusRect() {
+    return(
+        <GhostRectangular status={StudentStatus.Idle}/>
+    )
+    
 }
 
 class StudentStatusRect extends React.Component<IStudentStatusRectProps, IStudentStatusRectState> {
@@ -58,15 +87,18 @@ class StudentStatusRect extends React.Component<IStudentStatusRectProps, IStuden
     }
 
     public render() {
-
+        
         return(
             <Rectangular 
+                onMouseOver={ ()=>this.props.onMouseOverASpecificStudentEvent(this.props.student)}
+                onMouseOut={()=>this.props.onMouseOutASpecificStudentEvent()}
+            
                 tabIndex={0}
 
                 className={this.state.rectActive? "active" : ""}
 
                 status={this.props.student.status} onClick={this.onClick} data-tip={this.getContentFromStatus(this.props.student.status)}>
-                
+
                 <ReactToolTip place="top" type="dark" effect="solid" />
 
                 {this.props.student.name}

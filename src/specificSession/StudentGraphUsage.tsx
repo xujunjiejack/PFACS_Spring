@@ -29,8 +29,8 @@ class StudentGraphUsage extends React.Component{
 
             <Card style={{width:"100%"}}>
                 <Card.Content>
-                    <CardHeader textAlign="left" style={{paddingTop:`18px`, marginBottom: "20px", marginLeft: "10px", letterSpacing:"2px", wordSpacing:"5px"}} >
-                        CLASS OVERVIEW
+                    <CardHeader textAlign="left" style={{fontFamily:"Roboto", paddingTop:`18px`, marginBottom: "20px", marginLeft: "10px"}} >
+                        Class Overview
                     </CardHeader>
 
                     <Table basic='very' style={{marginLeft: "10px"}}>

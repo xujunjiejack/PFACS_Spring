@@ -55,23 +55,28 @@ interface ISessionData {
 /*** 
  * Dummy data two for sessions 
  */
+
+const dummyDataStudentList = ["Alice","Bob","Charlie","Donny","Elise","Frank","Gigi","Hadi","Iris","Jojo","Kiki","Lala","Mimi","Norb","Onno","Poppy","Quinn","Rog","Sisko","Tom","Josh","Yan"]
+
 const dummyData1: ISessionData = {
   startTime: "23 July, 2017 - Started at 4:50pm",
   ongoing: true,
   sessionName: "Spring 2019 Math Assessment",
-  studentNumber: 24,
-  studentIds: ["Alice","Bob","Charlie","Donny","Elise","Frank","Gigi","Hadi","Iris","Jojo","Kiki","Lala","Mimi","Norb","Onno","Poppy","Quinn","Rog","Sisko","Tom","Josh","Yan"],
+  studentNumber: dummyDataStudentList.length,
+  studentIds: dummyDataStudentList,
   sessionId: Math.random().toString(36)
 }
+
 
 const dummyData2: ISessionData = {
   startTime: "23 July, 2017 - Started at 4:50pm",
   ongoing: false,
   sessionName: "Fall 2019 Math Assessment",
-  studentNumber: 25,
-  studentIds: ["Alice","Bob","Charlie","Donny","Elise","Frank","Gigi","Hadi","Iris","Jojo","Kiki","Lala","Mimi","Norb","Onno","Poppy","Quinn","Rog","Sisko","Tom","Josh","Yan"], 
+  studentNumber: dummyDataStudentList.length,
+  studentIds: dummyDataStudentList, 
   sessionId: Math.random().toString(36)
 }
+// So I need to find the student data. 
 
 const dummyData=[dummyData1, dummyData2]
 
@@ -128,7 +133,7 @@ class App extends React.Component <any, IAppState> {
 
   public render() {
     return (
-      <div className="App" style={{background:"#f1f1f1"}}>
+      <div className="App" style={{background:"#f1f1f1", height:"100vh", width:"100vw"}}>
         <Router history={history}>
           <div>
           <Route exact={true} path="/" render={
@@ -183,9 +188,11 @@ class App extends React.Component <any, IAppState> {
 
        </div>
     );
-
   }
+
+
   private changeCurrentSession = (sessionId: string, sessionCurrentView: string ) => {
+    // This code will change the session id 
     this.setState({
       currentSessionId: sessionId, currentView: sessionCurrentView
     })

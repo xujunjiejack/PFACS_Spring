@@ -43,7 +43,7 @@ const SessionButton = styled.div`
 
 const UserNameButton = styled.div`
     position: absolute;
-    left: 86.25%;
+    // left: 86.25%;
     right: 7.5%;
     top: 23.26%;
     bottom: 25.58%;
@@ -61,7 +61,8 @@ const UserNameButton = styled.div`
 
 const TopBarContainer = styled.div`
     position: relative;
-    width: 1440px;
+    // width: 1440px;
+    width: 100vw;
     height: 43px;
     left: 0px;
     top: 0px;

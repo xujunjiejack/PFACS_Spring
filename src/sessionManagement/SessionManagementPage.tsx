@@ -11,20 +11,56 @@ import {Layout} from "../Layout"
 /* CSS For the components */
 const DashboardIcon = styled(FontAwesomeIcon)`
     position: relative;
-    width: 29px;
-    height: 25px;
-    left: 510px;
+    width: 25px;
+    height: 21px;
+    // left: 510px;
     cursor: pointer; 
+    margin-right: 8px;
 `
 
 const ReportIcon = styled(FontAwesomeIcon)`
     position: relative;
-    width: 17px;
-    height: 25px;
-    left: 550px;
+    width: 15px;
+    height: 20px;
+    // left: 550px;
     cursor: pointer;
+    margin-right: 8px;
 `
 
+const DashboardButton = styled.button`
+    border-radius: 6px;
+    background-color: white;
+    border-width: 1px;
+    border-color: rgb(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    height: 35px;
+    width: 120px;
+    font-size:12px;
+    justify-content: center;
+    margin-right: 16px;
+    right: 110px;
+    position: absolute;
+`
+
+
+const ReportButton = styled.button`
+    border-radius: 6px;
+    background-color: white;
+    border-width: 1px;
+    border-color: rgb(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    height: 35px;
+    width: 120px;
+    font-size:12px;
+    justify-content: center;
+    right: 0px;
+    position: absolute;
+    
+`
 
 const SessionLabel = styled.div`
     position: absolute;
@@ -159,7 +195,7 @@ const StartTime = styled.div`
 
 const SessionRowContainer2 = styled.div`
     position: relative;
-    top: 250px;
+    top: 200px;
     width: 1132px;
     left: 121px;
     margin-top: 15px;
@@ -204,7 +240,7 @@ const StudentNumber2 = styled.div`
     position: relative;
     width: 96.98px;
     height: 22px;
-    left: 400px;
+    left: 200px;
     top: 1px;
 
     font-family: Roboto;
@@ -218,12 +254,13 @@ const StudentNumber2 = styled.div`
 
 const OngoingLabel2 = styled.div`
     position: absolute;
-    width: 110.11px;
     height: 25px;
-    left: 400px;
+    left: 330px;
     top: 3px;
-    display: inline-block;
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
     background: #E1E1E1;
     border-radius: 8px;
 `
@@ -266,10 +303,12 @@ export class Session extends React.Component <any, any> {
                         <div>
                             <SessionLabel> SESSIONS </SessionLabel>
                             <CreateNewButtonSmall onClick={this.navigateToCreation}> Create a new session </CreateNewButtonSmall>  
-                            <LabelOfNoOfStudents> No. Of Students </LabelOfNoOfStudents>  
-                            <Line/>
+                            {/* <LabelOfNoOfStudents> No. Of Students </LabelOfNoOfStudents>   */}
+                            {/* <Line/> */}
 
-                            {this.createSessions(context.userSessions)}
+                            <ul style={{listStyleType:"none", paddingLeft:"0"}}>
+                                {this.createSessions(context.userSessions)}
+                            </ul>
                         </div>
                     </Layout>
                 )   
@@ -280,25 +319,40 @@ export class Session extends React.Component <any, any> {
         return(
             <div>
                 {dummyDataList.map(dummy => 
-                
-                    <SessionRowContainer2 key={dummy.sessionName}>
+                    <li  key={dummy.sessionName}>
+                        <SessionRowContainer2 key={dummy.sessionName}>
 
-                        <div style={{display: "flex", alignItems:"center"}}>
-                            <SessionLabel2>{dummy.sessionName} </SessionLabel2>
-                            { dummy.ongoing ?  <OngoingLabel2> Ongoing </OngoingLabel2> : <div/>}
-                            <StudentNumber2> {dummy.studentNumber} Students </StudentNumber2> 
-                            <span onClick={()=>this.dashboardClick(dummy.sessionId)}>
-                                <DashboardIcon icon="tachometer-alt" size="2x"/>
-                            </span>
-                            <span onClick={()=>this.reportClick(dummy.sessionId)}>
-                                <ReportIcon icon={["far","file-alt"]} size="2x"/>
-                            </span>
+                            <div style={{display: "flex", alignItems:"center"}}>
+                                <SessionLabel2>{dummy.sessionName} </SessionLabel2>
+                                { dummy.ongoing ?  <OngoingLabel2> Ongoing </OngoingLabel2> : <div/>}
+                                <StudentNumber2> {dummy.studentNumber} Students </StudentNumber2> 
+                                
+                                
+                                <DashboardButton onClick={()=>this.dashboardClick(dummy.sessionId)}>
+                                    <span>
+                                        <DashboardIcon icon="tachometer-alt" size="2x"/>
+                                    </span>
+                                    <span>
+                                        Dashboard
+                                    </span>
+                                </DashboardButton>
+                                
+                                <ReportButton onClick={()=>this.reportClick(dummy.sessionId)}>
+                                    <span>
+                                        <ReportIcon icon={["far","file-alt"]} size="2x"/>
+                                    </span>
 
-                        </div>                     
+                                    <span>
+                                        Report
+                                    </span>
+                                </ReportButton>
 
-                        <SessionStartTime> {dummy.startTime} </SessionStartTime>
-                        
-                    </SessionRowContainer2>
+                            </div>                     
+
+                            <SessionStartTime> {dummy.startTime} </SessionStartTime>
+                            
+                        </SessionRowContainer2>
+                    </li>
                 )}
             </div>
         )

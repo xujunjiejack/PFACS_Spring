@@ -16,15 +16,15 @@ import * as openSocket from 'socket.io-client';
 /* CSS For Component */
 const HeaderContainer = styled.div`
   position: relative;
-  width: 1143px;
-  height: 102px;
-  left: 143px;
+  // width: 1143px;
+  width: 100%;
+  height: 110px;
   top: 0px;
   display: flex;
   align-items: center;
   background: #FFFFFF;
   justify-content: flex-end;  
-  padding: 10px 20px 10px 20px;
+  padding: 10px 20px 4px 20px;
 `
 
 const Title = styled.label`
@@ -35,7 +35,7 @@ const Title = styled.label`
   font-family: Roboto;
   font-style: normal;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 24px;
   line-height: normal;
 
   color: #000000;
@@ -44,13 +44,13 @@ const Title = styled.label`
 const StartTime = styled.div`
   position: absolute;
   left: 4.37%;
-  top: 64.71%;
+  top: 58.71%;
   bottom: 13.73%;
 
   font-family: Roboto;
   font-style: normal;
   font-weight: light;
-  font-size: 18px;
+  font-size: 20px;
   line-height: normal;
 
   color: #9C9C9C;
@@ -148,7 +148,10 @@ class SessionView extends React.Component <any, any> {
 
     public wrapData = (studentIds: string[]): Student[] => {
         // the name and the progress will be done here
-        return studentIds.map(s => new Student(s, StudentStatus.InProgress, s))
+        // the data will also change here
+        // here things can only be set as a default, the actual data will only be received on mount. Due to the live data
+        
+        return studentIds.map(s => new Student(s, StudentStatus.InProgress, s, 10000, 10, 100000, "Make songs"))
     }
 
     public componentDidUpdate(prevProps: any){
@@ -170,32 +173,42 @@ class SessionView extends React.Component <any, any> {
                        <p style={{height: `5vh`}}>    
                         {/*  */}
                        </p>
-       
-                       <HeaderContainer>
-                         <Title>
-                           { this.getSessionTitle(value.userSessions, this.state.currentSessionId) }
-                         </Title>
-       
-                         <StartTime>
-                          { this.getSessionTime(value.userSessions, this.state.currentSessionId) }
-                         </StartTime>
+                      {/* I can add grid to it */}
+                      <Grid style={{position: "relative"}}>
+                      <Grid.Row>
+                      <Grid.Column width="1"/>
+                      <Grid.Column width="14">
+                        <HeaderContainer>
+                          <Title>
+                            { this.getSessionTitle(value.userSessions, this.state.currentSessionId) }
+                          </Title>
+        
+                          <StartTime>
+                            { this.getSessionTime(value.userSessions, this.state.currentSessionId) }
+                          </StartTime>
 
-                         <StyledButtonGroup>                              
-                           <ReportButton onClick={this.dashboardClick} className={ this.state.currentView === "dashboard" ? "active": "" }>
-                             Dashboard
-                           </ReportButton>
-       
-                           <EndSessionButton onClick={this.reportClick} className={this.state.currentView === "report" ? "active": ""}>
-                             Report
-                           </EndSessionButton>
-                         </StyledButtonGroup>
-       
-                       </HeaderContainer>
+                          <StyledButtonGroup>                              
+                            <ReportButton style={{fontSize: "20px", width:"200px"}} onClick={this.dashboardClick} className={ this.state.currentView === "dashboard" ? "active": "" }>
+                              Dashboard
+                            </ReportButton>
+        
+                            <EndSessionButton style={{fontSize: "20px", width:"200px"}} onClick={this.reportClick} className={this.state.currentView === "report" ? "active": ""}>
+                              Report
+                            </EndSessionButton>
+                          </StyledButtonGroup>
+        
+                        </HeaderContainer>
+                        </Grid.Column>
+                        </Grid.Row>
+                      </Grid>
+
                        <br/>
                        
-                       {this.state.currentView === "dashboard"? <LiveDashboard studentData={this.getStudentData(value.userSessions, this.state.currentSessionId)} sessionData={this.getSessionData(value.userSessions, this.state.currentSessionId)}/> 
+                       
+                       {this.state.currentView === "dashboard"? 
+                          <LiveDashboard studentData={this.getStudentData(value.userSessions, this.state.currentSessionId)} sessionData={this.getSessionData(value.userSessions, this.state.currentSessionId)}/> 
                        : 
-                       <DetailedReport sessionData={this.getSessionData(value.userSessions, this.state.currentSessionId)}> Detailed report </DetailedReport>}  
+                          <DetailedReport sessionData={this.getSessionData(value.userSessions, this.state.currentSessionId)}> Detailed report </DetailedReport>}  
                        </Layout>
                 }
             </UserContext.Consumer>
@@ -204,6 +217,9 @@ class SessionView extends React.Component <any, any> {
 
     private getStudentData = (allSessions: ISession[], currentSessionId: string) => {
         const session = this.getSessionData(allSessions, currentSessionId)
+        // here is the set up of the session 
+        // I remembered that I already made it work with socket 
+        
         if (session){
           const wrappedData = this.wrapData(session.studentIds)
           return wrappedData
