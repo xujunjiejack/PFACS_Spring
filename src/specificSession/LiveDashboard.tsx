@@ -128,53 +128,53 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
         studentData: this.props.studentData, doesShowSpecificDetail: false, specificStudentData: undefined, loading: false}
 
 
-        socket.on("receive inital data", message =>{
-          console.log("")
-          // The initial data will decide the initial status 
-          // get rid of the loading problem 
-          this.setState({loading: false})
-          const updatedDocuments = message  
+        // socket.on("receive inital data", message =>{
+        //   console.log("")
+        //   // The initial data will decide the initial status 
+        //   // get rid of the loading problem 
+        //   this.setState({loading: false})
+        //   const updatedDocuments = message  
           
-          const statusSetFunction = (id, status) => {
-            this.setState( ( prevState )=>{
-              const otherStudentData = prevState.studentData.filter( s => s.id !== id)
-              const searchResults = prevState.studentData.filter( s => s.id === id)
-              if (searchResults.length > 0) {
-                const studentNeedToBeUpdated = searchResults[0]
-                studentNeedToBeUpdated.status = status
-                const updatedResults = otherStudentData.concat(studentNeedToBeUpdated)
-                return {...prevState, studentData: updatedResults}
-              }
-              return {...prevState}
-            }) 
-          }
+        //   const statusSetFunction = (id, status) => {
+        //     this.setState( ( prevState )=>{
+        //       const otherStudentData = prevState.studentData.filter( s => s.id !== id)
+        //       const searchResults = prevState.studentData.filter( s => s.id === id)
+        //       if (searchResults.length > 0) {
+        //         const studentNeedToBeUpdated = searchResults[0]
+        //         studentNeedToBeUpdated.status = status
+        //         const updatedResults = otherStudentData.concat(studentNeedToBeUpdated)
+        //         return {...prevState, studentData: updatedResults}
+        //       }
+        //       return {...prevState}
+        //     }) 
+        //   }
           
-          let updatedStudentDataArray = this.state.studentData
-          console.log(updatedDocuments)
-          const newUpdatedStudentData: Student[] = []
-          for (const document of updatedDocuments) {  
-              const searchResults = this.state.studentData.filter( s => s.id === document.playerUniqueID)
-              console.log("Search results")
-              console.log(searchResults.length)
-              if (searchResults.length > 0) {
-                console.log(searchResults.length)
-                const studentNeedToBeUpdated = searchResults[0]
-                studentNeedToBeUpdated.currentTurn = document.currentTurn
-                studentNeedToBeUpdated.currentScreen = document.currentScreen
-                studentNeedToBeUpdated.currentCash = document.currentCash
-                studentNeedToBeUpdated.lastActTime = 10000
-                // studentNeedToBeUpdated.statusReset(statusSetFunction)
-                // decide on the status based on the last active time 
-                newUpdatedStudentData.push(studentNeedToBeUpdated)
-                updatedStudentDataArray = updatedStudentDataArray.filter(s => s.id !== document.playerUniqueID)
-              }
-          }
+        //   let updatedStudentDataArray = this.state.studentData
+        //   console.log(updatedDocuments)
+        //   const newUpdatedStudentData: Student[] = []
+        //   for (const document of updatedDocuments) {  
+        //       const searchResults = this.state.studentData.filter( s => s.id === document.playerUniqueID)
+        //       console.log("Search results")
+        //       console.log(searchResults.length)
+        //       if (searchResults.length > 0) {
+        //         console.log(searchResults.length)
+        //         const studentNeedToBeUpdated = searchResults[0]
+        //         studentNeedToBeUpdated.currentTurn = document.currentTurn
+        //         studentNeedToBeUpdated.currentScreen = document.currentScreen
+        //         studentNeedToBeUpdated.currentCash = document.currentCash
+        //         studentNeedToBeUpdated.lastActTime = 10000
+        //         // studentNeedToBeUpdated.statusReset(statusSetFunction)
+        //         // decide on the status based on the last active time 
+        //         newUpdatedStudentData.push(studentNeedToBeUpdated)
+        //         updatedStudentDataArray = updatedStudentDataArray.filter(s => s.id !== document.playerUniqueID)
+        //       }
+        //   }
 
-          console.log(newUpdatedStudentData) 
-          updatedStudentDataArray = updatedStudentDataArray.concat(newUpdatedStudentData)
-          this.setState({studentData: updatedStudentDataArray});
+        //   console.log(newUpdatedStudentData) 
+        //   updatedStudentDataArray = updatedStudentDataArray.concat(newUpdatedStudentData)
+        //   this.setState({studentData: updatedStudentDataArray});
 
-        })
+        // })
 
         socket.on("live status update", message => {
           // convert data from the backend. 
@@ -356,6 +356,17 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
         });
       }
       
+      // private dummyData = (): Student[] =>{
+      //   // {"403870ae4811bcb15dcdfe7f0c2ad3f8": "Vishesh", "a47746fa74fe8f3823d48dfdcbc13618": "Nathan", "e311f1a829e27d2f8a4aef242ad0f71c": "Matthew", "fe185d1d04a7d905953ed7455f0561ca": "Reina", "3242fe1dc946799d204984d330975432": "Daisy"};
+      //   let vishesh = new Student("Vishesh", StudentStatus.InProgress, "403870ae4811bcb15dcdfe7f0c2ad3f8")
+      //   let nathan = new Student("Nathan", StudentStatus.InProgress, "a47746fa74fe8f3823d48dfdcbc13618")
+      //   let matthew = new Student("Matthew", StudentStatus.InProgress, "e311f1a829e27d2f8a4aef242ad0f71c")
+      //   let reina = new Student("reina", StudentStatus.InProgress, "fe185d1d04a7d905953ed7455f0561ca")
+      //   // let reina = new Student("reina", StudentStatus.InProgress, "fe185d1d04a7d905953ed7455f0561ca")
+
+      //   return []
+      // }
+
       public componentWillMount(){
     
         // This should be the right data format. 
@@ -373,11 +384,12 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
         
         const studentData = this.wrapData(idNames);
         this.setState({loading: true, studentData})
+        
         // set dummy data for right now, if the second time change, it shouldn't be dummy data, just minor performance issue 
         // this.setState({studentData}) 
+        
         console.log("live dashboard");
         console.log(studentData);
-        // Loading data ?
         // socket.emit('listen to live data', {students})
         socket.emit('listen to live data', { "students": Object.keys(idNames) } );
 
