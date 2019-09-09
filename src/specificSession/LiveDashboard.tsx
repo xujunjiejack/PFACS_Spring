@@ -349,16 +349,11 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
         }) 
       }
 
-      public wrapData = (studentIds: string[]): Student[] => {
+      public wrapData = (studentIds): Student[] => {
         // just for dummy data 
-        return studentIds.map((s,i) => {
-          if (s !== "aee6c2569ea2cf8b88d79a7c36a90015") {
-            return new Student("Student"+i , StudentStatus.Idle, s, 10000, 10, 100000, "Make songs")
-          } else {
-            return new Student("JJ", StudentStatus.Idle, s, 10000, 10, 100000, "Make songs")
-          }
-        }
-        )
+        return Object.keys(studentIds).map((s,i) => {
+          return new Student(studentIds[s] , StudentStatus.Idle, s, 10000, 10, 100000, "Make songs");
+        });
       }
       
       public componentWillMount(){
@@ -374,17 +369,20 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
       public componentDidMount(){
 
         const students = ["5d8e8868a3bb1d4f2dcec66cac311f13", "eb8452b1765435e9f7ca856809c7fc31", "d88a1b66dece974a1c2576c752c3a187", "604527392b8c515ea87122933a57cb51", "aee6c2569ea2cf8b88d79a7c36a90015"]
-        const studentData = this.wrapData(students)
+        const idNames = {"aee6c2569ea2cf8b88d79a7c36a90015": "JJ", "403870ae4811bcb15dcdfe7f0c2ad3f8": "Vishesh", "a47746fa74fe8f3823d48dfdcbc13618": "Nathan", "e311f1a829e27d2f8a4aef242ad0f71c": "Matthew", "fe185d1d04a7d905953ed7455f0561ca": "Reina", "3242fe1dc946799d204984d330975432": "Daisy"};
+        
+        const studentData = this.wrapData(idNames);
         this.setState({loading: true, studentData})
         // set dummy data for right now, if the second time change, it shouldn't be dummy data, just minor performance issue 
         // this.setState({studentData}) 
         console.log("live dashboard");
         console.log(studentData);
         // Loading data ?
-        socket.emit('listen to live data', {students})
+        // socket.emit('listen to live data', {students})
+        socket.emit('listen to live data', { "students": Object.keys(idNames) } );
 
         window.onbeforeunload = () =>{
-          socket.emit('stop listening student status')
+          socket.emit('stop listening student status');
         }
       }
 
