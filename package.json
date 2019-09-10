@@ -17,6 +17,7 @@
     "@types/styled-components": "^4.1.8",
     "axios": "^0.18.1",
     "chance": "^1.0.18",
+    "firebase": "^6.6.0",
     "history": "^4.9.0",
     "i": "^0.3.6",
     "immutable": "^4.0.0-rc.12",

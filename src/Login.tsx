@@ -5,6 +5,23 @@ import styled from "styled-components";
 import {TitleText} from "./AppStyle";
 import {UserContext} from "./Context"
 import {IGoogleClassroomInfo} from "./data_structure/GoogleClassroomInfo";
+import * as firebase from "firebase"
+import {Button} from "semantic-ui-react"
+const firebaseConfig = {
+  apiKey: "AIzaSyAbY4nV71yiRKOo83KAv0c2xm-IV5fmH6k",
+  authDomain: "test-pfacs.firebaseapp.com",
+  databaseURL: "https://test-pfacs.firebaseio.com",
+  projectId: "test-pfacs",
+  storageBucket: "test-pfacs.appspot.com",
+  messagingSenderId: "908046556011",
+  appId: "1:908046556011:web:917ef33f5fc776aa1f4a2e"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const provider = new firebase.auth.GoogleAuthProvider();
+provider.addScope("https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.rosters.readonly")
+
 
 /* CSS For different componenets*/
 const GoogleLoginButton = styled(GoogleLogin)`
@@ -13,7 +30,6 @@ const GoogleLoginButton = styled(GoogleLogin)`
     height: 97px;
     left: 468px;
     top: 495px;
-
     justify-content: center;
 `
 
@@ -33,6 +49,34 @@ class LoginPage extends React.Component <any, ILoginProps> {
         this.onSuccess = this.onSuccess.bind(this)
       }
 
+    public firebaseLogin () {
+      firebase.auth().signInWithPopup(provider).then( (result : firebase.auth.UserCredential) =>  {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        if (result !== null){
+          const token = (result.credential as any).accessToken;
+          // The signed-in user info.
+          const user = result.user;
+          console.log(token)
+          console.log(user)
+          firebase.database().ref("/users/DU7k6DVcJmS0ASOBvMv6nqCByuh2").once('value').then((snapshot) =>{
+            console.log(snapshot.val())
+          }).catch( (error) =>{ console.log(error) } )
+
+        // ...
+        }
+        
+      }).catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        const credential = error.credential;
+        // ...
+      });
+    }
+
     public render(){
         return(
 
@@ -42,7 +86,9 @@ class LoginPage extends React.Component <any, ILoginProps> {
                   <TitleText>
                       PFACS Teacher Dashboard
                   </TitleText>
-
+                  <Button onClick={ this.firebaseLogin }>
+                    Firebase login with Google provider
+                  </Button>
                   <GoogleLoginButton clientId="908046556011-80kbve0btf4nnn1o4vd010a0ag59tfj5.apps.googleusercontent.com" 
                           scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.rosters.readonly"
                   onSuccess={this.onSuccess} onFailure={this.onFailure}/>

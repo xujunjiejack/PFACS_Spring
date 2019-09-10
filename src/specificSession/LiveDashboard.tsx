@@ -13,9 +13,11 @@ import {StudentOverview} from "./StudentOverview";
 import * as openSocket from 'socket.io-client'; 
 import {StudentCurrentDetails} from "./StudentCurrentDetails"
 
+
 // Now I'm totally lost about how I should approach this problem
 // the problem that I need to reflect the data in the server onto the frontend. 
 const socket = openSocket("http://localhost:3001/studentstatus")
+
 
 /* CSS for components */
 const GridHeaderStyle = {
@@ -45,8 +47,6 @@ const TotalStudentLabel = styled.div`
 `
 
 const Rect = styled.div <{status: StudentStatus}> `
-  
-
     &:first-of-type{
       margin-left:4px;
     }
