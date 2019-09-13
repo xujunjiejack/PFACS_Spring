@@ -1,4 +1,4 @@
-import "node_modules/semantic-ui-css/semantic.min.css"
+import "../node_modules/semantic-ui-css/semantic.min.css"
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import App from './App';

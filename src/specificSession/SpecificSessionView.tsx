@@ -1,15 +1,16 @@
-import axios from "axios"
+// import axios from "axios"
 import * as React from 'react';
-import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
-import {Route, Router} from "react-router"
-import {Button, ButtonGroup, Card, CardContent,CardHeader, Grid, GridColumn, GridRow, Header } from "semantic-ui-react"
+// import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
+// import {Route, Router} from "react-router"
+// import {Button, ButtonGroup, Card, CardContent,CardHeader, Grid, GridColumn, GridRow, Header } from "semantic-ui-react"
+import {Button, ButtonGroup, Grid } from "semantic-ui-react"
 import styled from "styled-components";
 import {ISession, UserContext} from "../Context"
 import {Student, StudentStatus} from '../data_structure/Student';
 import DetailedReport from "./DetailedReport"
 import {Layout} from "../Layout"
 import LiveDashboard from "./LiveDashboard";  
-import * as openSocket from 'socket.io-client'; 
+// import * as openSocket from 'socket.io-client'; 
 
 // const socket = openSocket("http://localhost:8080/studentstatus")
 

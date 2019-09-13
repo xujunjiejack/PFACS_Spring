@@ -22,7 +22,9 @@ firebase.initializeApp(firebaseConfig);
 const provider = new firebase.auth.GoogleAuthProvider();
 provider.addScope("https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.rosters.readonly")
 
-
+const responseGoogle = (response: any) => {
+  console.log(response);
+}
 /* CSS For different componenets*/
 const GoogleLoginButton = styled(GoogleLogin)`
     position: absolute;
@@ -91,7 +93,7 @@ class LoginPage extends React.Component <any, ILoginProps> {
                   </Button>
                   <GoogleLoginButton clientId="908046556011-80kbve0btf4nnn1o4vd010a0ag59tfj5.apps.googleusercontent.com" 
                           scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.rosters.readonly"
-                  onSuccess={this.onSuccess} onFailure={this.onFailure}/>
+                  onSuccess={responseGoogle} onFailure={responseGoogle}/>
                   
                 </div>
               }
@@ -114,9 +116,9 @@ class LoginPage extends React.Component <any, ILoginProps> {
       return ;
     }
   
-    private async getStudentDataFromCourseId(data, accessToken){
+    private async getStudentDataFromCourseId(data: any, accessToken: any){
       
-      const result = data.courses.map(async course => {
+      const result = data.courses.map(async (course: any) => {
         const classroomInfo: IGoogleClassroomInfo = {className:"",  studentName:[]}
         classroomInfo.className = course.name
         

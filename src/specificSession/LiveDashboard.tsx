@@ -1,16 +1,19 @@
-import axios from "axios"
+// import axios from "axios"
 import * as React from 'react';
-import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
-import {Route, Router} from "react-router"
-import {Button, ButtonGroup, Card, CardContent,CardHeader, Grid, GridColumn, GridRow, Header } from "semantic-ui-react"
+// import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
+import {GoogleLoginResponse} from "react-google-login";
+// import {Route, Router} from "react-router"
+// import {Button, ButtonGroup, Card, CardContent,CardHeader, Grid, GridColumn, GridRow, Header } from "semantic-ui-react"
+import {Card, CardContent,CardHeader, Grid } from "semantic-ui-react";
 import styled from "styled-components";
-import {HeaderText, TitleText} from "../AppStyle";
+// import {HeaderText, TitleText} from "../AppStyle";
 import {Student, StudentStatus} from '../data_structure/Student';
 import {ISession, UserContext} from "../Context"
-import {Layout} from "../Layout"
+// import {Layout} from "../Layout"
 import StudentGraphUsage from "./StudentGraphUsage";
 import {StudentOverview} from "./StudentOverview";
-import * as openSocket from 'socket.io-client'; 
+// import * as openSocket from 'socket.io-client'; 
+import openSocket from 'socket.io-client'; 
 import {StudentCurrentDetails} from "./StudentCurrentDetails"
 
 
@@ -86,22 +89,22 @@ const currentData = [ new Student("Matthew", StudentStatus.InProgress, "lili"),
 
 function generateColorBasedOnStatus(status: StudentStatus){
     switch (status) {
-    case StudentStatus.InProgress:
-    return "#DAF8FF"
-    break;
+      case StudentStatus.InProgress:
+        return "#DAF8FF"
+        break;
 
-    case StudentStatus.Idle:
-    return "#EFEFEF"
-    break;
+      case StudentStatus.Idle:
+        return "#EFEFEF"
+        break;
 
-    case StudentStatus.Absent:
-    return "#EFEFEF"   
+      case StudentStatus.Absent:
+        return "#EFEFEF"   
 
-    case StudentStatus.Stuck: 
-    return "#E2DAFF"
+      case StudentStatus.Stuck: 
+        return "#E2DAFF"
 
-    default:
-    return "#000000"
+      default:
+        return "#000000"
     }
 } 
 
@@ -176,7 +179,7 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
 
         // })
 
-        socket.on("live status update", message => {
+        socket.on("live status update", (message: any) => {
           // convert data from the backend. 
           console.log("Data update");
           const newStudentData: Student[] = []
@@ -231,7 +234,7 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
 
           // const updateDocuments = this.state.studentData.filter((s) => { s.id })
           // const needUpdateDocumentsUniqueId
-          const updatedDocuments = message  
+          const updatedDocuments = message;  
           // this.state.studentData.so
           // if (updatedDocuments.some((d) => d.playerUniqueID === eachCurrentStudentData.id)){
           //   const newStudentData = new Student(studentData.playerUniqueID, StudentStatus.InProgress,studentData.playerUniqueID
@@ -283,7 +286,7 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
           this.setState({studentData: updatedStudentDataArray});
         });
 
-        socket.on("live2", message => {
+        socket.on("live2", (message: any) => {
           // convert data from the backend. 
 
           // console.log(message.fullDocument);
@@ -301,9 +304,9 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
           const studentName = k.userEmail.slice(0,8);
 
           let newStudent = true;
-
-          for (const s of Object.keys(newStudentData)) {
-            const timeGap = ((new Date()).getTime()/1000) - newStudentData[s].lastActTime;
+          let s: any;
+          for (s of Object.keys(newStudentData)) {
+            let timeGap = ((new Date()).getTime()/1000) - newStudentData[s].lastActTime;
             // console.log(k.lastActTime + " " + ((new Date()).getTime()/1000));
             console.log(newStudentData[s].lastActTime);
             console.log(timeGap);
@@ -335,7 +338,7 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
         });
       }
 
-      public statusSetFunction = (id, status) => {
+      public statusSetFunction = (id: String, status: any) => {
         this.setState( ( prevState )=>{
           const otherStudentData = prevState.studentData.filter( s => s.id !== id)
           const searchResults = prevState.studentData.filter( s => s.id === id)
@@ -349,9 +352,9 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
         }) 
       }
 
-      public wrapData = (studentIds): Student[] => {
+      public wrapData = (studentIds: any) => {
         // just for dummy data 
-        return Object.keys(studentIds).map((s,i) => {
+        return Object.keys(studentIds).map((s: any) => {
           return new Student(studentIds[s] , StudentStatus.Idle, s, 10000, 10, 100000, "Make songs");
         });
       }
