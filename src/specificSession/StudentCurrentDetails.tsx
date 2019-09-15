@@ -1,9 +1,11 @@
 import * as React from "react"
-import { Button, Grid, Card } from "semantic-ui-react"
+import { Grid, Card } from "semantic-ui-react"
 import "semantic-ui-css/semantic.min.css"
 import styled from "styled-components"
 import * as _ from "lodash"
-import { StudentStatus } from 'src/data_structure/Student';
+// import { StudentStatus } from 'src/data_structure/Student';
+
+import { StudentStatus } from '../data_structure/Student';
 
 function generateColorBasedOnStatus(status: StudentStatus){
     switch (status) {
@@ -55,7 +57,7 @@ const Indicator = styled.div<{status: StudentStatus}>`
 `
 
 
-export function StudentCurrentDetails(props) {
+export function StudentCurrentDetails(props: any) {
     const showCash = (cashNumber: number) : string => {
         if (cashNumber > 1000){
             return Math.round(cashNumber / 1000) + " k"

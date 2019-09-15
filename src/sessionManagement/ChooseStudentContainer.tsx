@@ -1,5 +1,5 @@
-import axios from "axios";
-import { Map, update } from "immutable";
+// import axios from "axios";
+import { Map } from "immutable";
 import * as React from "react";
 import { Checkbox, GridColumn, GridRow} from 'semantic-ui-react'
 

@@ -1,5 +1,6 @@
 import * as React from "react";
-import * as ReactToolTip from "react-tooltip";
+// import * as ReactToolTip from "react-tooltip";
+import ReactToolTip from "react-tooltip";
 import {Grid, GridColumn, GridRow} from "semantic-ui-react";
 import styled from "styled-components";
 import {Student, StudentStatus} from "../data_structure/Student";

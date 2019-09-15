@@ -2,11 +2,11 @@ import axios from "axios"
 import * as React from 'react';
 
 import {Button, Label } from "semantic-ui-react"
-import * as openSocket from 'socket.io-client';
+// import * as openSocket from 'socket.io-client';
+import openSocket from 'socket.io-client';
 import styled from "styled-components";
 
-
-const socket = openSocket("http://localhost:3001")
+const socket = openSocket("http://localhost:3001");
 
 /* CSS For different componenets*/
 const DataTestGround = styled.div`
