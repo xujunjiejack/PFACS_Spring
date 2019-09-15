@@ -22,9 +22,7 @@ firebase.initializeApp(firebaseConfig);
 const provider = new firebase.auth.GoogleAuthProvider();
 provider.addScope("https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.rosters.readonly")
 
-const responseGoogle = (response: any) => {
-  console.log(response);
-}
+
 /* CSS For different componenets*/
 const GoogleLoginButton = styled(GoogleLogin)`
     position: absolute;
@@ -49,6 +47,7 @@ class LoginPage extends React.Component <any, ILoginProps> {
         super(prop)
         this.state = {studentChosen: undefined, response: undefined, accessToken: undefined }
         this.onSuccess = this.onSuccess.bind(this)
+        // this.responseGoogle = this.responseGoogle.bind(this)
       }
 
     public firebaseLogin () {
@@ -93,7 +92,7 @@ class LoginPage extends React.Component <any, ILoginProps> {
                   </Button>
                   <GoogleLoginButton clientId="908046556011-80kbve0btf4nnn1o4vd010a0ag59tfj5.apps.googleusercontent.com" 
                           scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.rosters.readonly"
-                  onSuccess={responseGoogle} onFailure={responseGoogle}/>
+                  onSuccess={this.onSuccess} onFailure={this.onFailure}/>
                   
                 </div>
               }
@@ -102,7 +101,7 @@ class LoginPage extends React.Component <any, ILoginProps> {
     }
     
     // use this to get data https://developers.google.com/classroom/reference/rest/
-    private async onSuccess (response: GoogleLoginResponse) {
+    private async onSuccess (response: any) {
       console.log("success")
       // The course data looks like {courses: {id, name}}
       // setUser(userName: string, userAccessToken:string, userIdToken:string )
@@ -116,6 +115,19 @@ class LoginPage extends React.Component <any, ILoginProps> {
       return ;
     }
   
+    // private async responseGoogle(response: any) {
+    //   console.log(response);
+    //   console.log("success")
+    //   // The course data looks like {courses: {id, name}}
+    //   // setUser(userName: string, userAccessToken:string, userIdToken:string )
+    //   this.props.setUser(response.getId, response.getAuthResponse().access_token, response.getAuthResponse().id_token) 
+    
+    //   // Need to save the things in the cookie. 
+    //   // axios({url:`https://classroom.googleapis.com/v1/courses/${firstId}/students`, method:"list"}).then(console.log).catch(console.log)
+    //   const email = await this.getStudentEmailList(response.getAuthResponse().access_token)
+    //   this.props.history.push("/")
+    // }
+
     private async getStudentDataFromCourseId(data: any, accessToken: any){
       
       const result = data.courses.map(async (course: any) => {
