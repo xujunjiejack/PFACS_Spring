@@ -12,7 +12,8 @@ import {ISession, UserContext} from "../Context"
 // import {Layout} from "../Layout"
 import StudentGraphUsage from "./StudentGraphUsage";
 import {StudentOverview} from "./StudentOverview";
-import * as openSocket from 'socket.io-client'; 
+// import * as openSocket from 'socket.io-client'; 
+import openSocket from 'socket.io-client'; 
 import {StudentCurrentDetails} from "./StudentCurrentDetails";
 import {idNamesPair} from "./../studentsIDsName";
 

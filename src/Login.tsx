@@ -57,11 +57,20 @@ class LoginPage extends React.Component <any, ILoginProps> {
           const token = (result.credential as any).accessToken;
           // The signed-in user info.
           const user = result.user;
-          console.log(token)
-          console.log(user)
-          firebase.database().ref("/users/DU7k6DVcJmS0ASOBvMv6nqCByuh2").once('value').then((snapshot) =>{
-            console.log(snapshot.val())
-          }).catch( (error) =>{ console.log(error) } )
+          console.log("firebase login");
+          console.log(token);
+          console.log(user);
+          firebase.firestore().collection('users').get().then((snapshot) => {
+            snapshot.forEach((doc) => {
+              console.log(doc.id, '=>', doc.data());
+            });
+          })
+          .catch((err) => {
+            console.log('Error ', err);
+          });
+          // firebase.database().ref("/users/DU7k6DVcJmS0ASOBvMv6nqCByuh2").once('value').then((snapshot) =>{
+          //   console.log(snapshot.val());
+          // }).catch( (error) =>{ console.log(error) } );
 
         // ...
         }
