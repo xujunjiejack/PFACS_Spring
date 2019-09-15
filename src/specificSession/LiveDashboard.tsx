@@ -11,13 +11,12 @@ import {Layout} from "../Layout"
 import StudentGraphUsage from "./StudentGraphUsage";
 import {StudentOverview} from "./StudentOverview";
 import * as openSocket from 'socket.io-client'; 
-import {StudentCurrentDetails} from "./StudentCurrentDetails"
-
+import {StudentCurrentDetails} from "./StudentCurrentDetails";
+import {idNamesPair} from "./../studentsIDsName";
 
 // Now I'm totally lost about how I should approach this problem
 // the problem that I need to reflect the data in the server onto the frontend. 
 const socket = openSocket("http://localhost:3001/studentstatus")
-
 
 /* CSS for components */
 const GridHeaderStyle = {
@@ -282,57 +281,6 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
           updatedStudentDataArray = updatedStudentDataArray.concat(newUpdatedStudentData)
           this.setState({studentData: updatedStudentDataArray});
         });
-
-        socket.on("live2", message => {
-          // convert data from the backend. 
-
-          // console.log(message.fullDocument);
-          // console.log("state");
-          // console.log(this.state.studentData);
-
-          // const newStudentData: Student[] = [];
-
-          // Another way is to understand the 
-
-          const k = message.fullDocument;
-          console.log(k);
-          let status = StudentStatus.InProgress;
-          const newStudentData = this.state.studentData;
-          const studentName = k.userEmail.slice(0,8);
-
-          let newStudent = true;
-
-          for (const s of Object.keys(newStudentData)) {
-            const timeGap = ((new Date()).getTime()/1000) - newStudentData[s].lastActTime;
-            // console.log(k.lastActTime + " " + ((new Date()).getTime()/1000));
-            console.log(newStudentData[s].lastActTime);
-            console.log(timeGap);
-            if (timeGap < 1000){
-              status = StudentStatus.InProgress;
-            }
-            else if (timeGap < 10000) {
-              status = StudentStatus.Stuck;
-            }
-            else{
-              status = StudentStatus.Absent;
-            }  
-            
-            if (newStudentData[s].name === studentName) {
-              newStudent = false;
-            }
-            newStudentData[s].setStatus(status);
-          }
-
-          if (newStudent){
-            newStudentData.push(new Student(studentName, status, k.userId, k.lastActTime,k.currentTurn, k.currentCash, k.currentScreen));
-          }
-                   
-          newStudentData.filter(x => x.name === studentName);
-          
-          // newStudentData.studentUser = status;
-          this.setState({studentData: newStudentData});
-
-        });
       }
 
       public statusSetFunction = (id, status) => {
@@ -377,21 +325,38 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
     
       }
       
+      public convertIdsToIdNamePair (ids: string[]){
+        const idNamePairRet = {}
+        ids.forEach((id) =>{
+          idNamePairRet[id] = idNamesPair[id]
+        })
+        return idNamePairRet
+      }
+
+      // public convertStudentsToIdNamePair (students: Student[]) {
+      //   const idNamePairRet = {}
+      //   students.forEach((student) =>{
+      //     idNamePairRet[student.id] = 
+      //   })
+      // }
+
       public componentDidMount(){
 
         const students = ["5d8e8868a3bb1d4f2dcec66cac311f13", "eb8452b1765435e9f7ca856809c7fc31", "d88a1b66dece974a1c2576c752c3a187", "604527392b8c515ea87122933a57cb51", "aee6c2569ea2cf8b88d79a7c36a90015"]
-        const idNames = {"aee6c2569ea2cf8b88d79a7c36a90015": "JJ", "403870ae4811bcb15dcdfe7f0c2ad3f8": "Vishesh", "a47746fa74fe8f3823d48dfdcbc13618": "Nathan", "e311f1a829e27d2f8a4aef242ad0f71c": "Matthew", "fe185d1d04a7d905953ed7455f0561ca": "Reina", "3242fe1dc946799d204984d330975432": "Daisy"};
+        // const idNames = {"aee6c2569ea2cf8b88d79a7c36a90015": "JJ", "403870ae4811bcb15dcdfe7f0c2ad3f8": "Vishesh", "a47746fa74fe8f3823d48dfdcbc13618": "Nathan", "e311f1a829e27d2f8a4aef242ad0f71c": "Matthew", "fe185d1d04a7d905953ed7455f0561ca": "Reina", "3242fe1dc946799d204984d330975432": "Daisy"};
+        // const idNames = this.convertIdsToIdNamePair(this.props.studentData)
+        // const studentData = this.wrapData(idNames);
         
-        const studentData = this.wrapData(idNames);
-        this.setState({loading: true, studentData})
+        this.setState({loading: true, studentData: this.props.studentData})
         
         // set dummy data for right now, if the second time change, it shouldn't be dummy data, just minor performance issue 
         // this.setState({studentData}) 
         
         console.log("live dashboard");
-        console.log(studentData);
-        // socket.emit('listen to live data', {students})
-        socket.emit('listen to live data', { "students": Object.keys(idNames) } );
+        // console.log(studentData);
+        console.log(this.props.studentData)
+        const studentIds = this.props.studentData.map(s => s.id)
+        socket.emit('listen to live data', { "students": studentIds} );
 
         window.onbeforeunload = () =>{
           socket.emit('stop listening student status');

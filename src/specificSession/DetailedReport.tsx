@@ -5,6 +5,7 @@ import {Button, Label } from "semantic-ui-react"
 import * as openSocket from 'socket.io-client';
 import styled from "styled-components";
 
+
 const socket = openSocket("http://localhost:3001")
 
 /* CSS For different componenets*/
@@ -390,6 +391,8 @@ const IndividualLegend = styled.div`
 
 class DetailedReport extends React.Component<any, any> {
 
+    private underConstruction = true
+
     constructor (props: any){
         super(props)
         this.state = { socketData: "placeholder" }
@@ -403,6 +406,9 @@ class DetailedReport extends React.Component<any, any> {
         return(
             <React.Fragment>
                 
+                {
+                    this.underConstruction ? <div> Under Construction </div> 
+                    :
                 <OverallClassPerformanceContainer>
                     
                     <SectionHeader>
@@ -492,7 +498,7 @@ class DetailedReport extends React.Component<any, any> {
                     </LegendContainer>
 
                 </OverallClassPerformanceContainer>
-                
+                }
                 <DataTestGround>
                 <Button onClick={this.getGraphUsage}>
                         Click me to get data 
@@ -502,7 +508,7 @@ class DetailedReport extends React.Component<any, any> {
                     {this.state.socketData}
                 </Label>
                 </DataTestGround>
-
+                
                 
 
                 {/* Individual Performance componenet */}

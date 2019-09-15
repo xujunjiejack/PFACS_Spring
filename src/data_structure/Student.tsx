@@ -13,7 +13,7 @@ export class Student {
     constructor(public name:string, public status: StudentStatus, public id: string, 
       public lastActTime: number = 100000, public currentTurn: number= -1, public currentCash: number = 0,
       public currentScreen: string = ""){
-
+        
       this.statusReset = this.statusReset.bind(this)
     }
     
@@ -41,7 +41,7 @@ export class Student {
     }
 
     // public status() {
-
+      
     // }
     
 }

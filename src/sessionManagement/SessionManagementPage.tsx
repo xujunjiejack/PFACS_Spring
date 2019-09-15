@@ -6,6 +6,7 @@ import styled from "styled-components"
 import {HeaderText, TitleText} from "../AppStyle";
 import {ISession, UserContext} from "../Context"
 import {Layout} from "../Layout"
+import {Grid, GridColumn, GridRow, Container} from "semantic-ui-react"
 
 
 /* CSS For the components */
@@ -63,12 +64,8 @@ const ReportButton = styled.button`
 `
 
 const SessionLabel = styled.div`
-    position: absolute;
     width: 85px;
     height: 22px;
-    left: 144px;
-    top: 113px;
-
     font-family: Roboto;
     font-style: normal;
     font-weight: bold;
@@ -121,11 +118,11 @@ const CreateNewButtonSmall = styled.div`
     position: absolute;
     width: 184px;
     height: 38px;
-    left: 1142px;
-    top: 105px;
+    // left: 1142px;
+    right: 0px
 
     background: #F4F4F4;
-    border: 1px solid #000000;
+    // border: 1px solid #000000;
     box-sizing: border-box;
     border-radius: 6px;
 
@@ -140,6 +137,21 @@ const CreateNewButtonSmall = styled.div`
     justify-content: center;
     align-items:center;
     cursor: pointer;
+
+    :hover{
+        background-color: #5A9AF8;
+        color: white;
+      }
+  
+      &.active {
+        
+        :hover{
+          background-color: #357AE0;
+          color: white;
+        }
+        background-color: #5A9AF8;
+        color: white;
+      }
 `
 
 const LabelOfNoOfStudents = styled.div`
@@ -195,9 +207,8 @@ const StartTime = styled.div`
 
 const SessionRowContainer2 = styled.div`
     position: relative;
-    top: 200px;
-    width: 1132px;
-    left: 121px;
+    // width: 1132px;
+    width: 100%;
     margin-top: 15px;
     margin-bottom: 40px;
 `
@@ -208,7 +219,6 @@ const SessionLabel2 = styled.div`
     width: 30% ;
     text-align: left;
     height: 24px;
-    left: 20px;
     top: 0px;
 
     font-family: Roboto;
@@ -224,7 +234,6 @@ const SessionStartTime = styled.div`
     width: 422px;
     height: 19px;
     top: 42px;
-    margin-left: 20px;
     margin-top: 15px;
     font-family: Roboto;
     font-style: normal;
@@ -232,7 +241,6 @@ const SessionStartTime = styled.div`
     font-size: 16px;
     line-height: normal;
     text-align: left;
-
     color: #8F8F8F;
 `
 
@@ -255,7 +263,7 @@ const StudentNumber2 = styled.div`
 const OngoingLabel2 = styled.div`
     position: absolute;
     height: 25px;
-    left: 330px;
+    left: 300px;
     top: 3px;
     display: flex;
     justify-content: center;
@@ -263,6 +271,7 @@ const OngoingLabel2 = styled.div`
     vertical-align: middle;
     background: #E1E1E1;
     border-radius: 8px;
+    width: 110px;
 `
 
 /* Main Component */
@@ -300,16 +309,31 @@ export class Session extends React.Component <any, any> {
             default:
                 return (
                     <Layout history={this.props.history}>
-                        <div>
-                            <SessionLabel> SESSIONS </SessionLabel>
-                            <CreateNewButtonSmall onClick={this.navigateToCreation}> Create a new session </CreateNewButtonSmall>  
-                            {/* <LabelOfNoOfStudents> No. Of Students </LabelOfNoOfStudents>   */}
-                            {/* <Line/> */}
+                        <Grid style={{position:"absolute", top:"43px", width:"100%"}}>
+                            <GridRow>
+                                <GridColumn width="1"/>
+                                <GridColumn width="14" style={{background:"#FFFFFF", width:"100%", height:"75vh", margin:"14px", padding:"50px 50px 50px 50px"}}>
+                                        <Grid>
+                                        <Grid.Row >
+                                            <Grid.Column width="8" style={{paddingLeft: "0px"}}>
+                                                <SessionLabel> Sessions </SessionLabel>
+                                            </Grid.Column>
+                                            <Grid.Column width="8">
+                                                <CreateNewButtonSmall onClick={this.navigateToCreation}> Create a new session </CreateNewButtonSmall>  
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                        <Grid.Row>
+                                            {/* <Container> */}
+                                            <ul style={{listStyleType:"none", paddingLeft:"0", width:"100%"}}>
+                                                {this.createSessions(context.userSessions)}
+                                            </ul>
+                                            {/* </Container> */}
+                                        </Grid.Row>
 
-                            <ul style={{listStyleType:"none", paddingLeft:"0"}}>
-                                {this.createSessions(context.userSessions)}
-                            </ul>
-                        </div>
+                                        </Grid>                                        
+                                </GridColumn>
+                            </GridRow>
+                        </Grid>
                     </Layout>
                 )   
             }
@@ -326,7 +350,6 @@ export class Session extends React.Component <any, any> {
                                 <SessionLabel2>{dummy.sessionName} </SessionLabel2>
                                 { dummy.ongoing ?  <OngoingLabel2> Ongoing </OngoingLabel2> : <div/>}
                                 <StudentNumber2> {dummy.studentNumber} Students </StudentNumber2> 
-                                
                                 
                                 <DashboardButton onClick={()=>this.dashboardClick(dummy.sessionId)}>
                                     <span>

@@ -43,6 +43,7 @@ interface IClassroomControl {
 
 type IAppState = IUserContext & IControlState & IClassroomControl;
 
+// Should I keep the student id? probably true. I need to make sure we find those people 
 interface ISessionData {
   startTime: string,
   ongoing: boolean,
@@ -57,23 +58,24 @@ interface ISessionData {
  */
 
 const dummyDataStudentList = ["Alice","Bob","Charlie","Donny","Elise","Frank","Gigi","Hadi","Iris","Jojo","Kiki","Lala","Mimi","Norb","Onno","Poppy","Quinn","Rog","Sisko","Tom","Josh","Yan"]
-
+// {"aee6c2569ea2cf8b88d79a7c36a90015": "JJ", "403870ae4811bcb15dcdfe7f0c2ad3f8": "Vishesh", "a47746fa74fe8f3823d48dfdcbc13618": "Nathan", "e311f1a829e27d2f8a4aef242ad0f71c": "Matthew", "fe185d1d04a7d905953ed7455f0561ca": "Reina", "3242fe1dc946799d204984d330975432": "Daisy"};
+const dummyDataStudentIds = ["aee6c2569ea2cf8b88d79a7c36a90015", "403870ae4811bcb15dcdfe7f0c2ad3f8", "a47746fa74fe8f3823d48dfdcbc13618","e311f1a829e27d2f8a4aef242ad0f71c", "fe185d1d04a7d905953ed7455f0561ca", "3242fe1dc946799d204984d330975432"]
+const dummyDataStudentIds2 = ["aee6c2569ea2cf8b88d79a7c36a90015", "403870ae4811bcb15dcdfe7f0c2ad3f8", "a47746fa74fe8f3823d48dfdcbc13618", "fe185d1d04a7d905953ed7455f0561ca", "3242fe1dc946799d204984d330975432"]
 const dummyData1: ISessionData = {
   startTime: "23 July, 2017 - Started at 4:50pm",
   ongoing: true,
-  sessionName: "Spring 2019 Math Assessment",
-  studentNumber: dummyDataStudentList.length,
-  studentIds: dummyDataStudentList,
+  sessionName: "Test Session",
+  studentNumber: dummyDataStudentIds.length,
+  studentIds: dummyDataStudentIds,
   sessionId: Math.random().toString(36)
 }
 
-
 const dummyData2: ISessionData = {
-  startTime: "23 July, 2017 - Started at 4:50pm",
+  startTime: "1 June, 2019 - Started at 4:50pm",
   ongoing: false,
   sessionName: "Fall 2019 Math Assessment",
-  studentNumber: dummyDataStudentList.length,
-  studentIds: dummyDataStudentList, 
+  studentNumber: dummyDataStudentIds.length,
+  studentIds: dummyDataStudentIds2, 
   sessionId: Math.random().toString(36)
 }
 // So I need to find the student data. 
@@ -151,7 +153,7 @@ class App extends React.Component <any, IAppState> {
           <Route exact={true} path="/login" 
                 render={
                     props => 
-                      <UserContext.Provider value={{ ...this.state}}  >
+                      <UserContext.Provider value={{ ...this.state}} >
                         <LoginPage history={props.history} setUser={this.setUser} setClassroom={this.setClassroom}/>
                       </UserContext.Provider>
               }

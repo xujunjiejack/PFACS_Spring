@@ -101,7 +101,7 @@ class LoginPage extends React.Component <any, ILoginProps> {
     
     // use this to get data https://developers.google.com/classroom/reference/rest/
     private async onSuccess (response: GoogleLoginResponse) {
-      
+      console.log("success")
       // The course data looks like {courses: {id, name}}
       // setUser(userName: string, userAccessToken:string, userIdToken:string )
       this.props.setUser(response.getId, response.getAuthResponse().access_token, response.getAuthResponse().id_token) 
@@ -137,7 +137,7 @@ class LoginPage extends React.Component <any, ILoginProps> {
 
     private async getStudentEmailList(accessToken: string): Promise<string[]> {
       try {
-        const googleCourseResponse = await axios.get("https://classroom.googleapis.com/v1/courses ", {headers:{Authorization:`Bearer  ${accessToken}`}})
+        const googleCourseResponse = await axios.get("https://classroom.googleapis.com/v1/courses", {headers:{Authorization:`Bearer  ${accessToken}`}})
         const data = googleCourseResponse.data;
         
         const classrooms = await this.getStudentDataFromCourseId(data, accessToken)
@@ -155,6 +155,7 @@ class LoginPage extends React.Component <any, ILoginProps> {
     }
   
     private onFailure = (error: any) =>{
+      console.log("error")
       console.log(error)
     }
 }

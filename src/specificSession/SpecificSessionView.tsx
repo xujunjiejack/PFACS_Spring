@@ -10,6 +10,7 @@ import DetailedReport from "./DetailedReport"
 import {Layout} from "../Layout"
 import LiveDashboard from "./LiveDashboard";  
 import * as openSocket from 'socket.io-client'; 
+import {idNamesPair} from "./../studentsIDsName";
 
 // const socket = openSocket("http://localhost:8080/studentstatus")
 
@@ -154,6 +155,15 @@ class SessionView extends React.Component <any, any> {
         return studentIds.map(s => new Student(s, StudentStatus.InProgress, s, 10000, 10, 100000, "Make songs"))
     }
 
+
+    public wrapDataThroughIdNamePair = (studentIds: string[], nameIdPair): Student[] => {
+      // just for dummy data 
+      return studentIds.map((s,i) => {
+        return new Student(nameIdPair[s] , StudentStatus.Idle, s, 10000, 10, 100000, "Make songs");
+      });
+    }
+    
+
     public componentDidUpdate(prevProps: any){
         if (prevProps.currentSessionId !== this.props.currentSessionId || prevProps.currentView !== this.props.currentView ) {
           this.setState({
@@ -219,9 +229,10 @@ class SessionView extends React.Component <any, any> {
         const session = this.getSessionData(allSessions, currentSessionId)
         // here is the set up of the session 
         // I remembered that I already made it work with socket 
-        
         if (session){
-          const wrappedData = this.wrapData(session.studentIds)
+          console.log(idNamesPair)
+          const wrappedData = this.wrapDataThroughIdNamePair(session.studentIds, idNamesPair)
+          console.log(wrappedData)
           return wrappedData
         }
         return []

@@ -2,6 +2,7 @@ import * as React from "react"
 import { Button, Grid, Card } from "semantic-ui-react"
 import "semantic-ui-css/semantic.min.css"
 import styled from "styled-components"
+import * as _ from "lodash"
 import { StudentStatus } from 'src/data_structure/Student';
 
 function generateColorBasedOnStatus(status: StudentStatus){
@@ -122,7 +123,7 @@ export function StudentCurrentDetails(props) {
                             <Grid.Column width="16" style={{ paddingLeft: 0 }}>
                                 <DataTitle> Current screen </DataTitle>
                                 {/* break the camel case */}
-                                <Data> {props.student.currentScreen}</Data>
+                                <Data> { _.startCase(props.student.currentScreen)}</Data>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
