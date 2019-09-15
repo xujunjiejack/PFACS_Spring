@@ -10,7 +10,8 @@
 
 import {History} from "history";
 import * as React from "react";
-import styled from "styled-components"
+import styled from "styled-components";
+import { GoogleLogout } from 'react-google-login';
 
 /* CSS For different componenets*/
 const TopBarBackground = styled.div`
@@ -82,7 +83,6 @@ export class Layout extends React.Component<ILayoutProps, any> {
                 <TopBarBackground/>
                 <SessionButton onClick={this.navigateToSessions}> Sessions </SessionButton>
                 <UserNameButton> User Name </UserNameButton>
-
                 {this.props.children}
             </TopBarContainer>
         )
