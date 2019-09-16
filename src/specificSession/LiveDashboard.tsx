@@ -129,143 +129,47 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
         studentData: this.props.studentData, doesShowSpecificDetail: false, specificStudentData: undefined, loading: false}
 
 
-        // socket.on("receive inital data", message =>{
-        //   console.log("")
-        //   // The initial data will decide the initial status 
-        //   // get rid of the loading problem 
-        //   this.setState({loading: false})
-        //   const updatedDocuments = message  
-          
-        //   const statusSetFunction = (id, status) => {
-        //     this.setState( ( prevState )=>{
-        //       const otherStudentData = prevState.studentData.filter( s => s.id !== id)
-        //       const searchResults = prevState.studentData.filter( s => s.id === id)
-        //       if (searchResults.length > 0) {
-        //         const studentNeedToBeUpdated = searchResults[0]
-        //         studentNeedToBeUpdated.status = status
-        //         const updatedResults = otherStudentData.concat(studentNeedToBeUpdated)
-        //         return {...prevState, studentData: updatedResults}
-        //       }
-        //       return {...prevState}
-        //     }) 
-        //   }
-          
-        //   let updatedStudentDataArray = this.state.studentData
-        //   console.log(updatedDocuments)
-        //   const newUpdatedStudentData: Student[] = []
-        //   for (const document of updatedDocuments) {  
-        //       const searchResults = this.state.studentData.filter( s => s.id === document.playerUniqueID)
-        //       console.log("Search results")
-        //       console.log(searchResults.length)
-        //       if (searchResults.length > 0) {
-        //         console.log(searchResults.length)
-        //         const studentNeedToBeUpdated = searchResults[0]
-        //         studentNeedToBeUpdated.currentTurn = document.currentTurn
-        //         studentNeedToBeUpdated.currentScreen = document.currentScreen
-        //         studentNeedToBeUpdated.currentCash = document.currentCash
-        //         studentNeedToBeUpdated.lastActTime = 10000
-        //         // studentNeedToBeUpdated.statusReset(statusSetFunction)
-        //         // decide on the status based on the last active time 
-        //         newUpdatedStudentData.push(studentNeedToBeUpdated)
-        //         updatedStudentDataArray = updatedStudentDataArray.filter(s => s.id !== document.playerUniqueID)
-        //       }
-        //   }
-
-        //   console.log(newUpdatedStudentData) 
-        //   updatedStudentDataArray = updatedStudentDataArray.concat(newUpdatedStudentData)
-        //   this.setState({studentData: updatedStudentDataArray});
-
-        // })
+        socket.on("receive initial data", message =>{
+          console.log("receive initial data")
+          // The initial data will decide the initial status 
+          // get rid of the loading problem 
+          this.setState({loading: false})
+          const updatedDocuments = message  
+          let updatedStudentDataArray = this.state.studentData
+          const newUpdatedStudentData: Student[] = []
+          for (const document of updatedDocuments) {  
+              const searchResults = this.state.studentData.filter( s => s.id === document.playerUniqueID)
+              
+              if (searchResults.length > 0) {
+                const studentNeedToBeUpdated = searchResults[0]
+                studentNeedToBeUpdated.currentTurn = document.currentTurn
+                studentNeedToBeUpdated.currentScreen = document.currentScreen
+                studentNeedToBeUpdated.currentCash = document.currentCash
+                studentNeedToBeUpdated.lastActTime = 10000
+                studentNeedToBeUpdated.status = this.calculateWhetherOnline(document.lastActTime)
+                studentNeedToBeUpdated.startTimer(this.statusSetFunction)
+                // decide on the status based on the last active time 
+                newUpdatedStudentData.push(studentNeedToBeUpdated)
+                updatedStudentDataArray = updatedStudentDataArray.filter(s => s.id !== document.playerUniqueID)
+              }
+          }
+          updatedStudentDataArray = updatedStudentDataArray.concat(newUpdatedStudentData)
+          console.log(this.props.studentData)
+          this.setState({studentData: updatedStudentDataArray});
+        })
 
         socket.on("live status update", (message: any) => {
           // convert data from the backend. 
           console.log("Data update");
           const newStudentData: Student[] = []
-          this.setState({loading: false})
-
-          // Another way is to understand the 
-
-          // Object.keys(message).forEach(k => {
-          //   // no need for external function wrap
-          //   let status = StudentStatus.InProgress;
-            
-          //   switch (message[k]) {
-          //     case 0:
-          //       status = StudentStatus.InProgress;
-          //       break;
-              
-          //     case 1:
-          //       status = StudentStatus.Stuck;
-          //       break;
-            
-          //     case 2: 
-          //     case 3:
-          //       status = StudentStatus.Absent
-          //       break
-
-          //     default:
-          //       break;
-          //   }
-          //   newStudentData.push(new Student(k, status, k, 10000))
-          // })
-          // This is not entirely right. If it's actually update, I need to see whether the data is already there 
-           
-          // if the data has not shown up. What will happen
-          // for (const studentData of message){
-          //   newStudentData.push(new Student(studentData.playerUniqueID, StudentStatus.InProgress,studentData.playerUniqueID
-          //      , 10000, studentData.currentTurn, studentData.currentCash, studentData.currentScreen))
-          // }
-          
-          // Technically, if the code is run correctly, the student data should already exists. There are actually two 
-          // use case for live data update, then. Or one. Let me check the initial state
-
-          // Live dashboard update
-          // most time, the students should be the same, but not really.
-          // Probably just find the current student and change it
-          // If I understand correctly, this will only be updated one document at a time
-          // So I only need to find that document and update that 
-          // Possible need for adding a new student??????? I didn't think of that. That would be painful if there doesn't exist a easy to do it. It's just it would be another can of for implementing 
-          
-          // should accept an array. 
-
-          // For updating live data 
-
-          // const updateDocuments = this.state.studentData.filter((s) => { s.id })
-          // const needUpdateDocumentsUniqueId
+          this.setState({loading: false}) 
           const updatedDocuments = message;  
-          // this.state.studentData.so
-          // if (updatedDocuments.some((d) => d.playerUniqueID === eachCurrentStudentData.id)){
-          //   const newStudentData = new Student(studentData.playerUniqueID, StudentStatus.InProgress,studentData.playerUniqueID
-          //     , 10000, studentData.currentTurn, studentData.currentCash, studentData.currentScreen)
-          // } 
-          // get the specific updated document 
-          // create new student data
-          // remove old one
-          // concat the new one
-
-          // The other way. filter out the document needs updated
-          // const studentDataNeedsUpdated = this.state.
-          // create new based on it 
-          // concat it 
-
-          // The other one 
-          // for each document in the updated documents 
-          //    if the player exists in the  (which should)
-          //      find the document out 
-          //      change it 
-          //      add this to an updated ddocument array
-          //      delete it 
-          //  concat the array
-          
+          console.log(updatedDocuments.length)
           let updatedStudentDataArray = this.state.studentData
-          console.log(updatedDocuments)
           const newUpdatedStudentData: Student[] = []
           for (const document of updatedDocuments) {  
               const searchResults = this.state.studentData.filter( s => s.id === document.playerUniqueID)
-              console.log("Search results")
-              console.log(searchResults.length)
               if (searchResults.length > 0) {
-                console.log(searchResults.length)
                 const studentNeedToBeUpdated = searchResults[0]
                 studentNeedToBeUpdated.currentTurn = document.currentTurn
                 studentNeedToBeUpdated.currentScreen = document.currentScreen
@@ -276,10 +180,6 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
                 updatedStudentDataArray = updatedStudentDataArray.filter(s => s.id !== document.playerUniqueID)
               }
           }
-
-          
-
-          console.log(newUpdatedStudentData) 
           updatedStudentDataArray = updatedStudentDataArray.concat(newUpdatedStudentData)
           this.setState({studentData: updatedStudentDataArray});
         });
@@ -371,6 +271,9 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
         //   console.log(res.data)
         // });
         socket.emit('stop listening student status')
+        this.props.studentData.forEach(s => {
+          s.clearTimeout()   
+        });
       }
 
       public onMouseOverASpecificStudentEvent = (studentData: Student) =>{
@@ -446,20 +349,33 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
         }
     }
 
+
+
     private showDetailed = (studentId: string) => {
         return this.setState({studentChosen: studentId}) ;
       }
 
       // add private functions for clicking the dashboard button
       // change the state to dashboard
-      private dashboardClick = () =>{
-        this.setState({currentView: "dashboard"})
-      }
+    private dashboardClick = () =>{
+      this.setState({currentView: "dashboard"})
+    }
 
-      private reportClick = () =>{
-        this.setState({currentView: "report"})
-      }
+    private reportClick = () =>{
+      this.setState({currentView: "report"})
+    }
 
+    private calculateWhetherOnline = (lastActiveTime): StudentStatus => {
+      let currentDate = new Date()
+      let timeStampInSecond = Math.floor(currentDate.getTime()/1000)
+      let timeDifference = timeStampInSecond - lastActiveTime
+      if (timeDifference < 30){
+        return StudentStatus.InProgress
+      } else if (timeDifference >= 30 && timeDifference < 120){
+        return StudentStatus.Stuck
+      } 
+      return StudentStatus.Idle
+    }
 }
 
 export default LiveDashboard

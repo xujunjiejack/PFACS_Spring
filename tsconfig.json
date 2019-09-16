@@ -23,6 +23,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
+    "esModuleInterop": false,
+    "resolveJsonModule": true
   },
   "include": [
     "src"

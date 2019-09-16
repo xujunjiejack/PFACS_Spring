@@ -1,4 +1,3 @@
-import { clearTimeout } from 'timers';
 
 export enum StudentStatus {
     InProgress,
@@ -6,6 +5,10 @@ export enum StudentStatus {
     Absent,
     Stuck
 }
+
+const IN_PROGRESS_TO_STUCK_SECONDS = 10
+const STUCK_TO_DISCONNECTED_SECONDS = 30
+
 
 export class Student {
     // constructor(public name:string, public status: StudentStatus, public id: string){
@@ -17,6 +20,7 @@ export class Student {
       public currentScreen: string = ""){
         
       this.statusReset = this.statusReset.bind(this)
+      this.startTimer = this.startTimer.bind(this)
       this.statusTimeout = undefined;
     }
     
@@ -26,21 +30,40 @@ export class Student {
     
     public statusReset( setStatusFunction : any ){
       
-      if (this.statusTimeout)
+      if (this.statusTimeout !== undefined)
         clearTimeout(this.statusTimeout);
+      // The bug is that when I switch between report and class overview, the timeout seems to have ended. Hmm. Actually, I don't
+      // get the memory management. Does those status rect still. I think yes. Because this is a part of the student object which 
+      // gets created in the specific session. 
       // Chain of timeout 
       this.status = StudentStatus.InProgress
-      this.statusTimeout = setTimeout(()=>{
-        console.log("stuck");
-        console.log(this);
-        setStatusFunction(this.id, StudentStatus.Stuck);
-        
-        this.statusTimeout = setTimeout( () =>{
-          console.log("probably idle");
+      this.startTimer(setStatusFunction)
+    }
+    // Question, why does this get called multiple times?
+    public startTimer (setStatusFunction : any ) : void {
+      if (this.status == StudentStatus.InProgress){
+        this.statusTimeout = setTimeout(()=>{
+          console.log("stuck");
           console.log(this);
+          setStatusFunction(this.id, StudentStatus.Stuck);
+          
+          this.statusTimeout = setTimeout( () =>{
+            console.log("probably idle");
+            console.log(this);
+            setStatusFunction(this.id, StudentStatus.Idle);
+          }, STUCK_TO_DISCONNECTED_SECONDS * 1000);
+        }, 1000 * IN_PROGRESS_TO_STUCK_SECONDS);
+      }
+      else if (this.status == StudentStatus.Stuck){
+        this.statusTimeout = setTimeout( () =>{
           setStatusFunction(this.id, StudentStatus.Idle);
-        }, 30 * 1000);
-      }, 1000 * 10);
+        }, STUCK_TO_DISCONNECTED_SECONDS * 1000);
+      }
+    }
+
+    public clearTimeout(){
+        if (this.statusTimeout !== undefined)
+          clearTimeout(this.statusTimeout)
     }
 
     // public status() {
