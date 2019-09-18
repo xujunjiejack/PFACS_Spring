@@ -1,4 +1,4 @@
-import { clearTimeout } from 'timers';
+// import { clearTimeout } from 'timers';
 
 export enum StudentStatus {
     InProgress,
@@ -14,8 +14,9 @@ export class Student {
 
     constructor(public name:string, public status: StudentStatus, public id: string, 
       public lastActTime: number = 100000, public currentTurn: number= -1, public currentCash: number = 0,
-      public currentScreen: string = ""){
-        
+      public currentScreen: string = "", public madeInsight: boolean = false, public successfulInsight: boolean = false, 
+      public twoSongsReleased: boolean = true, public upgradedStorage: boolean = true){
+      
       this.statusReset = this.statusReset.bind(this)
       this.statusTimeout = undefined;
     }
