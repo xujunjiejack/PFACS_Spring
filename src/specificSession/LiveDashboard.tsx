@@ -62,30 +62,6 @@ const Rect = styled.div <{status: StudentStatus}> `
     display: inline-block;   
 `
 
-const currentData = [ new Student("Matthew", StudentStatus.InProgress, "lili"),
-    new Student("Vishesh", StudentStatus.InProgress, "mimi"),
-    new Student("Reina", StudentStatus.Idle, "ben"),
-    new Student("Nathan", StudentStatus.Absent, "josh"),
-    new Student("Daisy", StudentStatus.Stuck, "kuku"),
-    new Student("Frank", StudentStatus.InProgress, "liz"),
-    new Student("Gigi", StudentStatus.InProgress, "jojo"),
-    new Student("Hadi", StudentStatus.InProgress, "Hadi"),
-    new Student("Iris", StudentStatus.InProgress, "Iris"),
-    new Student("Jojo", StudentStatus.InProgress, "Jojo"),
-    new Student("Kiki", StudentStatus.InProgress, "Kiki"),
-    new Student("Lala", StudentStatus.InProgress, "Lala"),
-    new Student("Mimi", StudentStatus.InProgress, "Mimi"),
-    new Student("Norb", StudentStatus.InProgress, "Norb"),
-    new Student("Onno", StudentStatus.InProgress, "Onno"),
-    new Student("Poppy", StudentStatus.InProgress, "Poppy"),
-    new Student("Quinn", StudentStatus.InProgress, "Quinn"),
-    new Student("Rog", StudentStatus.InProgress, "Rog"),
-    new Student("Sisko", StudentStatus.InProgress, "Sisko"),
-    new Student("Tom", StudentStatus.Stuck, "Tom"),
-    new Student("Josh", StudentStatus.InProgress, "Josh"),
-    new Student("Yan", StudentStatus.InProgress, "Yan"),
-]
-
 function generateColorBasedOnStatus(status: StudentStatus){
     switch (status) {
       case StudentStatus.InProgress:
@@ -207,24 +183,7 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
         });
       }
       
-      // private dummyData = (): Student[] =>{
-      //   // {"403870ae4811bcb15dcdfe7f0c2ad3f8": "Vishesh", "a47746fa74fe8f3823d48dfdcbc13618": "Nathan", "e311f1a829e27d2f8a4aef242ad0f71c": "Matthew", "fe185d1d04a7d905953ed7455f0561ca": "Reina", "3242fe1dc946799d204984d330975432": "Daisy"};
-      //   let vishesh = new Student("Vishesh", StudentStatus.InProgress, "403870ae4811bcb15dcdfe7f0c2ad3f8")
-      //   let nathan = new Student("Nathan", StudentStatus.InProgress, "a47746fa74fe8f3823d48dfdcbc13618")
-      //   let matthew = new Student("Matthew", StudentStatus.InProgress, "e311f1a829e27d2f8a4aef242ad0f71c")
-      //   let reina = new Student("reina", StudentStatus.InProgress, "fe185d1d04a7d905953ed7455f0561ca")
-      //   // let reina = new Student("reina", StudentStatus.InProgress, "fe185d1d04a7d905953ed7455f0561ca")
-
-      //   return []
-      // }
-
       public componentWillMount(){
-    
-        // This should be the right data format. 
-        // const students = this.props.studentData.map(s=>s.name)
-        
-        // const students = {"Vishesh": 0 , "Nathan": 0 ,  "Matthew": 0  , "Reina": 0 , "Daisy": 0  };
-        // const students = ["Vishesh", "Nathan", "Matthew", "Reina", "Daisy"];
     
       }
       
@@ -235,13 +194,6 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
         })
         return idNamePairRet
       }
-
-      // public convertStudentsToIdNamePair (students: Student[]) {
-      //   const idNamePairRet = {}
-      //   students.forEach((student) =>{
-      //     idNamePairRet[student.id] = 
-      //   })
-      // }
 
       public componentDidMount(){
 
