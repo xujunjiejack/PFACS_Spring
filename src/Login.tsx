@@ -47,34 +47,39 @@ class LoginPage extends React.Component <any, ILoginProps> {
         super(prop)
         this.state = {studentChosen: undefined, response: undefined, accessToken: undefined }
         this.onSuccess = this.onSuccess.bind(this)
+        this.firebaseLogin = this.firebaseLogin.bind(this)
         // this.responseGoogle = this.responseGoogle.bind(this)
       }
 
-    public firebaseLogin () {
+    public async firebaseLogin () {
       firebase.auth().signInWithPopup(provider).then( (result : firebase.auth.UserCredential) =>  {
         // This gives you a Google Access Token. You can use it to access the Google API.
         if (result !== null){
+          const credential = result.credential as any 
           const token = (result.credential as any).accessToken;
           // The signed-in user info.
           const user = result.user;
           console.log("firebase login");
-          console.log(token);
+          console.log(result.credential);
           console.log(user);
-          firebase.firestore().collection('users').get().then((snapshot) => {
-            snapshot.forEach((doc) => {
-              console.log(doc.id, '=>', doc.data());
-            });
-          })
-          .catch((err) => {
-            console.log('Error ', err);
-          });
+          // firebase.firestore().collection('users').get().then((snapshot) => {
+          //   snapshot.forEach((doc) => {
+          //     console.log(doc.id, '=>', doc.data());
+          //   });
+          // })
+          // .catch((err) => {
+          //   console.log('Error ', err);
+          // });
           // firebase.database().ref("/users/DU7k6DVcJmS0ASOBvMv6nqCByuh2").once('value').then((snapshot) =>{
           //   console.log(snapshot.val());
           // }).catch( (error) =>{ console.log(error) } );
 
         // ...
+          this.props.setUser("dummy", token, credential.id_token) 
+          this.props.history.push("/")
         }
-        
+        // What is this id??
+        // const email = await this.getStudentEmailList(response.getAuthResponse().access_token)        
       }).catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
@@ -114,6 +119,7 @@ class LoginPage extends React.Component <any, ILoginProps> {
       console.log("success")
       // The course data looks like {courses: {id, name}}
       // setUser(userName: string, userAccessToken:string, userIdToken:string )
+      console.log(response)
       this.props.setUser(response.getId, response.getAuthResponse().access_token, response.getAuthResponse().id_token) 
 
       // Need to save the things in the cookie. 
