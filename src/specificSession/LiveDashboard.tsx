@@ -118,48 +118,92 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
               const searchResults = this.state.studentData.filter( s => s.id === document.playerUniqueID)
               
               if (searchResults.length > 0) {
-                const studentNeedToBeUpdated = searchResults[0]
-                studentNeedToBeUpdated.currentTurn = document.currentTurn
-                studentNeedToBeUpdated.currentScreen = document.currentScreen
-                studentNeedToBeUpdated.currentCash = document.currentCash
-                studentNeedToBeUpdated.lastActTime = 10000
-                studentNeedToBeUpdated.status = this.calculateWhetherOnline(document.lastActTime)
-                studentNeedToBeUpdated.startTimer(this.statusSetFunction)
+                const studentNeedToBeUpdated = searchResults[0];
+                ///////******* TODO: can propList be a shared variable across this and live status update and makeTableData ? *********///////
+                let propList = ["currentTurn", "currentScreen", "currentCash", "currentFans", "lastActTime", "madeInsight", "successfulInsight", "twoSongsReleased", "upgradedStorage", "lineUse", "heatmapUse", "barChartUse", "storageBuys", "insightCount", "successfulInsightCount", "releasedSongCount"];
+                for (let p in propList) {
+                  // console.log(p);
+                  studentNeedToBeUpdated[propList[p]] = document[propList[p]];
+                }
+                
+                studentNeedToBeUpdated.status = this.calculateWhetherOnline(document.lastActTime);
+                studentNeedToBeUpdated.startTimer(this.statusSetFunction);
                 // decide on the status based on the last active time 
                 newUpdatedStudentData.push(studentNeedToBeUpdated)
                 updatedStudentDataArray = updatedStudentDataArray.filter(s => s.id !== document.playerUniqueID)
               }
           }
-          updatedStudentDataArray = updatedStudentDataArray.concat(newUpdatedStudentData)
-          console.log(this.props.studentData)
+
+          updatedStudentDataArray = updatedStudentDataArray.concat(newUpdatedStudentData);
+
+          console.log(this.props.studentData);
           this.setState({studentData: updatedStudentDataArray});
+          this.makeTableData(updatedStudentDataArray);
         })
 
         socket.on("live status update", (message: any) => {
           // convert data from the backend. 
           console.log("Data update");
-          const newStudentData: Student[] = []
-          this.setState({loading: false}) 
-          const updatedDocuments = message;  
-          console.log(updatedDocuments.length)
-          let updatedStudentDataArray = this.state.studentData
-          const newUpdatedStudentData: Student[] = []
-          for (const document of updatedDocuments) {  
-              const searchResults = this.state.studentData.filter( s => s.id === document.playerUniqueID)
+          const newStudentData: Student[] = [];
+          this.setState({loading: false});
+          const updatedDocuments = message;
+          console.log(updatedDocuments.length);
+          let updatedStudentDataArray = this.state.studentData;
+          const newUpdatedStudentData: Student[] = [];
+          for (const document of updatedDocuments) {
+              const searchResults = this.state.studentData.filter( s => s.id === document.playerUniqueID);
               if (searchResults.length > 0) {
-                const studentNeedToBeUpdated = searchResults[0]
-                studentNeedToBeUpdated.currentTurn = document.currentTurn
-                studentNeedToBeUpdated.currentScreen = document.currentScreen
-                studentNeedToBeUpdated.currentCash = document.currentCash
-                studentNeedToBeUpdated.lastActTime = 10000
-                studentNeedToBeUpdated.statusReset(this.statusSetFunction)
-                newUpdatedStudentData.push(studentNeedToBeUpdated)
-                updatedStudentDataArray = updatedStudentDataArray.filter(s => s.id !== document.playerUniqueID)
+                const studentNeedToBeUpdated = searchResults[0];
+                let propList = ["currentTurn", "currentScreen", "currentCash", "currentFans", "lastActTime", "madeInsight", "successfulInsight", "twoSongsReleased", "upgradedStorage", "lineUse", "heatmapUse", "barChartUse", "storageBuys", "insightCount", "successfulInsightCount", "releasedSongCount"];
+                for (let p in propList) {
+                  // console.log(p);
+                  studentNeedToBeUpdated[propList[p]] = document[propList[p]];
+                }
+                studentNeedToBeUpdated.statusReset(this.statusSetFunction);
+                newUpdatedStudentData.push(studentNeedToBeUpdated);
+                updatedStudentDataArray = updatedStudentDataArray.filter(s => s.id !== document.playerUniqueID);
               }
           }
-          updatedStudentDataArray = updatedStudentDataArray.concat(newUpdatedStudentData)
+          updatedStudentDataArray = updatedStudentDataArray.concat(newUpdatedStudentData);
           this.setState({studentData: updatedStudentDataArray});
+          this.makeTableData(updatedStudentDataArray);
         });
+      }
+
+      public makeTableData(sArray: Student[]) {
+
+        let tableData = {
+          // {'header': "Collection and Storage"},
+          "C&S Views": {often: 0, rarely: 0, notUse: 0},
+          "Variable modifications": {often: 0, rarely: 0, notUse: 0},
+          "Storage Increases": {often: 0, rarely: 0, notUse: 0},
+
+          // {'header': "Data viz/graphing"},
+          "bar graph": {often: 0, rarely: 0, notUse: 0},
+          "line graph": {often: 0, rarely: 0, notUse: 0},
+          "heatmap": {often: 0, rarely: 0, notUse: 0},
+
+          // {'header': "Insight/inferences"},
+          "Made insights": {often: 0, rarely: 0, notUse: 0},
+          "Successful insights": {often: 0, rarely: 0, notUse: 0},
+          "Good predictions": {often: 0, rarely: 0, notUse: 0},
+        };
+
+        for (let s in sArray) {
+          if (sArray[s]["storageBuys"] > 2) {
+            tableData["Storage Increases"]["often"]++;
+            //sArray[s][""]
+            //*** TODO: Make table counts come from student attributes
+            //*** add student property - bar graph use - frequent, often, rare; and so on
+          } 
+          else if (sArray[s]["storageBuys"] > 0) {
+            tableData["Storage Increases"]["rarely"]++;
+          }
+          else if (sArray[s]["storageBuys"] == 0) {
+            tableData["Storage Increases"]["notUse"]++;
+          }
+        }
+
       }
 
       public statusSetFunction = (id: String, status: any) => {
