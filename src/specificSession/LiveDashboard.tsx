@@ -82,7 +82,7 @@ function generateColorBasedOnStatus(status: StudentStatus){
 } 
 
 /* Interface for the state */
-interface ILoginState {
+interface ILiveDashboardState {
   studentChosen?: string ,
   response?: GoogleLoginResponse,
   accessToken? : string
@@ -92,16 +92,17 @@ interface ILoginState {
   doesShowSpecificDetail: boolean,
   specificStudentData?: Student,
   loading: boolean,
+  classOverviewData: Object
 }
 
 
 /* Main component */
-class LiveDashboard extends React.Component  <any, ILoginState>{
+class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
 
     public constructor(props: any) {
         super(props)
         this.state = {studentChosen: undefined, response: undefined, accessToken: undefined, currentView: "dashboard", sessionData: this.props.sessionData, 
-        studentData: this.props.studentData, doesShowSpecificDetail: false, specificStudentData: undefined, loading: false}
+        studentData: this.props.studentData, doesShowSpecificDetail: false, specificStudentData: undefined, loading: false, classOverviewData: {}}
 
 
         socket.on("receive initial data", message =>{
@@ -136,7 +137,7 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
 
           console.log(this.props.studentData);
           this.setState({studentData: updatedStudentDataArray});
-          this.makeTableData(updatedStudentDataArray);
+          this.setState({classOverviewData: this.makeTableData(updatedStudentDataArray)});
         })
 
         socket.on("live status update", (message: any) => {
@@ -164,11 +165,11 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
           }
           updatedStudentDataArray = updatedStudentDataArray.concat(newUpdatedStudentData);
           this.setState({studentData: updatedStudentDataArray});
-          this.makeTableData(updatedStudentDataArray);
+          this.setState({classOverviewData: this.makeTableData(updatedStudentDataArray)});
         });
       }
 
-      public makeTableData(sArray: Student[]) {
+      public makeTableData(sArray: Student[]) : Object{
 
         let tableData = {
           // {'header': "Collection and Storage"},
@@ -218,7 +219,7 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
           else if (sArray[s]["successfulInsightCount"] == 0) { tableData["Successful insights"]["notUse"]++;}
 
         }
-
+        return tableData
       }
 
       public statusSetFunction = (id: String, status: any) => {
@@ -341,7 +342,7 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
 
                   <Grid.Column width="7" style={{display:"flex", justifyContent: "center", color:"#00000"}}>
                       {/* <StudentGraphUsage/> */}
-                      {this.state.doesShowSpecificDetail? <StudentCurrentDetails student={this.state.specificStudentData}/> : <StudentGraphUsage/>}
+                      {this.state.doesShowSpecificDetail? <StudentCurrentDetails student={this.state.specificStudentData}/> : <StudentGraphUsage tableData={this.state.classOverviewData}/>}
 
                   </Grid.Column>
                 </Grid.Row>      
