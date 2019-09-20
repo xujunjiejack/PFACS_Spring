@@ -65,21 +65,19 @@ const Rect = styled.div <{status: StudentStatus}> `
 function generateColorBasedOnStatus(status: StudentStatus){
     switch (status) {
       case StudentStatus.InProgress:
-        return "#DAF8FF"
-        break;
+        return "#DAF8FF";
 
       case StudentStatus.Idle:
-        return "#EFEFEF"
-        break;
+        return "#EFEFEF";
 
       case StudentStatus.Absent:
-        return "#EFEFEF"   
+        return "#EFEFEF";  
 
       case StudentStatus.Stuck: 
-        return "#E2DAFF"
+        return "#E2DAFF";
 
       default:
-        return "#000000"
+        return "#000000";
     }
 } 
 
@@ -196,12 +194,29 @@ class LiveDashboard extends React.Component  <any, ILoginState>{
             //*** TODO: Make table counts come from student attributes
             //*** add student property - bar graph use - frequent, often, rare; and so on
           } 
-          else if (sArray[s]["storageBuys"] > 0) {
-            tableData["Storage Increases"]["rarely"]++;
-          }
-          else if (sArray[s]["storageBuys"] == 0) {
-            tableData["Storage Increases"]["notUse"]++;
-          }
+          else if (sArray[s]["storageBuys"] > 0) {tableData["Storage Increases"]["rarely"]++;}
+          else if (sArray[s]["storageBuys"] == 0) {tableData["Storage Increases"]["notUse"]++;}
+
+          if (sArray[s]["barUse"] > 3) { tableData["bar graph"]["often"]++;}
+          else if (sArray[s]["barUse"] > 1) { tableData["bar graph"]["rarely"]++;}
+          else if (sArray[s]["barUse"] == 0) { tableData["bar graph"]["notUse"]++;}
+
+          if (sArray[s]["lineUse"] > 3) { tableData["line graph"]["often"]++;}
+          else if (sArray[s]["lineUse"] > 1) { tableData["line graph"]["rarely"]++;}
+          else if (sArray[s]["lineUse"] == 0) { tableData["line graph"]["notUse"]++;}
+
+          if (sArray[s]["heatmapUse"] > 3) { tableData["heatmap"]["often"]++;}
+          else if (sArray[s]["heatmapUse"] > 1) { tableData["heatmap"]["rarely"]++;}
+          else if (sArray[s]["heatmapUse"] == 0) { tableData["heatmap"]["notUse"]++;}
+
+          if (sArray[s]["insightCount"] > 3) { tableData["Made insights"]["often"]++;}
+          else if (sArray[s]["insightCount"] > 1) { tableData["Made insights"]["rarely"]++;}
+          else if (sArray[s]["insightCount"] == 0) { tableData["Made insights"]["notUse"]++;}
+
+          if (sArray[s]["successfulInsightCount"] > 3) { tableData["Successful insights"]["often"]++;}
+          else if (sArray[s]["successfulInsightCount"] > 1) { tableData["Successful insights"]["rarely"]++;}
+          else if (sArray[s]["successfulInsightCount"] == 0) { tableData["Successful insights"]["notUse"]++;}
+
         }
 
       }
