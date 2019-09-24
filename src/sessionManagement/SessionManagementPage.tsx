@@ -1,12 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import axios from "axios";
+// import axios from "axios";
 import * as React from "react";
-import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
+// import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
 import styled from "styled-components"
-import {HeaderText, TitleText} from "../AppStyle";
+// import {HeaderText, TitleText} from "../AppStyle";
 import {ISession, UserContext} from "../Context"
 import {Layout} from "../Layout"
-import {Grid, GridColumn, GridRow, Container} from "semantic-ui-react"
+// import {Grid, GridColumn, GridRow, Container} from "semantic-ui-react"
+import {Grid, GridColumn, GridRow} from "semantic-ui-react"
 
 
 /* CSS For the components */
@@ -154,56 +155,56 @@ const CreateNewButtonSmall = styled.div`
       }
 `
 
-const LabelOfNoOfStudents = styled.div`
-    position: absolute;
-    width: 117px;
-    height: 17px;
-    left: 889px;
-    top: 183px;
+// const LabelOfNoOfStudents = styled.div`
+//     position: absolute;
+//     width: 117px;
+//     height: 17px;
+//     left: 889px;
+//     top: 183px;
 
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: normal;
+//     font-family: Roboto;
+//     font-style: normal;
+//     font-weight: normal;
+//     font-size: 14px;
+//     line-height: normal;
 
-    color: #474747;
-`
+//     color: #474747;
+// `
 
-const Line = styled.div`
-    position: absolute;
-    width: 1206.01px;
-    height: 0px;
-    left: 120px;
-    top: 217px;
+// const Line = styled.div`
+//     position: absolute;
+//     width: 1206.01px;
+//     height: 0px;
+//     left: 120px;
+//     top: 217px;
 
-    border: 1px solid #C4C4C4;
-    transform: rotate(-0.24deg);
-`
+//     border: 1px solid #C4C4C4;
+//     transform: rotate(-0.24deg);
+// `
 
-const SessionRowContainer = styled.div`
-    position: absolute;
-    width: 1122px;
-    height: 61px;
-    left: 120px;
-    top: 229px;
-`
+// const SessionRowContainer = styled.div`
+//     position: absolute;
+//     width: 1122px;
+//     height: 61px;
+//     left: 120px;
+//     top: 229px;
+// `
 
-const StartTime = styled.div`
-    position: absolute;
-    left: 0%;
-    right: 76.17%;
-    top: 68.85%;
-    bottom: 0%;
+// const StartTime = styled.div`
+//     position: absolute;
+//     left: 0%;
+//     right: 76.17%;
+//     top: 68.85%;
+//     bottom: 0%;
 
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: normal;
+//     font-family: Roboto;
+//     font-style: normal;
+//     font-weight: normal;
+//     font-size: 16px;
+//     line-height: normal;
 
-    color: #8F8F8F;
-`
+//     color: #8F8F8F;
+// `
 
 const SessionRowContainer2 = styled.div`
     position: relative;

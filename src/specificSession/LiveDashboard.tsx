@@ -65,21 +65,19 @@ const Rect = styled.div <{status: StudentStatus}> `
 function generateColorBasedOnStatus(status: StudentStatus){
     switch (status) {
       case StudentStatus.InProgress:
-        return "#DAF8FF"
-        break;
+        return "#DAF8FF";
 
       case StudentStatus.Idle:
-        return "#EFEFEF"
-        break;
+        return "#EFEFEF";
 
       case StudentStatus.Absent:
-        return "#EFEFEF"   
+        return "#EFEFEF";  
 
       case StudentStatus.Stuck: 
-        return "#E2DAFF"
+        return "#E2DAFF";
 
       default:
-        return "#000000"
+        return "#000000";
     }
 } 
 
@@ -121,7 +119,7 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
               if (searchResults.length > 0) {
                 const studentNeedToBeUpdated = searchResults[0];
                 ///////******* TODO: can propList be a shared variable across this and live status update and makeTableData ? *********///////
-                let propList = ["currentTurn", "currentScreen", "currentCash", "currentFans", "lastActTime", "madeInsight", "successfulInsight", "twoSongsReleased", "upgradedStorage", "lineUse", "heatmapUse", "barChartUse", "storageBuys", "insightCount", "successfulInsightCount", "releasedSongCount"];
+                let propList = ["currentTurn", "currentScreen", "currentCash", "currentFans", "lastActTime", "madeInsight", "successfulInsight", "twoSongsReleased", "upgradedStorage", "barUse", "lineUse", "heatmapUse", "barChartUsed", "storageBuys", "insightCount", "successfulInsightCount", "releasedSongCount", "collectViews"];
                 for (let p in propList) {
                   // console.log(p);
                   studentNeedToBeUpdated[propList[p]] = document[propList[p]];
@@ -145,7 +143,7 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
         socket.on("live status update", (message: any) => {
           // convert data from the backend. 
           console.log("Data update");
-          const newStudentData: Student[] = [];
+          // const newStudentData: Student[] = [];
           this.setState({loading: false});
           const updatedDocuments = message;
           console.log(updatedDocuments.length);
@@ -155,7 +153,7 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
               const searchResults = this.state.studentData.filter( s => s.id === document.playerUniqueID);
               if (searchResults.length > 0) {
                 const studentNeedToBeUpdated = searchResults[0];
-                let propList = ["currentTurn", "currentScreen", "currentCash", "currentFans", "lastActTime", "madeInsight", "successfulInsight", "twoSongsReleased", "upgradedStorage", "lineUse", "heatmapUse", "barChartUse", "storageBuys", "insightCount", "successfulInsightCount", "releasedSongCount"];
+                let propList = ["currentTurn", "currentScreen", "currentCash", "currentFans", "lastActTime", "madeInsight", "successfulInsight", "twoSongsReleased", "upgradedStorage", "barUse", "lineUse", "heatmapUse", "barChartUsed", "storageBuys", "insightCount", "successfulInsightCount", "releasedSongCount", "collectViews"];
                 for (let p in propList) {
                   // console.log(p);
                   studentNeedToBeUpdated[propList[p]] = document[propList[p]];
@@ -172,6 +170,8 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
       }
 
       public makeTableData(sArray: Student[]) : Object{
+
+        //**** TODO: Pending cols - Variable modifications, and good predictions
 
         let tableData = {
           // {'header': "Collection and Storage"},
@@ -191,20 +191,49 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
         };
 
         for (let s in sArray) {
+          console.log(sArray[s]);
+
+          if (sArray[s]["collectViews"] > 3) { tableData["C&S Views"]["often"]++;}
+          else if (sArray[s]["collectViews"] > 1) { tableData["C&S Views"]["rarely"]++;}
+          else if (sArray[s]["collectViews"] === 0) { tableData["C&S Views"]["notUse"]++;}
+
+
           if (sArray[s]["storageBuys"] > 2) {
             tableData["Storage Increases"]["often"]++;
             //sArray[s][""]
             //*** TODO: Make table counts come from student attributes
             //*** add student property - bar graph use - frequent, often, rare; and so on
           } 
-          else if (sArray[s]["storageBuys"] > 0) {
-            tableData["Storage Increases"]["rarely"]++;
-          }
-          else if (sArray[s]["storageBuys"] == 0) {
-            tableData["Storage Increases"]["notUse"]++;
-          }
+          else if (sArray[s]["storageBuys"] > 0) {tableData["Storage Increases"]["rarely"]++;}
+          else if (sArray[s]["storageBuys"] === 0) {tableData["Storage Increases"]["notUse"]++;}
+
+          if (sArray[s]["barUse"] > 3) { tableData["bar graph"]["often"]++;
+        console.log("bar use often"); console.log(sArray[s]);}
+          else if (sArray[s]["barUse"] > 1) { tableData["bar graph"]["rarely"]++;
+        console.log("line use often"); console.log(sArray[s]);}
+          else if (sArray[s]["barUse"] === 0) { tableData["bar graph"]["notUse"]++;}
+
+          if (sArray[s]["lineUse"] > 3) { tableData["line graph"]["often"]++; 
+          console.log("line use often"); console.log(sArray[s]);}
+          else if (sArray[s]["lineUse"] > 1) { tableData["line graph"]["rarely"]++; 
+          console.log("line use "); console.log(sArray[s]);}
+          else if (sArray[s]["lineUse"] === 0) { tableData["line graph"]["notUse"]++;}
+
+          if (sArray[s]["heatmapUse"] > 3) { tableData["heatmap"]["often"]++;}
+          else if (sArray[s]["heatmapUse"] > 1) { tableData["heatmap"]["rarely"]++;}
+          else if (sArray[s]["heatmapUse"] === 0) { tableData["heatmap"]["notUse"]++;}          
+
+          if (sArray[s]["insightCount"] > 3) { tableData["Made insights"]["often"]++;}
+          else if (sArray[s]["insightCount"] > 1) { tableData["Made insights"]["rarely"]++;}
+          else if (sArray[s]["insightCount"] === 0) { tableData["Made insights"]["notUse"]++;}
+
+          if (sArray[s]["successfulInsightCount"] > 3) { tableData["Successful insights"]["often"]++;}
+          else if (sArray[s]["successfulInsightCount"] > 1) { tableData["Successful insights"]["rarely"]++;}
+          else if (sArray[s]["successfulInsightCount"] === 0) { tableData["Successful insights"]["notUse"]++;}
+
         }
-        return tableData
+        // console.log(tableData);
+        return tableData;
       }
 
       public statusSetFunction = (id: String, status: any) => {
@@ -242,7 +271,7 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
 
       public componentDidMount(){
 
-        const students = ["5d8e8868a3bb1d4f2dcec66cac311f13", "eb8452b1765435e9f7ca856809c7fc31", "d88a1b66dece974a1c2576c752c3a187", "604527392b8c515ea87122933a57cb51", "aee6c2569ea2cf8b88d79a7c36a90015"]
+        // const students = ["5d8e8868a3bb1d4f2dcec66cac311f13", "eb8452b1765435e9f7ca856809c7fc31", "d88a1b66dece974a1c2576c752c3a187", "604527392b8c515ea87122933a57cb51", "aee6c2569ea2cf8b88d79a7c36a90015"]
         // const idNames = {"aee6c2569ea2cf8b88d79a7c36a90015": "JJ", "403870ae4811bcb15dcdfe7f0c2ad3f8": "Vishesh", "a47746fa74fe8f3823d48dfdcbc13618": "Nathan", "e311f1a829e27d2f8a4aef242ad0f71c": "Matthew", "fe185d1d04a7d905953ed7455f0561ca": "Reina", "3242fe1dc946799d204984d330975432": "Daisy"};
         // const idNames = this.convertIdsToIdNamePair(this.props.studentData)
         // const studentData = this.wrapData(idNames);

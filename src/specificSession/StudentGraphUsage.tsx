@@ -1,8 +1,9 @@
 import * as React from "react";
-import { Card, CardHeader, Table, TableBody, TableCell, TableHeader, Tab, Dropdown} from "semantic-ui-react";
+// import { Card, CardHeader, Table, TableBody, TableCell, TableHeader, Tab, Dropdown} from "semantic-ui-react";
+import { Card, CardHeader, Table, Dropdown} from "semantic-ui-react";
  
 import styled from "styled-components";
-import { create } from 'istanbul-reports';
+// import { create } from 'istanbul-reports';
 
 /* CSS For Component */
 const ColorText = styled.div`
@@ -34,11 +35,11 @@ class StudentGraphUsage extends React.Component <any, any>{
         /*
             Change the data here. 
         */
-        const tableData2 = [
-            {graph: "Bar", often: 10, lessOften: 15, notUse: 10},
-            {graph: "Line", often: 15, lessOften: 15, notUse: 10},
-            {graph: "Heat Map", often: 15, lessOften: 5, notUse: 3},
-        ]
+        // const tableData2 = [
+        //     {graph: "Bar", often: 10, lessOften: 15, notUse: 10},
+        //     {graph: "Line", often: 15, lessOften: 15, notUse: 10},
+        //     {graph: "Heat Map", often: 15, lessOften: 5, notUse: 3},
+        // ]
 
         let tableData = {
             // {'header': "Collection and Storage"},
@@ -112,13 +113,13 @@ class StudentGraphUsage extends React.Component <any, any>{
             return []
         }
 
-        console.log(Object.keys(data))
+        // console.log(Object.keys(data))
         let options = {
             0: "collectionAndStorage",
             1: "dataVisAndGraph",
             2: "insghtAndInferences"
-        }
-        let tableKeys = this.headerMatch[options[tableNumber]]
+        };
+        let tableKeys = this.headerMatch[options[tableNumber]];
 
         let rows = tableKeys.map( variable =>{
             return (
@@ -131,7 +132,7 @@ class StudentGraphUsage extends React.Component <any, any>{
             )
         } )
 
-        return rows 
+        return rows;
     }
 
     private menuOnChange= (event, data)=>{
@@ -167,7 +168,7 @@ class StudentGraphUsage extends React.Component <any, any>{
                             <Table.HeaderCell/> 
                             <Table.HeaderCell> Often </Table.HeaderCell>
                             <Table.HeaderCell> Rarely </Table.HeaderCell>
-                            <Table.HeaderCell> Not at all   </Table.HeaderCell>
+                            <Table.HeaderCell> Not at all </Table.HeaderCell>
 
                         </Table.Row>
                         </Table.Header>

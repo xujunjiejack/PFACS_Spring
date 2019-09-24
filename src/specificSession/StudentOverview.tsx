@@ -1,9 +1,11 @@
 import * as React from "react";
-import { Grid, GridColumn, GridRow } from "semantic-ui-react";
-import styled from "styled-components";
-import { Student, StudentStatus } from "../data_structure/Student";
+// import { Grid, GridColumn, GridRow } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
+// import styled from "styled-components";
+// import { Student, StudentStatus } from "../data_structure/Student";
+import { Student } from "../data_structure/Student";
 import StudentStatusRect from './StudentStatusRectangular';
-import * as _ from "lodash"
+import * as _ from "lodash";
 /* Interface */
 interface IStudentOverviewProps {
     showDetailed: (studentId: string) => void,
@@ -16,13 +18,12 @@ interface IStudentOverviewProps {
 export class StudentOverview extends React.Component<IStudentOverviewProps, any> {
 
     public constructor(props: any) {
-        super(props)
-        this.state = { studentData: this.props.studentData }
+        super(props);
+        this.state = { studentData: this.props.studentData };
     }
 
 
     public render() {
-
         const elementNumberOneRow = 5;
         const rowNum = Math.round(this.state.studentData.length / elementNumberOneRow) + 1
         const a = new Array();

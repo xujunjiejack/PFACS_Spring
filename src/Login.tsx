@@ -7,6 +7,7 @@ import {UserContext} from "./Context"
 import {IGoogleClassroomInfo} from "./data_structure/GoogleClassroomInfo";
 import * as firebase from "firebase"
 import {Button} from "semantic-ui-react"
+
 const firebaseConfig = {
   apiKey: "AIzaSyAbY4nV71yiRKOo83KAv0c2xm-IV5fmH6k",
   authDomain: "test-pfacs.firebaseapp.com",
@@ -82,12 +83,12 @@ class LoginPage extends React.Component <any, ILoginProps> {
         // const email = await this.getStudentEmailList(response.getAuthResponse().access_token)        
       }).catch((error) => {
         // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
         // The email of the user's account used.
-        const email = error.email;
+        // const email = error.email;
         // The firebase.auth.AuthCredential type that was used.
-        const credential = error.credential;
+        // const credential = error.credential;
         // ...
       });
     }
@@ -119,13 +120,13 @@ class LoginPage extends React.Component <any, ILoginProps> {
       console.log("success")
       // The course data looks like {courses: {id, name}}
       // setUser(userName: string, userAccessToken:string, userIdToken:string )
-      console.log(response)
-      this.props.setUser(response.getId, response.getAuthResponse().access_token, response.getAuthResponse().id_token) 
+      console.log(response);
+      this.props.setUser(response.getId, response.getAuthResponse().access_token, response.getAuthResponse().id_token);
 
       // Need to save the things in the cookie. 
       // axios({url:`https://classroom.googleapis.com/v1/courses/${firstId}/students`, method:"list"}).then(console.log).catch(console.log)
-      const email = await this.getStudentEmailList(response.getAuthResponse().access_token)
-      this.props.history.push("/")
+      // const email = await this.getStudentEmailList(response.getAuthResponse().access_token)
+      this.props.history.push("/");
       
       return ;
     }

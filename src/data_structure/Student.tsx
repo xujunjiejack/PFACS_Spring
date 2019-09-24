@@ -18,10 +18,10 @@ export class Student {
     constructor(public name:string, public status: StudentStatus, public id: string, 
       public lastActTime: number = 100000, public currentTurn: number= -1, public currentCash: number = 0,
       public currentScreen: string = "", public madeInsight: boolean = false, public successfulInsight: boolean = false, 
-      public twoSongsReleased: boolean = true, public upgradedStorage: boolean = true, 
-      public lineUse: number = 0, public heatmapUse: number = 0, public barChartUse: number = 0, 
+      public twoSongsReleased: boolean = true, public upgradedStorage: boolean = true, public barUse: number = 0,
+      public lineUse: number = 0, public heatmapUse: number = 0, public barChartUsed: boolean = false, 
       public storageBuys: number = 0, public insightCount: number = 0, public successfulInsightCount: number = 0, 
-      public releasedSongCount: number = 0){
+      public releasedSongCount: number = 0, public collectViews: number = 0){
       
       this.statusReset = this.statusReset.bind(this)
       this.startTimer = this.startTimer.bind(this)
@@ -45,7 +45,7 @@ export class Student {
     }
     // Question, why does this get called multiple times?
     public startTimer (setStatusFunction : any ) : void {
-      if (this.status == StudentStatus.InProgress){
+      if (this.status === StudentStatus.InProgress){
         this.statusTimeout = setTimeout(()=>{
           console.log("stuck");
           console.log(this);
@@ -58,7 +58,7 @@ export class Student {
           }, STUCK_TO_DISCONNECTED_SECONDS * 1000);
         }, 1000 * IN_PROGRESS_TO_STUCK_SECONDS);
       }
-      else if (this.status == StudentStatus.Stuck){
+      else if (this.status === StudentStatus.Stuck){
         this.statusTimeout = setTimeout( () =>{
           setStatusFunction(this.id, StudentStatus.Idle);
         }, STUCK_TO_DISCONNECTED_SECONDS * 1000);
