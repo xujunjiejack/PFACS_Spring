@@ -57,7 +57,7 @@ interface ISessionData {
  * Dummy data two for sessions 
  */
 
-const dummyDataStudentList = ["Alice","Bob","Charlie","Donny","Elise","Frank","Gigi","Hadi","Iris","Jojo","Kiki","Lala","Mimi","Norb","Onno","Poppy","Quinn","Rog","Sisko","Tom","Josh","Yan"]
+// const dummyDataStudentList = ["Alice","Bob","Charlie","Donny","Elise","Frank","Gigi","Hadi","Iris","Jojo","Kiki","Lala","Mimi","Norb","Onno","Poppy","Quinn","Rog","Sisko","Tom","Josh","Yan"]
 // {"aee6c2569ea2cf8b88d79a7c36a90015": "JJ", "403870ae4811bcb15dcdfe7f0c2ad3f8": "Vishesh", "a47746fa74fe8f3823d48dfdcbc13618": "Nathan", "e311f1a829e27d2f8a4aef242ad0f71c": "Matthew", "fe185d1d04a7d905953ed7455f0561ca": "Reina", "3242fe1dc946799d204984d330975432": "Daisy"};
 const dummyDataStudentIds = ["aee6c2569ea2cf8b88d79a7c36a90015", "403870ae4811bcb15dcdfe7f0c2ad3f8", "a47746fa74fe8f3823d48dfdcbc13618","e311f1a829e27d2f8a4aef242ad0f71c", "fe185d1d04a7d905953ed7455f0561ca", "3242fe1dc946799d204984d330975432"]
 const dummyDataStudentIds2 = ["aee6c2569ea2cf8b88d79a7c36a90015", "403870ae4811bcb15dcdfe7f0c2ad3f8", "a47746fa74fe8f3823d48dfdcbc13618", "fe185d1d04a7d905953ed7455f0561ca", "3242fe1dc946799d204984d330975432"]

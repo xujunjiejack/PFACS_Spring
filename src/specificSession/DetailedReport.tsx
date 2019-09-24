@@ -56,21 +56,21 @@ const SubTitle = styled.div`
     color: #565656;
 `
 
-const TotalStudent = styled.div`
-    position: absolute;
-    left: 62.2%;
-    right: 21.7%;
-    top: 11.56%;
-    bottom: 84.58%;
+// const TotalStudent = styled.div`
+//     position: absolute;
+//     left: 62.2%;
+//     right: 21.7%;
+//     top: 11.56%;
+//     bottom: 84.58%;
 
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: normal;
+//     font-family: Roboto;
+//     font-style: normal;
+//     font-weight: normal;
+//     font-size: 14px;
+//     line-height: normal;
 
-    color: #7F7F7F;
-`
+//     color: #7F7F7F;
+// `
 
 
 const StudentsCount = styled.div`
