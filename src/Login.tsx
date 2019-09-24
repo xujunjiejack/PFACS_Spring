@@ -62,15 +62,22 @@ class LoginPage extends React.Component <any, ILoginProps> {
           const user = result.user;
           console.log("firebase login");
           console.log(result.credential);
-          console.log(user);
-          // firebase.firestore().collection('users').get().then((snapshot) => {
-          //   snapshot.forEach((doc) => {
-          //     console.log(doc.id, '=>', doc.data());
-          //   });
-          // })
-          // .catch((err) => {
-          //   console.log('Error ', err);
-          // });
+          let uid = "";
+          if (user != null){
+            if ('uid' in user) { uid = user["uid"];}
+          }
+          console.log(uid);
+          // if (user)
+          // firebase.firestore().collection('access-test').doc(uid).get().then((snapshot) => {
+          firebase.firestore().collection('users').get().then((snapshot) => {
+            snapshot.forEach((doc) => {
+              console.log(doc.id, '=>', doc.data());
+            });
+            // console.log(snapshot.data());
+          })
+          .catch((err) => {
+            console.log('Error ', err);
+          });
           // firebase.database().ref("/users/DU7k6DVcJmS0ASOBvMv6nqCByuh2").once('value').then((snapshot) =>{
           //   console.log(snapshot.val());
           // }).catch( (error) =>{ console.log(error) } );

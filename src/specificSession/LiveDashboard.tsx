@@ -257,9 +257,9 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
         });
       }
       
-      public componentWillMount(){
+      // public componentWillMount(){
     
-      }
+      // }
       
       public convertIdsToIdNamePair (ids: string[]){
         const idNamePairRet = {}
