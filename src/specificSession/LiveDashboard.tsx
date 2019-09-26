@@ -94,7 +94,8 @@ interface ILiveDashboardState {
   doesShowSpecificDetail: boolean,
   specificStudentData?: Student,
   loading: boolean,
-  classOverviewData: Object
+  classOverviewData: Object,
+  lockSpecificDetail: boolean
 }
 
 
@@ -104,7 +105,7 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
     public constructor(props: any) {
         super(props)
         this.state = {studentChosen: undefined, response: undefined, accessToken: undefined, currentView: "dashboard", sessionData: this.props.sessionData, 
-        studentData: this.props.studentData, doesShowSpecificDetail: false, specificStudentData: undefined, loading: false, classOverviewData: {}}
+        studentData: this.props.studentData, doesShowSpecificDetail: false, specificStudentData: undefined, loading: false, classOverviewData: {}, lockSpecificDetail: false}
 
 
         socket.on("receive initial data", message =>{
@@ -175,19 +176,19 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
 
         let tableData = {
           // {'header': "Collection and Storage"},
-          "C&S Views": {often: 0, rarely: 0, notUse: 0},
-          "Variable modifications": {often: 0, rarely: 0, notUse: 0},
-          "Storage Increases": {often: 0, rarely: 0, notUse: 0},
+          "C&S Views": {often: 1, rarely: 0, notUse: 0},
+          "Variable modifications": {often: 2, rarely: 0, notUse: 0},
+          "Storage Increases": {often: 3, rarely: 0, notUse: 0},
 
           // {'header': "Data viz/graphing"},
-          "bar graph": {often: 0, rarely: 0, notUse: 0},
-          "line graph": {often: 0, rarely: 0, notUse: 0},
-          "heatmap": {often: 0, rarely: 0, notUse: 0},
+          "bar graph": {often: 4, rarely: 0, notUse: 0},
+          "line graph": {often: 5, rarely: 0, notUse: 0},
+          "heatmap": {often: 6, rarely: 0, notUse: 0},
 
           // {'header': "Insight/inferences"},
-          "Made insights": {often: 0, rarely: 0, notUse: 0},
-          "Successful insights": {often: 0, rarely: 0, notUse: 0},
-          "Good predictions": {often: 0, rarely: 0, notUse: 0},
+          "Made insights": {often: 7, rarely: 0, notUse: 0},
+          "Successful insights": {often: 8, rarely: 0, notUse: 0},
+          "Good predictions": {often: 9, rarely: 0, notUse: 0},
         };
 
         for (let s in sArray) {
@@ -226,10 +227,6 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
         return Object.keys(studentIds).map((s: any) => {
           return new Student(studentIds[s] , StudentStatus.Idle, s, 10000, 10, 100000, "Make songs");
         });
-      }
-      
-      public componentWillMount(){
-    
       }
       
       public convertIdsToIdNamePair (ids: string[]){
@@ -276,12 +273,28 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
 
       public onMouseOverASpecificStudentEvent = (studentData: Student) =>{
         // console.log(studentData.name)
+          if (this.state.lockSpecificDetail){
+            return
+          }
+
           this.setState({doesShowSpecificDetail: true, specificStudentData: studentData})
       }
 
       public onMouseOutASpecificStudentEvent = () =>{
+          if (this.state.lockSpecificDetail){
+            return
+          }
           this.setState({doesShowSpecificDetail: false, specificStudentData: undefined})
       }
+
+      public onClickOnASpecificStudentEvent = (studentData: Student) => {
+        this.setState({doesShowSpecificDetail: true, specificStudentData: studentData, lockSpecificDetail: true})
+      }
+
+      public onCloseOnASpecificStudentEvent = () =>{
+        this.setState({lockSpecificDetail: false, doesShowSpecificDetail: false, specificStudentData: undefined})
+      }
+      
 
     public render(){
         return (
@@ -308,6 +321,7 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
                           <StudentOverview showDetailed={this.showDetailed} studentData={this.state.studentData}
                             onMouseOverASpecificStudentEvent= {this.onMouseOverASpecificStudentEvent}
                             onMouseOutASpecificStudentEvent={this.onMouseOutASpecificStudentEvent}
+                            onClickOnASpecificStudentEvent={this.onClickOnASpecificStudentEvent}
                           />
                         </CardContent>
 
@@ -316,10 +330,10 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
                             Engaged
                         
                             <Rect status={StudentStatus.Stuck}/>
-                            Stuck
+                            Idle for 30 seconds
                             
                             <Rect status={StudentStatus.Absent}/>
-                            Disconnected
+                            Idle for 1 minute
                         </div>
 
                       </Card>
@@ -327,7 +341,7 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
 
                   <Grid.Column width="7" style={{display:"flex", justifyContent: "center", color:"#00000"}}>
                       {/* <StudentGraphUsage/> */}
-                      {this.state.doesShowSpecificDetail? <StudentCurrentDetails student={this.state.specificStudentData}/> : <StudentGraphUsage tableData={this.state.classOverviewData}/>}
+                      {this.state.doesShowSpecificDetail? <StudentCurrentDetails student={this.state.specificStudentData} onCloseOnASpecificStudentEvent={this.onCloseOnASpecificStudentEvent} /> : <StudentGraphUsage tableData={this.state.classOverviewData}/>}
 
                   </Grid.Column>
                 </Grid.Row>      

@@ -179,7 +179,7 @@ class SessionView extends React.Component <any, any> {
         return (
             <UserContext.Consumer>
                 {value => 
-                       <Layout history={this.props.history}>
+                       <Layout history={this.props.history} userName={value.userName} logoutAction={this.props.logoutAction}>
 
                        <p style={{height: `5vh`}}>    
                         {/*  */}

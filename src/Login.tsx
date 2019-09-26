@@ -75,7 +75,7 @@ class LoginPage extends React.Component <any, ILoginProps> {
           // }).catch( (error) =>{ console.log(error) } );
 
         // ...
-          this.props.setUser("dummy", token, credential.id_token) 
+          this.props.setUser("Dummy", token, credential.id_token) 
           this.props.history.push("/")
         }
         // What is this id??

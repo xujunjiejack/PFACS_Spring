@@ -6,6 +6,7 @@ import styled from "styled-components"
 import {ChooseStudentsRow} from "./ChooseStudentContainer"
 import {Layout} from "../Layout"
 import {IGoogleClassroomInfo} from "../data_structure/GoogleClassroomInfo"
+import { UserContext } from '../Context';
 
 /* CSS for the component */
 const CreateAssessmentLabel = styled.div`
@@ -123,7 +124,9 @@ export class CreateSession extends React.Component<any, any>{
     public render(){
         
         return (
-            <Layout history={this.props.history}>
+            <UserContext.Consumer>
+                {value => 
+            <Layout history={this.props.history} userName={value.userName} logoutAction={this.props.logoutAction}>
                 <BackgroundContainer/>
                 
                 <CreateAssessmentLabel>
@@ -172,6 +175,8 @@ export class CreateSession extends React.Component<any, any>{
 
                 </StyledForm>
             </Layout>    
+                }
+            </UserContext.Consumer>
         )
     }
 

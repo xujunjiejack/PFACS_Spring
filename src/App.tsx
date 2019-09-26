@@ -124,6 +124,12 @@ class App extends React.Component <any, IAppState> {
     this.setState({userName, userAccessToken, userIdToken, userSessions: dummyData})
   }
 
+  private logout = (history) => {
+    console.log("logout")
+    history.push("/login")
+    this.setState({userName: "", userAccessToken:"", userIdToken:"", userSessions:[]})
+  }
+  
   public setClassroom = (classroomInfo: IGoogleClassroomInfo[]) =>{
     this.setState({classrooms: classroomInfo})
   }
@@ -162,8 +168,8 @@ class App extends React.Component <any, IAppState> {
           <Route exact={true} path="/sessions"
                 render={
                     props =>
-                      <UserContext.Provider value={{ ...this.state}}  >
-                          <Session history={props.history} changeCurrentSession={this.changeCurrentSession}/>
+                      <UserContext.Provider value={{ ...this.state}} >
+                          <Session history={props.history} changeCurrentSession={this.changeCurrentSession} logoutAction={this.logout}/>
                       </UserContext.Provider>
                 }
             />
@@ -172,7 +178,7 @@ class App extends React.Component <any, IAppState> {
               render = {
                   props => 
                       <UserContext.Provider value={{ ...this.state}}  >
-                        <CreateSession history={props.history} addNewSession={this.addNewSession} changeCurrentSession={this.changeCurrentSession} classroomInfoData={this.state.classrooms}/>                          
+                        <CreateSession history={props.history} addNewSession={this.addNewSession} changeCurrentSession={this.changeCurrentSession} classroomInfoData={this.state.classrooms} logoutAction={this.logout}/>                          
                       </UserContext.Provider>
               }
           />
@@ -181,7 +187,7 @@ class App extends React.Component <any, IAppState> {
               render = {
                   props => 
                     <UserContext.Provider value={{ ...this.state}}  >
-                      <SessionView history={props.history} currentSessionId={this.state.currentSessionId} currentSessionView={this.state.currentView} changeCurrentSession={this.changeCurrentSession}/>
+                      <SessionView history={props.history} currentSessionId={this.state.currentSessionId} currentSessionView={this.state.currentView} changeCurrentSession={this.changeCurrentSession} logoutAction={this.logout} />
                     </UserContext.Provider>
               }
              />

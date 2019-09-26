@@ -1,11 +1,14 @@
 import * as React from "react"
-import { Grid, Card } from "semantic-ui-react"
+import { Grid, Card, Button } from "semantic-ui-react"
 import "semantic-ui-css/semantic.min.css"
 import styled from "styled-components"
 import * as _ from "lodash"
 // import { StudentStatus } from 'src/data_structure/Student';
 
-import { StudentStatus } from '../data_structure/Student';
+import { StudentStatus, Student } from '../data_structure/Student';
+
+// the idea is that when the user clicks, the right will be locked. The data will not change unless the user clicks on close icon on the top right
+// or click on another students. 
 
 function generateColorBasedOnStatus(status: StudentStatus){
     switch (status) {
@@ -40,7 +43,7 @@ const Data = styled.p`
     position: relative;
     width: 100%;
     height: 50px;
-    font-size: 24px;
+    font-size: 20px;
     font-family: "Roboto";
     font-weight: 700;
     text-align: start;
@@ -94,8 +97,10 @@ export function StudentCurrentDetails(props: any) {
                     </p>
                     
                     <Indicator status={props.student.status}/>
+
+                    <Button style={{position:"absolute", right: "10%"}} onClick={props.onCloseOnASpecificStudentEvent}> Close </Button>
                 </Card.Header>
-                <Card.Content>
+                <Card.Content style={{overflowY:"scroll"}}>
                     <Grid>
                         <Grid.Row style={{ display: "flex" }}>
                             <Grid.Column width="8" style={{ paddingLeft: 0 }}>
@@ -122,10 +127,57 @@ export function StudentCurrentDetails(props: any) {
                         </Grid.Row>
 
                         <Grid.Row>
-                            <Grid.Column width="16" style={{ paddingLeft: 0 }}>
+                            <Grid.Column width="8" style={{ paddingLeft: 0 }}>
                                 <DataTitle> Current screen </DataTitle>
                                 {/* break the camel case */}
                                 <Data> { _.startCase(props.student.currentScreen)}</Data>
+                            </Grid.Column>
+                            <Grid.Column width="8" style={{ paddingLeft: 0 }}>
+                                <DataTitle> Released song count </DataTitle>
+                                {/* break the camel case */}
+                                <Data> {console.log(props.student)}</Data>
+                            </Grid.Column>
+                        </Grid.Row>
+
+                        <Grid.Row>
+                            <Grid.Column width="8" style={{ paddingLeft: 0 }}>
+                                <DataTitle>  Insight count </DataTitle>
+                                {/* break the camel case */}
+                                <Data> {(props.student as Student).insightCount}</Data>
+                            </Grid.Column>
+
+                            <Grid.Column width="8" style={{ paddingLeft: 0 }}>
+                                <DataTitle> Successful Insight Count </DataTitle>
+                                {/* break the camel case */}
+                                <Data>  {(props.student as Student).successfulInsightCount}</Data>
+                            </Grid.Column>
+                        </Grid.Row>
+
+                        <Grid.Row>
+                            <Grid.Column width="8" style={{ paddingLeft: 0 }}>
+                                <DataTitle>  Bar Use </DataTitle>
+                                {/* break the camel case */}
+                                <Data> {(props.student as Student).insightCount}</Data>
+                            </Grid.Column>
+
+                            <Grid.Column width="8" style={{ paddingLeft: 0 }}>
+                                <DataTitle> Line Use </DataTitle>
+                                {/* break the camel case */}
+                                <Data>  {(props.student as Student).successfulInsightCount}</Data>
+                            </Grid.Column>
+                        </Grid.Row>
+
+                        <Grid.Row>
+                            <Grid.Column width="8" style={{ paddingLeft: 0 }}>
+                                <DataTitle>  Storage Buys </DataTitle>
+                                {/* break the camel case */}
+                                <Data> {(props.student as Student).insightCount}</Data>
+                            </Grid.Column>
+
+                            <Grid.Column width="8" style={{ paddingLeft: 0 }}>
+                                <DataTitle> Collect views </DataTitle>
+                                {/* break the camel case */}
+                                <Data>  {(props.student as Student).successfulInsightCount}</Data>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

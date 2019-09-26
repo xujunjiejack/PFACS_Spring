@@ -297,7 +297,7 @@ export class Session extends React.Component <any, any> {
 
             case 0:
                 return( 
-                    <Layout history={this.props.history}>
+                    <Layout history={this.props.history} userName={context.userName} logoutAction={this.props.logoutAction}>
                         <div>
                             <SessionLabel> SESSIONS </SessionLabel>
                             <CreatePrompt> Seems like you have no previous PFACS Session </CreatePrompt>
@@ -308,7 +308,7 @@ export class Session extends React.Component <any, any> {
 
             default:
                 return (
-                    <Layout history={this.props.history}>
+                    <Layout history={this.props.history} userName={context.userName} logoutAction={this.props.logoutAction}>
                         <Grid style={{position:"absolute", top:"43px", width:"100%"}}>
                             <GridRow>
                                 <GridColumn width="1"/>
