@@ -10,7 +10,7 @@ import {Student, StudentStatus} from '../data_structure/Student';
 import DetailedReport from "./DetailedReport"
 import {Layout} from "../Layout"
 import LiveDashboard from "./LiveDashboard";  
-import * as openSocket from 'socket.io-client'; 
+// import * as openSocket from 'socket.io-client'; 
 import {idNamesPair} from "./../studentsIDsName";
 
 // const socket = openSocket("http://localhost:8080/studentstatus")
