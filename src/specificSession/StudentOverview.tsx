@@ -18,11 +18,32 @@ interface IStudentOverviewProps {
 /* Main Component */
 export class StudentOverview extends React.Component<IStudentOverviewProps, any> {
 
+    private myRef ;
+
     public constructor(props: any) {
         super(props);
         this.state = { studentData: this.props.studentData };
+        this.myRef = React.createRef()
+
     }
 
+    public componentDidMount(){
+        // this.myRef.current !== null ? console.log("ref" + this.myRef.current) : console.log("myref node is null")
+        const containerWidth = this.myRef.current.getBoundingClientRect().width
+        console.log(this.myRef.current.getBoundingClientRect().width)
+        const elementARow = Math.floor(containerWidth / 90)
+        console.log(elementARow)
+        if (this.state.studentData !== undefined){
+            const emptyBlockNum = this.state.studentData.length % elementARow
+            if (emptyBlockNum !== 0) {
+
+            }
+        }
+    }
+
+    // public setRef(element){
+    //    
+    // }
 
     public render() {
         const elementNumberOneRow = 5;
@@ -35,19 +56,20 @@ export class StudentOverview extends React.Component<IStudentOverviewProps, any>
 
         return (
             <React.Fragment>
-                <Grid padded={true} verticalAlign="middle"
+                <div 
                     style={{
                         padding: "0px 0px 0px 0px",
                         display: "flex",
-                        justifyContent: "space-between",
+                        // justifyContent: "space-between",
+                        justifyContent: "flex-start",
                         flexWrap: "wrap",
                         alignContent: "flex-start",
-                    }}>
+                        height: "100%"
 
+                    }} ref={this.myRef}>
+                    {/* <div ref={this.setRef} >  </div> */}
                     {/* Create the status grid */}
                     {
-                        
-                        
                         _.sortBy(this.state.studentData,'name').map((s: Student) => {
                             return (
                                 <StudentStatusRect
@@ -63,7 +85,14 @@ export class StudentOverview extends React.Component<IStudentOverviewProps, any>
                         )
                     }
 
-                </Grid>
+                    {/* We need add empty rect */}
+                    {/* {
+                        setTimeout(() => this.myRef.current !== null ? console.log("ref" + this.myRef.current) : console.log("myref node is null") , 
+                            3000)
+                        
+                    } */}
+
+                </div>
             </React.Fragment>
         )
     }

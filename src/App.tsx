@@ -51,7 +51,8 @@ interface ISessionData {
   sessionName: string,
   studentNumber: number, 
   studentIds: string[],
-  sessionId: string
+  sessionId: string,
+  emails: string[]
 }
 
 /*** 
@@ -68,7 +69,9 @@ const dummyData1: ISessionData = {
   sessionName: "Test Session",
   studentNumber: dummyDataStudentIds.length,
   studentIds: dummyDataStudentIds,
-  sessionId: Math.random().toString(36)
+  sessionId: Math.random().toString(36),
+  emails:["jj@gmail","vishesh@gmail.com", "nathan@gmail.com", "matthew@gmail.com", "reina@gmail.com", "daisy@gmail.com"]
+
 }
 
 const dummyData2: ISessionData = {
@@ -77,7 +80,8 @@ const dummyData2: ISessionData = {
   sessionName: "Fall 2019 Math Assessment",
   studentNumber: dummyDataStudentIds.length,
   studentIds: dummyDataStudentIds2, 
-  sessionId: Math.random().toString(36)
+  sessionId: Math.random().toString(36),
+  emails:["jj@gmail","vishesh@gmail.com", "nathan@gmail.com", "matthew@gmail.com", "reina@gmail.com"]
 }
 // So I need to find the student data. 
 
@@ -90,12 +94,14 @@ const dummyData=[dummyData1, dummyData2]
 
 const dummyClassroomData1: IGoogleClassroomInfo = {
   className: "2018 Spring",
-  studentName: ["Mike", "Charles", "Anna", "Dan", "Dan", "Dan", "Ben", "Anna"]
+  studentName: ["Mike", "Charles", "Anna", "Dan", "Dan", "Dan", "Ben", "Anna"],
+  studentNameIDMap: {}
 }
 
 const dummyClassroomData2: IGoogleClassroomInfo = {
   className: "Fall 2018 Math",
-  studentName: ["Anna", "Charles", "Steve", "Jack"]
+  studentName: ["Anna", "Charles", "Steve", "Jack"],
+  studentNameIDMap: {}
 }
 
 const dummyClassroomData = [dummyClassroomData1, dummyClassroomData2]
@@ -130,7 +136,13 @@ class App extends React.Component <any, IAppState> {
     const studentName = data.map(d => d.userEmail)
     console.log(studentID)
     console.log(studentName)
-    let newClassroom = {studentID, studentName, className:"Advisory Board"} as IGoogleClassroomInfo
+    
+    const studentNameIDMap = {}
+    studentName.forEach((e,i) => {
+      studentNameIDMap[e] = studentID[i]
+    });
+
+    let newClassroom: IGoogleClassroomInfo = {studentID, studentName, className:"Advisory Board", studentNameIDMap}
     this.setState({allUserData: data, classrooms:[newClassroom]})
   }
 

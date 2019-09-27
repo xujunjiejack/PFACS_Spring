@@ -221,7 +221,7 @@ const tableName = {
 } as React.CSSProperties
 
 const cellStyle = {
-    width: "50px",
+    // width: "50px",
     borderWidth: "0px",
     paddingTop: "5px",
     paddingBottom: "5px",
@@ -249,10 +249,10 @@ function IndividualTableRow(props) {
                 fontSize: "14px",
             }}
         >
-            <Table.Cell style={cellStyle}>{rowData[0]}</Table.Cell>
-            <Table.Cell style={cellStyle}>{rowData[1]}</Table.Cell>
-            <Table.Cell style={cellStyle}>{rowData[2]}</Table.Cell>
-            <Table.Cell style={cellStyle}>{rowData[3]}</Table.Cell>
+            <Table.Cell width={7} style={{...cellStyle}} textAlign="left">{rowData[0]}</Table.Cell>
+            <Table.Cell width={3} style={cellStyle}>{rowData[1]}</Table.Cell>
+            <Table.Cell width={3} style={cellStyle}>{rowData[2]}</Table.Cell>
+            <Table.Cell width={3} style={cellStyle}>{rowData[3]}</Table.Cell>
         </Table.Row>
     )
 }
@@ -350,11 +350,7 @@ function OverviewNineColumns(props) {
         {
             tableName:"Collection and Storage",
             headers:["Often", "Rarely", "never"],
-            data: collectionAndStorageKeys.map(k => 
-                {
-                    console.log(props.tableData)
-                return [k, props.tableData[k].often, props.tableData[k].rarely, props.tableData[k].notUse]
-                }) 
+            data: collectionAndStorageKeys.map(k => [k, props.tableData[k].often, props.tableData[k].rarely, props.tableData[k].notUse]) 
         },
         {
             tableName:"Data Vis and graph",
@@ -372,10 +368,11 @@ function OverviewNineColumns(props) {
 
             <div style={mainStack}>
                 {" "}
-                {data.map( t => 
+                {data.map( (t,i,array) => 
                     <React.Fragment>
-                    <IndividualTable key={t.tableName} tableData={t} style={{ marginBottom: "8px", width: "100%" }}/> 
-                    <br/>
+                    <IndividualTable key={t.tableName} tableData={t} style={{ marginBottom: 
+                        (i !== array.length-1) ? "8px": "0px", width: "100%" }}/> 
+                        {(i !== array.length-1) ? <br/> : <div/>}
                     </React.Fragment>)}
 
                 {/* <IndividualTable

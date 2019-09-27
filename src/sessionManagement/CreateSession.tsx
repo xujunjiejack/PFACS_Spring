@@ -1,5 +1,5 @@
 // import axios from "axios";
-import { Map } from "immutable";
+import { Map, get} from "immutable";
 import * as React from "react";
 import { Button, Form, Grid} from 'semantic-ui-react'
 import styled from "styled-components"
@@ -7,6 +7,7 @@ import {ChooseStudentsRow} from "./ChooseStudentContainer"
 import {Layout} from "../Layout"
 import {IGoogleClassroomInfo} from "../data_structure/GoogleClassroomInfo"
 import { UserContext } from '../Context';
+import { string } from 'prop-types';
 
 /* CSS for the component */
 const CreateAssessmentLabel = styled.div`
@@ -104,7 +105,14 @@ export class CreateSession extends React.Component<any, any>{
                 })
             }
         )
-        this.state = {allStudentCheckStatusMap: m, title: '', googleClassroomDataInfo: props.classroomInfoData}
+        let m2 = {}
+        this.props.classroomInfoData.forEach(
+            (d: IGoogleClassroomInfo) => {
+                Object.keys(d.studentNameIDMap).forEach(k => m2[k] = d.studentNameIDMap[k])
+            }
+        )
+
+        this.state = {allStudentCheckStatusMap: m, title: '', googleClassroomDataInfo: props.classroomInfoData,allStudentNameIDMap: m2 }
     }
     
     public componentDidUpdate(prevProps: any){
@@ -117,8 +125,15 @@ export class CreateSession extends React.Component<any, any>{
                     })
                 }
             )
-             
-            this.setState({allStudentCheckStatusMap: m})
+            
+            let m2 = Map<string, string>()
+            this.props.classroomInfoData.forEach(
+                (d: IGoogleClassroomInfo) => {
+                    Object.keys(d.studentNameIDMap).forEach(k => m2[k] = d.studentNameIDMap[k])
+                }
+            )
+            console.log(m2)
+            this.setState({allStudentCheckStatusMap: m, allStudentNameIDMap: m2})
         }
     }
 
@@ -189,22 +204,29 @@ export class CreateSession extends React.Component<any, any>{
     private formatCurrentTimeString = () =>{
         const date = new Date()
         // "23 July, 2017 - Started at 4:50pm"
-        return `${date.getMonth()} ${date.getDay()}, ${date.getFullYear()} - Started at ${date.getHours()}:${date.getMinutes()}${date.getHours() >= 12 ? "pm" : "am"}` 
+        return `${date.getMonth()}/${date.getDay()}, ${date.getFullYear()} - Started at ${date.getHours() - 12}:${date.getMinutes()}${date.getHours() >= 12 ? "pm" : "am"}` 
     }
 
     private createSession = () => {
          
         const sessionName = this.state.title
         const studentMaps: Map<string, boolean> = this.state.allStudentCheckStatusMap
-        const studentIds = studentMaps.filter((v,k) => v === true).keySeq().toArray()
+        const names = studentMaps.filter((v,k) => v === true).keySeq().toArray()
+        const studentIds = names.map(n => {
+            console.log("confused ")
+            console.log(this.state.allStudentNameIDMap[n])
+            return this.state.allStudentNameIDMap[n]
+        })
         const studentNumber = studentIds.length
         const ongoing = true;
         const startTime =  this.formatCurrentTimeString()
         const sessionId = Math.random().toString(36)
+        
         const newSessionEntry = {
             ongoing, startTime, studentNumber, studentIds, sessionName, sessionId,
         }
-
+        console.log('studentIds')
+        console.log(studentIds)
         this.props.addNewSession(newSessionEntry)
         this.props.changeCurrentSession(sessionId, "dashboard")
         this.props.history.push("/livedashboard")
