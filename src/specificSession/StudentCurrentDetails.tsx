@@ -157,13 +157,13 @@ export function StudentCurrentDetails(props: any) {
                             <Grid.Column width="8" style={{ paddingLeft: 0 }}>
                                 <DataTitle>  Bar Use </DataTitle>
                                 {/* break the camel case */}
-                                <Data> {(props.student as Student).insightCount}</Data>
+                                <Data> {(props.student as Student).barUse}</Data>
                             </Grid.Column>
 
                             <Grid.Column width="8" style={{ paddingLeft: 0 }}>
                                 <DataTitle> Line Use </DataTitle>
                                 {/* break the camel case */}
-                                <Data>  {(props.student as Student).successfulInsightCount}</Data>
+                                <Data>  {(props.student as Student).lineUse}</Data>
                             </Grid.Column>
                         </Grid.Row>
 
@@ -171,13 +171,13 @@ export function StudentCurrentDetails(props: any) {
                             <Grid.Column width="8" style={{ paddingLeft: 0 }}>
                                 <DataTitle>  Storage Buys </DataTitle>
                                 {/* break the camel case */}
-                                <Data> {(props.student as Student).insightCount}</Data>
+                                <Data> {(props.student as Student).storageBuys}</Data>
                             </Grid.Column>
 
                             <Grid.Column width="8" style={{ paddingLeft: 0 }}>
                                 <DataTitle> Collect views </DataTitle>
                                 {/* break the camel case */}
-                                <Data>  {(props.student as Student).successfulInsightCount}</Data>
+                                <Data>  {(props.student as Student).collectViews}</Data>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

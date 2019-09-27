@@ -176,19 +176,33 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
 
         let tableData = {
           // {'header': "Collection and Storage"},
-          "C&S Views": {often: 1, rarely: 0, notUse: 0},
-          "Variable modifications": {often: 2, rarely: 0, notUse: 0},
-          "Storage Increases": {often: 3, rarely: 0, notUse: 0},
+          // "C&S Views": {often: 1, rarely: 0, notUse: 0},
+          // "Variable modifications": {often: 2, rarely: 0, notUse: 0},
+          // "Storage Increases": {often: 3, rarely: 0, notUse: 0},
 
           // {'header': "Data viz/graphing"},
-          "bar graph": {often: 4, rarely: 0, notUse: 0},
-          "line graph": {often: 5, rarely: 0, notUse: 0},
-          "heatmap": {often: 6, rarely: 0, notUse: 0},
+          // "bar graph": {often: 4, rarely: 0, notUse: 0},
+          // "line graph": {often: 5, rarely: 0, notUse: 0},
+          // "heatmap": {often: 6, rarely: 0, notUse: 0},
 
           // {'header': "Insight/inferences"},
-          "Made insights": {often: 7, rarely: 0, notUse: 0},
-          "Successful insights": {often: 8, rarely: 0, notUse: 0},
-          "Good predictions": {often: 9, rarely: 0, notUse: 0},
+          // "Made insights": {often: 7, rarely: 0, notUse: 0},
+          // "Successful insights": {often: 8, rarely: 0, notUse: 0},
+          // "Good predictions": {often: 9, rarely: 0, notUse: 0},
+
+          "C&S Views": {often: 0, rarely: 0, notUse: 0},
+          "Variable modifications": {often: 0, rarely: 0, notUse: 0},
+          "Storage Increases": {often: 0, rarely: 0, notUse: 0},
+
+          // {'header': "Data viz/graphing"},
+          "bar graph": {often: 0, rarely: 0, notUse: 0},
+          "line graph": {often: 0, rarely: 0, notUse: 0},
+          "heatmap": {often: 0, rarely: 0, notUse: 0},
+
+          // {'header': "Insight/inferences"},
+          "Made insights": {often: 0, rarely: 0, notUse: 0},
+          "Successful insights": {often: 0, rarely: 0, notUse: 0},
+          "Good predictions": {often: 0, rarely: 0, notUse: 0},
         };
 
         for (let s in sArray) {
@@ -257,6 +271,11 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
           return new Student(studentIds[s] , StudentStatus.Idle, s, 10000, 10, 100000, "Make songs");
         });
       }
+      
+
+      // public componentWillMount(){
+    
+      // }
       
       public convertIdsToIdNamePair (ids: string[]){
         const idNamePairRet = {}
