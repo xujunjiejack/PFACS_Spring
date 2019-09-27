@@ -34,7 +34,8 @@ const history = createHashHistory()
 
 interface IControlState {
   currentView: string,
-  currentSessionId: string
+  currentSessionId: string,
+  allUserData: Object[]
 }
 
 interface IClassroomControl {
@@ -107,7 +108,7 @@ class App extends React.Component <any, IAppState> {
   
   public constructor(props: any){
     super(props)
-    this.state = {...initialUser, userSessions: dummyData, currentSessionId: "", currentView: "dashboard", classrooms: dummyClassroomData} 
+    this.state = {...initialUser, userSessions: dummyData, currentSessionId: "", currentView: "dashboard", classrooms: dummyClassroomData, allUserData:[]} 
   }
 
   public addNewSession = ( newSession: ISessionData ) => {
@@ -122,6 +123,15 @@ class App extends React.Component <any, IAppState> {
   public setUser = (userName: string, userAccessToken: string, userIdToken: string ) => {
     // TODO: grab data in for user sessions from the database.
     this.setState({userName, userAccessToken, userIdToken, userSessions: dummyData})
+  }
+
+  private setAllUserData=(data) =>{
+    const studentID = data.map(d => d.playerUniqueID)
+    const studentName = data.map(d => d.userEmail)
+    console.log(studentID)
+    console.log(studentName)
+    let newClassroom = {studentID, studentName, className:"Advisory Board"} as IGoogleClassroomInfo
+    this.setState({allUserData: data, classrooms:[newClassroom]})
   }
 
   private logout = (history) => {
@@ -160,7 +170,7 @@ class App extends React.Component <any, IAppState> {
                 render={
                     props => 
                       <UserContext.Provider value={{ ...this.state}} >
-                        <LoginPage history={props.history} setUser={this.setUser} setClassroom={this.setClassroom}/>
+                        <LoginPage history={props.history} setUser={this.setUser} setClassroom={this.setClassroom} setAllUserData={this.setAllUserData}/>
                       </UserContext.Provider>
               }
           />

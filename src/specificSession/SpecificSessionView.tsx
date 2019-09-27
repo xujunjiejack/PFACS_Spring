@@ -186,7 +186,7 @@ class SessionView extends React.Component <any, any> {
                        </p>
                       {/* I can add grid to it */}
                       <Grid style={{position: "relative"}}>
-                      <Grid.Row>
+                      <Grid.Row> 
                       <Grid.Column width="1"/>
                       <Grid.Column width="14">
                         <HeaderContainer>

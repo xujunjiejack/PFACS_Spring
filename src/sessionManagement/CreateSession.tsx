@@ -73,6 +73,7 @@ const ChooseStudentContainer = styled.div`
 
     border: 1px solid #C8C8C8;
     box-sizing: border-box;
+    overflow: scroll;
 `
 
 const BackgroundContainer = styled.div`
@@ -185,6 +186,12 @@ export class CreateSession extends React.Component<any, any>{
         this.setState({[e.target.name]: e.target.value})
     }
 
+    private formatCurrentTimeString = () =>{
+        const date = new Date()
+        // "23 July, 2017 - Started at 4:50pm"
+        return `${date.getMonth()} ${date.getDay()}, ${date.getFullYear()} - Started at ${date.getHours()}:${date.getMinutes()}${date.getHours() >= 12 ? "pm" : "am"}` 
+    }
+
     private createSession = () => {
          
         const sessionName = this.state.title
@@ -192,7 +199,7 @@ export class CreateSession extends React.Component<any, any>{
         const studentIds = studentMaps.filter((v,k) => v === true).keySeq().toArray()
         const studentNumber = studentIds.length
         const ongoing = true;
-        const startTime = "time-need-format"
+        const startTime =  this.formatCurrentTimeString()
         const sessionId = Math.random().toString(36)
         const newSessionEntry = {
             ongoing, startTime, studentNumber, studentIds, sessionName, sessionId,

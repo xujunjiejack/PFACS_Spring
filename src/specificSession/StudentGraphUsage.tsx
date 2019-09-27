@@ -148,8 +148,8 @@ class StudentGraphUsage extends React.Component <any, any>{
         ]
 
         return (
-            <Card style={{width:"100%"}}>
-                <Card.Content>
+            <Card style={{width:"100%", boxShadow:"none"}}>
+                <Card.Content style={{overflowY:"scroll"}}>
                     <CardHeader textAlign="left" style={{display:"flex", fontFamily:"Roboto", paddingTop:`18px`, marginBottom: "20px", marginLeft: "10px"}} >
                         <p style={{paddingTop:"5px", margin:"0px"}}>Class Overview</p>
                         {/* <Dropdown selection placeholder="Collection and storage"  onChange={this.menuOnChange} options={optionsForDropDown}
@@ -177,7 +177,7 @@ class StudentGraphUsage extends React.Component <any, any>{
                         </Table.Body>
                     </Table> */}
 
-                    <OverviewNineColumns/>
+                    <OverviewNineColumns tableData={this.props.tableData}/>
                 </Card.Content>
             </Card>
         )
@@ -339,12 +339,46 @@ function IndividualTable(props) {
 }
 
 function OverviewNineColumns(props) {
+    if (Object.keys(props.tableData).length ===0){
+        return <div/>
+    }
 
+    const collectionAndStorageKeys=["C&S Views", "Variable modifications", "Storage Increases"]
+    const dataVisGraphKeys=["bar graph","line graph","heatmap"]
+    const insightKeys = ["Made insights","Successful insights", "Good predictions"]
+    const data = [
+        {
+            tableName:"Collection and Storage",
+            headers:["Often", "Rarely", "never"],
+            data: collectionAndStorageKeys.map(k => 
+                {
+                    console.log(props.tableData)
+                return [k, props.tableData[k].often, props.tableData[k].rarely, props.tableData[k].notUse]
+                }) 
+        },
+        {
+            tableName:"Data Vis and graph",
+            headers:["Often", "Rarely", "never"],
+            data: dataVisGraphKeys.map(k => [k, props.tableData[k].often, props.tableData[k].rarely, props.tableData[k].notUse]) 
+        },
+        {
+            tableName:"Insights",
+            headers:["Often", "Rarely", "never"],
+            data: insightKeys.map(k => [k, props.tableData[k].often, props.tableData[k].rarely, props.tableData[k].notUse]) 
+        }
+
+    ]
     return (
 
             <div style={mainStack}>
                 {" "}
-                <IndividualTable
+                {data.map( t => 
+                    <React.Fragment>
+                    <IndividualTable key={t.tableName} tableData={t} style={{ marginBottom: "8px", width: "100%" }}/> 
+                    <br/>
+                    </React.Fragment>)}
+
+                {/* <IndividualTable
                     tableData={{
                         tableName: "Collection and Storage",
                         headers: ["header1", "header2", "header3"],
@@ -381,7 +415,7 @@ function OverviewNineColumns(props) {
                         ],
                     }}
                     style={{ marginBottom: "8px", width: "100%" }}
-                />{" "}
+                />{" "} */}
             </div>
     )
 }

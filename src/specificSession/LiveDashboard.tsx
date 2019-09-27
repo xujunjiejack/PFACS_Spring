@@ -333,10 +333,10 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
                 {this.state.loading ? <div> loading </div> : 
 
                 <Grid style={{position: "relative"}}>
-                <Grid.Row>
+                <Grid.Row style={{height: "75vh"}}>
                 <Grid.Column width="1"/>
                   <Grid.Column width="7">
-                      <Card style={{width:"100%",  height:"70vh", borderWidth: "0px"}} >
+                      <Card style={{width:"100%",  height:"100%", borderWidth: "0px",boxShadow:"none"}} >
 
                         <CardHeader textAlign="left" style={GridHeaderStyle} >
                             <div style={{display: "inline", fontSize:"18px", fontWeight: "bold"}}> Students </div>
@@ -368,7 +368,7 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
                       </Card>
                   </Grid.Column>
 
-                  <Grid.Column width="7" style={{display:"flex", justifyContent: "center", color:"#00000"}}>
+                  <Grid.Column width="7" style={{display:"flex", height: "100%",justifyContent: "center", color:"#00000"}}>
                       {/* <StudentGraphUsage/> */}
                       {this.state.doesShowSpecificDetail? <StudentCurrentDetails student={this.state.specificStudentData} onCloseOnASpecificStudentEvent={this.onCloseOnASpecificStudentEvent} /> : <StudentGraphUsage tableData={this.state.classOverviewData}/>}
 
