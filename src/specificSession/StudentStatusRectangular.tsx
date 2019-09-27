@@ -67,6 +67,7 @@ interface IStudentStatusRectProps{
     showDetailed: (studentId:string) => void,
     onMouseOverASpecificStudentEvent: (studentData: Student) => void,
     onMouseOutASpecificStudentEvent: () => void,
+    onClickOnASpecificStudentEvent: (studentData: Student) => void
 }
 
 interface IStudentStatusRectState{
@@ -92,7 +93,6 @@ class StudentStatusRect extends React.Component<IStudentStatusRectProps, IStuden
             <Rectangular 
                 onMouseOver={ ()=>this.props.onMouseOverASpecificStudentEvent(this.props.student)}
                 onMouseOut={()=>this.props.onMouseOutASpecificStudentEvent()}
-            
                 tabIndex={0}
 
                 className={this.state.rectActive? "active" : ""}
@@ -108,7 +108,7 @@ class StudentStatusRect extends React.Component<IStudentStatusRectProps, IStuden
 
     private onClick = () => {
         this.setState({rectActive: true})
-        this.props.showDetailed(this.props.student.id)
+        this.props.onClickOnASpecificStudentEvent(this.props.student)
     }
 
     private getContentFromStatus = (status: StudentStatus): string => {
@@ -120,12 +120,12 @@ class StudentStatusRect extends React.Component<IStudentStatusRectProps, IStuden
                 return "Absent"
 
             case StudentStatus.Stuck:
-                return "Stuck"
+                return "Idle for 30 seconds"
 
             case StudentStatus.Idle:
-                return "Idle"
+                return "Idle for 2 minute"
 
-                default:
+            default:
                 return ""
         }
     }

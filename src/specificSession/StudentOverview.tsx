@@ -12,6 +12,7 @@ interface IStudentOverviewProps {
     studentData: Student[],
     onMouseOverASpecificStudentEvent: (studentData: Student)=> void
     onMouseOutASpecificStudentEvent: () => void
+    onClickOnASpecificStudentEvent: (studentData: Student) => void
 }
 
 /* Main Component */
@@ -55,6 +56,7 @@ export class StudentOverview extends React.Component<IStudentOverviewProps, any>
                                     student={s}
                                     onMouseOverASpecificStudentEvent={this.props.onMouseOverASpecificStudentEvent}
                                     onMouseOutASpecificStudentEvent= {this.props.onMouseOutASpecificStudentEvent}
+                                    onClickOnASpecificStudentEvent = {this.props.onClickOnASpecificStudentEvent}
                                 />
                             )
                             }

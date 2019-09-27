@@ -38,7 +38,7 @@ const GoogleLoginButton = styled(GoogleLogin)`
 interface ILoginProps {
     studentChosen?: string ,
     response?: GoogleLoginResponse,
-    accessToken? : string
+    accessToken? : string,
   }
 
 /* Main Component Class*/
@@ -62,18 +62,16 @@ class LoginPage extends React.Component <any, ILoginProps> {
           const user = result.user;
           console.log("firebase login");
           console.log(result.credential);
-          let uid = "";
-          if (user != null){
-            if ('uid' in user) { uid = user["uid"];}
-          }
-          console.log(uid);
-          // if (user)
-          // firebase.firestore().collection('access-test').doc(uid).get().then((snapshot) => {
+          console.log(user);
           firebase.firestore().collection('users').get().then((snapshot) => {
+            const docArray : Array<Object> = [] 
             snapshot.forEach((doc) => {
               console.log(doc.id, '=>', doc.data());
+              docArray.push(doc.data())
             });
-            // console.log(snapshot.data());
+
+            // setAllUserData : ([Object] ) => void
+            this.props.setAllUserData( docArray )
           })
           .catch((err) => {
             console.log('Error ', err);
@@ -81,10 +79,9 @@ class LoginPage extends React.Component <any, ILoginProps> {
           // firebase.database().ref("/users/DU7k6DVcJmS0ASOBvMv6nqCByuh2").once('value').then((snapshot) =>{
           //   console.log(snapshot.val());
           // }).catch( (error) =>{ console.log(error) } );
-
-        // ...
-          this.props.setUser("dummy", token, credential.id_token) 
+          this.props.setUser("Dummy", token, credential.id_token) 
           this.props.history.push("/")
+        // ...
         }
         // What is this id??
         // const email = await this.getStudentEmailList(response.getAuthResponse().access_token)        

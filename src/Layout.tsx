@@ -12,6 +12,7 @@ import {History} from "history";
 import * as React from "react";
 import styled from "styled-components";
 import { GoogleLogout } from 'react-google-login';
+import { Button } from 'semantic-ui-react';
 
 /* CSS For different componenets*/
 const TopBarBackground = styled.div`
@@ -60,6 +61,19 @@ const UserNameButton = styled.div`
     z-index: 1;
 `
 
+const StyledButton = styled(Button)`
+    position: absolute;
+    right: 1.5%;
+    top: 23.26%;
+    color: #FFFFFF;
+    z-index: 1;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: normal;
+`
+
 const TopBarContainer = styled.div`
     position: relative;
     // width: 1440px;
@@ -71,21 +85,32 @@ const TopBarContainer = styled.div`
 
 /* Props interface  */
 interface ILayoutProps{ 
-    history: History
+    history: History,
+    userName?: string,
+    logoutAction?: (history)=>void
 }
 
 /* Main Class  */
 export class Layout extends React.Component<ILayoutProps, any> {
+    // The way I wrote the layout is not efficient. need better optimization
 
     public render(){
         return (
             <TopBarContainer>
                 <TopBarBackground/>
                 <SessionButton onClick={this.navigateToSessions}> Sessions </SessionButton>
-                <UserNameButton> User Name </UserNameButton>
+                <UserNameButton> {this.props.userName} </UserNameButton>                
+                <StyledButton onClick={this.logoutAction}> Log out </StyledButton>
+                {/* The log out button will clear all user logged information */}
                 {this.props.children}
+
             </TopBarContainer>
         )
+    }
+
+    private logoutAction = () => {
+        if (this.props.logoutAction !== undefined)
+            this.props.logoutAction(this.props.history)
     }
 
     private navigateToSessions = () => {

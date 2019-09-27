@@ -179,14 +179,14 @@ class SessionView extends React.Component <any, any> {
         return (
             <UserContext.Consumer>
                 {value => 
-                       <Layout history={this.props.history}>
+                       <Layout history={this.props.history} userName={value.userName} logoutAction={this.props.logoutAction}>
 
                        <p style={{height: `5vh`}}>    
                         {/*  */}
                        </p>
                       {/* I can add grid to it */}
                       <Grid style={{position: "relative"}}>
-                      <Grid.Row>
+                      <Grid.Row> 
                       <Grid.Column width="1"/>
                       <Grid.Column width="14">
                         <HeaderContainer>
