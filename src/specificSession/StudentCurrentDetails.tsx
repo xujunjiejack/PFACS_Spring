@@ -135,7 +135,7 @@ export function StudentCurrentDetails(props: any) {
                             <Grid.Column width="8" style={{ paddingLeft: 0 }}>
                                 <DataTitle> Released song count </DataTitle>
                                 {/* break the camel case */}
-                                <Data> {console.log(props.student)}</Data>
+                                <Data> {(props.student as Student).releasedSongCount}</Data>
                             </Grid.Column>
                         </Grid.Row>
 
