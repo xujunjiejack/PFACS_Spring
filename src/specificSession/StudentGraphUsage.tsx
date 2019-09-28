@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Card, CardHeader, Grid, Table, TableBody, TableCell, TableHeader, Tab, Dropdown} from "semantic-ui-react";
+// import { Card, CardHeader, Grid, Table, TableBody, TableCell, TableHeader, Tab, Dropdown} from "semantic-ui-react";
+import { Card, CardHeader, Grid, Table} from "semantic-ui-react";
 import styled from "styled-components";
 // import { create } from 'istanbul-reports';
 
@@ -141,11 +142,11 @@ class StudentGraphUsage extends React.Component <any, any>{
     // This detailed view will include the table view of using different view
     public render(){
         
-        let optionsForDropDown =[
-            {key:"0", text:"Collection and Storage", value:"0"},
-            {key:"1", text:"Graph", value:"1"},
-            {key:"2", text:"Insights and Inference", value:"2"},
-        ]
+        // let optionsForDropDown =[
+        //     {key:"0", text:"Collection and Storage", value:"0"},
+        //     {key:"1", text:"Graph", value:"1"},
+        //     {key:"2", text:"Insights and Inference", value:"2"},
+        // ]
 
         return (
             <Card style={{width:"100%", boxShadow:"none"}}>

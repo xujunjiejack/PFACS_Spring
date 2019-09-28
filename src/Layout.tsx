@@ -11,7 +11,7 @@
 import {History} from "history";
 import * as React from "react";
 import styled from "styled-components";
-import { GoogleLogout } from 'react-google-login';
+// import { GoogleLogout } from 'react-google-login';
 import { Button } from 'semantic-ui-react';
 
 /* CSS For different componenets*/
