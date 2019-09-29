@@ -151,7 +151,7 @@ class LoginPage extends React.Component <any, ILoginProps> {
     private async getStudentDataFromCourseId(data: any, accessToken: any){
       
       const result = data.courses.map(async (course: any) => {
-        const classroomInfo: IGoogleClassroomInfo = {className:"",  studentName:[]}
+        const classroomInfo: IGoogleClassroomInfo = {className:"",  studentName:[], studentNameIDMap: {}}
         classroomInfo.className = course.name
         
         const courseId = course.id
