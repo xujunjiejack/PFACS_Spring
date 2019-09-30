@@ -371,10 +371,10 @@ function OverviewNineColumns(props) {
                 {" "}
                 {data.map( (t,i,array) => 
                     <React.Fragment>
-                    <IndividualTable key={t.tableName} tableData={t} style={{ marginBottom: 
-                        (i !== array.length-1) ? "8px": "0px", width: "100%" }}/> 
-                        {(i !== array.length-1) ? <br/> : <div/>}
-                    </React.Fragment>)}
+                        <IndividualTable key={t.tableName + i} tableData={t} style={{ marginBottom: 
+                            (i !== array.length-1) ? "8px": "0px", width: "100%" }}/> 
+                            {(i !== array.length-1) ? <br/> : <div/>}
+                        </React.Fragment>)}
 
                 {/* <IndividualTable
                     tableData={{

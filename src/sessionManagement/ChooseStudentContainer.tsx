@@ -53,7 +53,7 @@ export class ChooseStudentsRow extends React.Component<IChooseStudentContainerPr
     public render(){
         return(
             <React.Fragment>
-                <GridRow style={{height:"51px", background:"#F4F4F4", marginTop: 0}}>
+                <GridRow style={{height:"51px", background:"#F4F4F4", marginTop: 0, padding: "14px", display: "flex", alignItems:"center"}}>
                     <Checkbox label={this.props.classInfo.className}  indeterminate={!this.state.none && !this.state.all} checked={this.decideMasterCheckbox()}
                         onChange = {this.masterClick}
                     />

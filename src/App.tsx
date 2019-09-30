@@ -22,6 +22,8 @@ import {Session} from "./sessionManagement/SessionManagementPage";
 import SessionView from "./specificSession/SpecificSessionView";
 import {IGoogleClassroomInfo} from "./data_structure/GoogleClassroomInfo"
 
+import * as firebase from "firebase" 
+
 library.add(faTachometerAlt)
 library.add(faFileAlt)
 
@@ -147,9 +149,9 @@ class App extends React.Component <any, IAppState> {
   }
 
   private logout = (history) => {
-    console.log("logout")
     history.push("/login")
     this.setState({userName: "", userAccessToken:"", userIdToken:"", userSessions:[]})
+    firebase.auth().signOut().then( () =>{console.log("firebase logout successful")} ).catch((e) =>{console.log(e)})
   }
   
   public setClassroom = (classroomInfo: IGoogleClassroomInfo[]) =>{
@@ -173,7 +175,7 @@ class App extends React.Component <any, IAppState> {
                     {  
                       this.historyPush("/sessions")
                       return <div>Welcome</div>
-                    } 
+                    }  
                   else
                     {return this.historyPush("/login")}}
                 }/> 

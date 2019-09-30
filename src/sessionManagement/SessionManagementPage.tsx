@@ -282,7 +282,16 @@ export class Session extends React.Component <any, any> {
 
         return (
             <UserContext.Consumer>
-                { value => this.createThisPage(value) }
+                { value => 
+                    {
+                        //    if (value.userName === "" || value.userName === undefined || value.userName === null) {
+                        //        return <div/>
+                        //    } else {
+                        //         return this.createThisPage(value) 
+                        //    }
+                        return this.createThisPage(value) 
+                    } 
+                }
             </UserContext.Consumer>
         )
     }
