@@ -298,8 +298,6 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
         // this.setState({studentData}) 
         
         console.log("live dashboard");
-        // console.log(studentData);
-        console.log(this.props.studentData)
         const studentIds = this.props.studentData.map(s => s.id)
         socket.emit('listen to live data', { "students": studentIds} );
 
@@ -348,54 +346,53 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
         return (
             <UserContext.Consumer>
             { value => 
-            <React.Fragment>
-                {this.state.loading ? <div> loading </div> : 
+              <React.Fragment>
+                  {this.state.loading ? <div> loading </div> : 
 
-                <Grid style={{position: "relative"}}>
-                <Grid.Row style={{height: "75vh"}}>
-                <Grid.Column width="1"/>
-                  <Grid.Column width="7">
-                      <Card style={{width:"100%",  height:"100%", borderWidth: "0px",boxShadow:"none"}} >
+                  <Grid style={{position: "relative"}}>
+                  <Grid.Row style={{height: "75vh"}}>
+                  <Grid.Column width="1"/>
+                    <Grid.Column width="7">
+                        <Card style={{width:"100%",  height:"100%", borderWidth: "0px",boxShadow:"none"}} >
 
-                        <CardHeader textAlign="left" style={GridHeaderStyle} >
-                            <div style={{display: "inline", fontSize:"18px", fontWeight: "bold"}}> Students </div>
-                            <TotalStudentLabel> 24 Total students</TotalStudentLabel>
-                            {/* Need some non-hard code later */}
-                        </CardHeader>
+                          <CardHeader textAlign="left" style={GridHeaderStyle} >
+                              <div style={{display: "inline", fontSize:"18px", fontWeight: "bold"}}> Students </div>
+                              <TotalStudentLabel> 24 Total students</TotalStudentLabel>
+                              {/* Need some non-hard code later */}
+                          </CardHeader>
 
-                        <CardContent style={{padding: "20px 50px 0px 50px", borderWidth:"0px"}}>
-                          {/* the goal is to connect the left with right */}
-                          {/* Pass the function to control the data in the on hover */}
-                          <StudentOverview showDetailed={this.showDetailed} studentData={this.state.studentData}
-                            onMouseOverASpecificStudentEvent= {this.onMouseOverASpecificStudentEvent}
-                            onMouseOutASpecificStudentEvent={this.onMouseOutASpecificStudentEvent}
-                            onClickOnASpecificStudentEvent={this.onClickOnASpecificStudentEvent}
-                          />
-                        </CardContent>
+                          <CardContent style={{padding: "20px 50px 0px 50px", borderWidth:"0px"}}>
+                            {/* the goal is to connect the left with right */}
+                            {/* Pass the function to control the data in the on hover */}
+                            <StudentOverview showDetailed={this.showDetailed} studentData={this.state.studentData}
+                              onMouseOverASpecificStudentEvent= {this.onMouseOverASpecificStudentEvent}
+                              onMouseOutASpecificStudentEvent={this.onMouseOutASpecificStudentEvent}
+                              onClickOnASpecificStudentEvent={this.onClickOnASpecificStudentEvent}
+                            />
+                          </CardContent>
 
-                        <div style={{fontSize: "16px", paddingLeft:"50px" , textAlign: "left", position:"absolute", bottom:"40px"}}>
-                            <Rect status={StudentStatus.InProgress}/>
-                            Engaged
-                        
-                            <Rect status={StudentStatus.Stuck}/>
-                            Idle for 30 seconds
-                            
-                            <Rect status={StudentStatus.Absent}/>
-                            Idle for 1 minute
-                        </div>
+                          <div style={{fontSize: "16px", paddingLeft:"50px" , textAlign: "left", position:"absolute", bottom:"40px"}}>
+                              <Rect status={StudentStatus.InProgress}/>
+                              Engaged
+                          
+                              <Rect status={StudentStatus.Stuck}/>
+                              Idle for 30 seconds
+                              
+                              <Rect status={StudentStatus.Absent}/>
+                              Idle for 1 minute
+                          </div>
 
-                      </Card>
-                  </Grid.Column>
+                        </Card>
+                    </Grid.Column>
 
-                  <Grid.Column width="7" style={{display:"flex", height: "100%",justifyContent: "center", color:"#00000"}}>
-                      {/* <StudentGraphUsage/> */}
-                      {this.state.doesShowSpecificDetail? <StudentCurrentDetails student={this.state.specificStudentData} onCloseOnASpecificStudentEvent={this.onCloseOnASpecificStudentEvent} /> : <StudentGraphUsage tableData={this.state.classOverviewData}/>}
-
-                  </Grid.Column>
-                </Grid.Row>      
-                </Grid>
-                }
-            </React.Fragment>
+                    <Grid.Column width="7" style={{display:"flex", height: "100%",justifyContent: "center", color:"#00000"}}>
+                        {/* <StudentGraphUsage/> */}
+                        {this.state.doesShowSpecificDetail? <StudentCurrentDetails student={this.state.specificStudentData} onCloseOnASpecificStudentEvent={this.onCloseOnASpecificStudentEvent} /> : <StudentGraphUsage tableData={this.state.classOverviewData}/>}
+                    </Grid.Column>
+                  </Grid.Row>      
+                  </Grid>
+                  }
+              </React.Fragment>
              
             }
             </UserContext.Consumer>

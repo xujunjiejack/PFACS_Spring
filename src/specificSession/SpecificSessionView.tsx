@@ -159,10 +159,21 @@ class SessionView extends React.Component <any, any> {
 
     public wrapDataThroughIdNamePair = (studentIds: string[], nameIdPair): Student[] => {
       // just for dummy data 
+      if (nameIdPair === undefined) {
+        nameIdPair = idNamesPair
+      }
+
       return studentIds.map((s,i) => {
         return new Student(nameIdPair[s] , StudentStatus.Idle, s, 10000, 10, 100000, "Make songs");
       });
     }
+
+    // public wrapDataThroughEmail = (studentIds: string[], names: string[]): Student[] => {
+    //   // just for dummy data 
+    //   return studentIds.map((s,i) => {
+    //     return new Student(nameIdPair[s] , StudentStatus.Idle, s, 10000, 10, 100000, "Make songs");
+    //   });
+    // }
     
 
     public componentDidUpdate(prevProps: any){
@@ -214,8 +225,6 @@ class SessionView extends React.Component <any, any> {
                       </Grid>
 
                        <br/>
-                       
-                       
                        {this.state.currentView === "dashboard"? 
                           <LiveDashboard studentData={this.getStudentData(value.userSessions, this.state.currentSessionId)} sessionData={this.getSessionData(value.userSessions, this.state.currentSessionId)}/> 
                        : 
@@ -231,8 +240,8 @@ class SessionView extends React.Component <any, any> {
         // here is the set up of the session 
         // I remembered that I already made it work with socket 
         if (session){
-          console.log(idNamesPair)
-          const wrappedData = this.wrapDataThroughIdNamePair(session.studentIds, idNamesPair)
+          console.log(session.studentIDNamePair)
+          const wrappedData = this.wrapDataThroughIdNamePair(session.studentIds, session.studentIDNamePair)
           console.log(wrappedData)
           return wrappedData
         }

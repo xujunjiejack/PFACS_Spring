@@ -5,6 +5,8 @@ import * as React from 'react';
 
 export interface ISession {
     studentIds: string[],
+    studentNames?: string[],
+    studentIDNamePair?: Object,
     startTime: string,
     ongoing: boolean,
     sessionName: string,
