@@ -16,13 +16,15 @@ import {Route, Router} from "react-router"
 
 import './App.css'
 import {initialUser, IUserContext, UserContext} from "./Context"
-import {CreateSession} from "./sessionManagement/CreateSession"
+import CreateSession from "./sessionManagement/CreateSession"
 import LoginPage from "./Login";
-import {Session} from "./sessionManagement/SessionManagementPage";
+import Session from "./sessionManagement/SessionManagementPage";
 import SessionView from "./specificSession/SpecificSessionView";
 import {IGoogleClassroomInfo} from "./data_structure/GoogleClassroomInfo"
 
 import * as firebase from "firebase" 
+
+import {CookiesProvider, useCookies, withCookies} from "react-cookie"
 
 library.add(faTachometerAlt)
 library.add(faFileAlt)
@@ -130,7 +132,14 @@ class App extends React.Component <any, IAppState> {
 
   public setUser = (userName: string, userAccessToken: string, userIdToken: string ) => {
     // TODO: grab data in for user sessions from the database.
-    this.setState({userName, userAccessToken, userIdToken, userSessions: dummyData})
+    const { cookies } = this.props;
+ 
+    cookies.set('userName', userName, { path: '/' });
+    cookies.set('userAccessToken', userAccessToken, { path: '/' });
+    cookies.set('userIdToken', userIdToken, { path: '/' });
+    if (this.state.userName === "" ){
+      this.setState({userName, userAccessToken, userIdToken, userSessions: dummyData})
+    }
   }
 
   private setAllUserData=(data) =>{
@@ -150,6 +159,12 @@ class App extends React.Component <any, IAppState> {
 
   private logout = (history) => {
     history.push("/login")
+
+    const { cookies } = this.props;
+    cookies.remove("userName")
+    cookies.remove("userIdToken")
+    cookies.remove("userAccessToken")
+
     this.setState({userName: "", userAccessToken:"", userIdToken:"", userSessions:[]})
     firebase.auth().signOut().then( () =>{console.log("firebase logout successful")} ).catch((e) =>{console.log(e)})
   }
@@ -193,7 +208,7 @@ class App extends React.Component <any, IAppState> {
                 render={
                     props =>
                       <UserContext.Provider value={{ ...this.state}} >
-                          <Session history={props.history} changeCurrentSession={this.changeCurrentSession} logoutAction={this.logout}/>
+                          <Session history={props.history} setUser={this.setUser} changeCurrentSession={this.changeCurrentSession} logoutAction={this.logout}/>
                       </UserContext.Provider>
                 }
             />
@@ -231,4 +246,4 @@ class App extends React.Component <any, IAppState> {
 }
 }
 
-export default App;
+export default withCookies(App);

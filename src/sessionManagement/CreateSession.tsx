@@ -1,14 +1,16 @@
 // import axios from "axios";
-import { Map, get} from "immutable";
+import { Map, get } from "immutable";
 import * as React from "react";
-import { Button, Form, Grid} from 'semantic-ui-react'
+import { Button, Form, Grid } from 'semantic-ui-react'
 import styled from "styled-components"
-import {ChooseStudentsRow} from "./ChooseStudentContainer"
-import {Layout} from "../Layout"
-import {IGoogleClassroomInfo} from "../data_structure/GoogleClassroomInfo"
+import { ChooseStudentsRow } from "./ChooseStudentContainer"
+import { Layout } from "../Layout"
+import { IGoogleClassroomInfo } from "../data_structure/GoogleClassroomInfo"
 import { UserContext } from '../Context';
 import { string } from 'prop-types';
-import * as firebase from "firebase" 
+import * as firebase from "firebase"
+import { withCookies } from "react-cookie";
+
 
 /* CSS for the component */
 const CreateAssessmentLabel = styled.div`
@@ -31,7 +33,7 @@ const CreateAssessmentLabel = styled.div`
     cursor: pointer;
 `
 
-const StyledForm = styled(Form) `
+const StyledForm = styled(Form)`
     position: relative;
     width: 100%;
     height: 19px;
@@ -72,9 +74,9 @@ const BackgroundContainer = styled(Grid)`
 `
 
 /* Main Component */
-export class CreateSession extends React.Component<any, any>{
+class CreateSession extends React.Component<any, any>{
 
-    public constructor(props: any){
+    public constructor(props: any) {
         super(props)
         let m = Map<string, boolean>()
 
@@ -99,18 +101,18 @@ export class CreateSession extends React.Component<any, any>{
         // this.state = {allStudentCheckStatusMap: m, title: '', googleClassroomDataInfo: props.classroomInfoData,allStudentNameIDMap: m2,
         //         isLoading: true
         //         }
-        this.state = {isLoading: true}
+        this.state = { isLoading: true }
     }
 
-    public componentDidMount(){
+    public componentDidMount() {
         firebase.firestore().collection('users').get().then((snapshot) => {
-            const docArray : Array<any> = [] 
+            const docArray: Array<any> = []
             snapshot.forEach((doc) => {
-              console.log(doc.id, '=>', doc.data());
-              docArray.push(doc.data())
+                console.log(doc.id, '=>', doc.data());
+                docArray.push(doc.data())
 
             });
-      
+
             // setAllUserData : ([Object] ) => void
             // Questions is how to deal with this thing
             // this.props.setAllUserData( docArray )
@@ -118,35 +120,35 @@ export class CreateSession extends React.Component<any, any>{
             const studentName = docArray.map(d => d.userEmail)
             console.log(studentID)
             console.log(studentName)
-            
+
             const studentNameIDMap = {}
-            studentName.forEach((e,i) => {
-              studentNameIDMap[e] = studentID[i]
+            studentName.forEach((e, i) => {
+                studentNameIDMap[e] = studentID[i]
             });
-        
-            const newClassroom: IGoogleClassroomInfo = {studentID, studentName, className:"Advisory Board", studentNameIDMap}
+
+            const newClassroom: IGoogleClassroomInfo = { studentID, studentName, className: "Advisory Board", studentNameIDMap }
             const classrooms = [newClassroom]
             let m = Map<string, boolean>()
             classrooms.forEach(
                 (d: IGoogleClassroomInfo) => {
-                    d.studentName.forEach(s =>{
+                    d.studentName.forEach(s => {
                         m = m.set(s, false)
                     })
                 }
             )
-            
+
             let m2 = Map<string, string>()
             classrooms.forEach(
                 (d: IGoogleClassroomInfo) => {
                     Object.keys(d.studentNameIDMap).forEach(k => m2[k] = d.studentNameIDMap[k])
                 }
             )
-            this.setState({allStudentCheckStatusMap: m, allStudentNameIDMap: m2, googleClassroomDataInfo: classrooms, isLoading: false })
-          })
-          .catch((err) => {
-            console.log('Error ', err);
-          });
-    }  
+            this.setState({ allStudentCheckStatusMap: m, allStudentNameIDMap: m2, googleClassroomDataInfo: classrooms, isLoading: false })
+        })
+            .catch((err) => {
+                console.log('Error ', err);
+            });
+    }
 
     // public componentDidUpdate(prevProps: any){
     //     if (prevProps.allStudentCheckStatusMap !== this.props.allStudentCheckStatusMap){
@@ -158,7 +160,7 @@ export class CreateSession extends React.Component<any, any>{
     //                 })
     //             }
     //         )
-            
+
     //         let m2 = Map<string, string>()
     //         this.props.classroomInfoData.forEach(
     //             (d: IGoogleClassroomInfo) => {
@@ -170,107 +172,117 @@ export class CreateSession extends React.Component<any, any>{
     //     }
     // }
 
-    public render(){
-        
+    public render() {
+
         return (
             <UserContext.Consumer>
-                {value => 
-            <Layout history={this.props.history} userName={value.userName} logoutAction={this.props.logoutAction}>
-                <BackgroundContainer style={{margin: "14px 0 0 0" }}> 
-                
-                <Grid.Column width={1}/>
-                <Grid.Column width={14} style={{background: "#FFFFFF", paddingLeft:"40px", paddingRight: "40px" }} >
-                <CreateAssessmentLabel>
-                    Create a new assessment
-                </CreateAssessmentLabel>
+                {value => {
+                    const { cookies } = this.props;
+                    if (cookies !== undefined) {
+                        if (cookies.get("userName") === undefined || cookies.get("userName") === "") {
+                            setTimeout(() => {
+                                this.props.history.push("/login")
+                            }, 3000)
+                            return <div> Redirecting to login </div>
+                        }
+                    }
 
-                <StyledForm>
-                    
-                    {/* Session title */}
-                    <Form.Field>
-                        <label style={{display: "flex", justifyContent:"left", marginBottom:"10px"}}>Session Title</label>
-                        <input placeholder='Session Title' value={this.state.title} name="title" onChange={this.formOnChange} style={{width: "100%"}}/>
-                    </Form.Field>
+                    return <Layout history={this.props.history} userName={value.userName} logoutAction={this.props.logoutAction}>
+                        <BackgroundContainer style={{ margin: "14px 0 0 0" }}>
 
-                    <div style={{height: "24px"}}/>  
+                            <Grid.Column width={1} />
+                            <Grid.Column width={14} style={{ background: "#FFFFFF", paddingLeft: "40px", paddingRight: "40px" }} >
+                                <CreateAssessmentLabel>
+                                    Create a new assessment
+                                </CreateAssessmentLabel>
 
-                     {/* Session check box */}
-                    <Form.Field>
-                        <label style={{display: "flex", justifyContent:"left", marginBottom:"10px"}}>
-                            Students (From Google Classroom)
-                        </label>
+                                <StyledForm>
 
-                        {/* Given the data and generate it*/}
-                        <ChooseStudentContainer>        
-                            { this.state.isLoading? 
-                                <div>
-                                    Data is loading 
-                                </div>
-                                :
-                                <Grid padded="horizontally" style={{marginTop: 0}}>
-                                    {/* this is for adding the class info and it needs to be dynamically generated*/}
-                                    {/* <ChooseStudentsRow classInfo={dummyData1} allStudentsCheckitems={this.state.allStudentCheckStatusMap} setAllStudentCheckitems={this.setAllStudentItems}/>
+                                    {/* Session title */}
+                                    <Form.Field>
+                                        <label style={{ display: "flex", justifyContent: "left", marginBottom: "10px" }}>Session Title</label>
+                                        <input placeholder='Session Title' value={this.state.title} name="title" onChange={this.formOnChange} style={{ width: "100%" }} />
+                                    </Form.Field>
+
+                                    <div style={{ height: "24px" }} />
+
+                                    {/* Session check box */}
+                                    <Form.Field>
+                                        <label style={{ display: "flex", justifyContent: "left", marginBottom: "10px" }}>
+                                            Students (From Google Classroom)
+                                        </label>
+
+                                        {/* Given the data and generate it*/}
+                                        <ChooseStudentContainer>
+                                            {this.state.isLoading ?
+                                                <div>
+                                                    Data is loading
+                                                </div>
+                                                :
+                                                <Grid padded="horizontally" style={{ marginTop: 0 }}>
+                                                    {/* this is for adding the class info and it needs to be dynamically generated*/}
+                                                    {/* <ChooseStudentsRow classInfo={dummyData1} allStudentsCheckitems={this.state.allStudentCheckStatusMap} setAllStudentCheckitems={this.setAllStudentItems}/>
                                     <ChooseStudentsRow classInfo={dummyData2} allStudentsCheckitems={this.state.allStudentCheckStatusMap} setAllStudentCheckitems={this.setAllStudentItems}/> */}
-                                    { this.state.googleClassroomDataInfo.map(
-                                        (data: IGoogleClassroomInfo) => {
-                                            return <ChooseStudentsRow key={data.className} classInfo={data} allStudentsCheckitems={this.state.allStudentCheckStatusMap} setAllStudentCheckitems={this.setAllStudentItems}/>
-                                        }
+                                                    {this.state.googleClassroomDataInfo.map(
+                                                        (data: IGoogleClassroomInfo) => {
+                                                            return <ChooseStudentsRow key={data.className} classInfo={data} allStudentsCheckitems={this.state.allStudentCheckStatusMap} setAllStudentCheckitems={this.setAllStudentItems} />
+                                                        }
+                                                    )}
+                                                </Grid>
+                                            }
+                                        </ChooseStudentContainer>
 
-                                    )} 
-                                </Grid>
-                            }
-                        </ChooseStudentContainer>
-                        
-                    </Form.Field>   
+                                    </Form.Field>
 
-                    {/* Create Session */}
-                    <Form.Field>
-                        <Button onClick={this.createSession} style={{position:"absolute", left: `0px`}}>
-                            Create Session
+                                    {/* Create Session */}
+                                    <Form.Field>
+                                        <Button onClick={this.createSession} style={{ position: "absolute", left: `0px` }}>
+                                            Create Session
                         </Button>
-                    </Form.Field>
+                                    </Form.Field>
 
-                </StyledForm>
-                </Grid.Column>
-                </BackgroundContainer>
-            </Layout>    
+                                </StyledForm>
+                            </Grid.Column>
+                        </BackgroundContainer>
+                    </Layout>
+                }
                 }
             </UserContext.Consumer>
         )
     }
 
-    private formOnChange = (e:any) =>{
+    private formOnChange = (e: any) => {
         console.log(this.state)
-        this.setState({[e.target.name]: e.target.value})
+        this.setState({ [e.target.name]: e.target.value })
     }
 
-    private formatCurrentTimeString = () =>{
+    private formatCurrentTimeString = () => {
         const date = new Date()
         // "23 July, 2017 - Started at 4:50pm"
-        return `${date.getMonth() + 1}/${date.getDate()}, ${date.getFullYear()} - Started at ${date.getHours() - 12}:${date.getMinutes()}${date.getHours() >= 12 ? "pm" : "am"}` 
+        return `${date.getMonth() + 1}/${date.getDate()}, ${date.getFullYear()} - Started at ${date.getHours() > 12 ? date.getHours() - 12 : date.getHours()}:${date.getMinutes()}${date.getHours() >= 12 ? "pm" : "am"}`
     }
 
     private createSession = () => {
-         
+
         const sessionName = this.state.title
         const studentMaps: Map<string, boolean> = this.state.allStudentCheckStatusMap
-        const studentNames = studentMaps.filter((v,k) => v === true).keySeq().toArray()
+        const studentNames = studentMaps.filter((v, k) => v === true).keySeq().toArray()
         const studentIds = studentNames.map(n => {
             // console.log(this.state.allStudentNameIDMap[n])
             return this.state.allStudentNameIDMap[n]
         })
         const studentIDNamePair = {}
-        studentIds.forEach( (id,i) =>{
+        studentIds.forEach((id, i) => {
             // Email only
             const name = studentNames[i].split("@")[0]
             studentIDNamePair[id] = name
-        } )
-    
+        })
+
         const studentNumber = studentIds.length
         const ongoing = true;
-        const startTime =  this.formatCurrentTimeString()
+        const startTime = this.formatCurrentTimeString()
         const sessionId = Math.random().toString(36)
-        
+
         const newSessionEntry = {
             ongoing, startTime, studentNumber, studentNames, studentIds, sessionName, sessionId, studentIDNamePair
         }
@@ -280,7 +292,9 @@ export class CreateSession extends React.Component<any, any>{
         this.props.history.push("/livedashboard")
     }
 
-    private setAllStudentItems = (newAllStudentItems: Map<string, boolean> ) => {
-        this.setState({allStudentCheckStatusMap: newAllStudentItems})
+    private setAllStudentItems = (newAllStudentItems: Map<string, boolean>) => {
+        this.setState({ allStudentCheckStatusMap: newAllStudentItems })
     }
 }
+
+export default withCookies(CreateSession)
