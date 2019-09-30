@@ -8,6 +8,7 @@ import {ISession, UserContext} from "../Context"
 import {Layout} from "../Layout"
 // import {Grid, GridColumn, GridRow, Container} from "semantic-ui-react"
 import {Grid, GridColumn, GridRow} from "semantic-ui-react"
+import { withCookies, Cookies } from "react-cookie";
 
 
 /* CSS For the components */
@@ -276,7 +277,7 @@ const OngoingLabel2 = styled.div`
 `
 
 /* Main Component */
-export class Session extends React.Component <any, any> {
+class Session extends React.Component <any, any> {
 
     public render(){
 
@@ -289,11 +290,44 @@ export class Session extends React.Component <any, any> {
                         //    } else {
                         //         return this.createThisPage(value) 
                         //    }
+                        const { cookies } = this.props;
+                        if (cookies !== undefined){
+                            if (cookies.get("userName") === undefined || cookies.get("userName")=== ""){
+                                setTimeout(()=>{
+                                    this.props.history.push("/login")
+                                }, 3000)
+                                return <div> Redirecting to login </div>
+                                
+                            }
+                        }
                         return this.createThisPage(value) 
                     } 
                 }
             </UserContext.Consumer>
         )
+    }
+
+    public componentDidMount (){
+        const { cookies } = this.props;
+        // window.addEventListener("load", ()=>{
+        //     if (cookies.get("userName") !== undefined && cookies.get("userAccessToken") !== undefined && cookies.get("userIdToken") !== undefined){
+        //         this.props.setUser( cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken") )    
+        //     }  
+        // })
+
+        // window.addEventListener("onload", ()=>{
+        //     if (cookies.get("userName") !== undefined && cookies.get("userAccessToken") !== undefined && cookies.get("userIdToken") !== undefined){
+        //         this.props.setUser( cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken") )    
+        //     }  
+        // })
+        if (cookies.get("userName") !== undefined && cookies.get("userAccessToken") !== undefined && cookies.get("userIdToken") !== undefined){
+            this.props.setUser( cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken") )    
+        }  
+    }
+
+    private onReload() {
+        this.props.setUser()
+        // I will set the user information. 
     }
 
     private navigateToCreation = ()=> {
@@ -318,6 +352,9 @@ export class Session extends React.Component <any, any> {
 
             default:
                 return (
+                    // like the user name will be gone hmm. One way is to extract the data from Cookie 
+                    // if the context is the same 
+                    // or I can just set the user.
                     <Layout history={this.props.history} userName={context.userName} logoutAction={this.props.logoutAction}>
                         <Grid style={{position:"absolute", top:"43px", width:"100%"}}>
                             <GridRow>
@@ -402,3 +439,4 @@ export class Session extends React.Component <any, any> {
     }
 }
 
+export default withCookies(Session)

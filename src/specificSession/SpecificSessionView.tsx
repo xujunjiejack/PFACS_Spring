@@ -12,7 +12,7 @@ import {Layout} from "../Layout"
 import LiveDashboard from "./LiveDashboard";  
 // import * as openSocket from 'socket.io-client'; 
 import {idNamesPair} from "./../studentsIDsName";
-
+import { withCookies } from "react-cookie";
 // const socket = openSocket("http://localhost:8080/studentstatus")
 
 /* CSS For Component */
@@ -189,8 +189,19 @@ class SessionView extends React.Component <any, any> {
 
         return (
             <UserContext.Consumer>
-                {value => 
-                       <Layout history={this.props.history} userName={value.userName} logoutAction={this.props.logoutAction}>
+                {value => {
+                  const { cookies } = this.props;
+                  if (cookies !== undefined){
+                      if (cookies.get("userName") === undefined || cookies.get("userName")=== ""){
+                          setTimeout(()=>{
+                              this.props.history.push("/login")
+                          }, 3000)
+                          return <div> Redirecting to login </div>
+                          
+                      }
+                  }
+                  
+                  return <Layout history={this.props.history} userName={value.userName} logoutAction={this.props.logoutAction}>
 
                        <p style={{height: `5vh`}}>    
                         {/*  */}
@@ -230,7 +241,8 @@ class SessionView extends React.Component <any, any> {
                        : 
                           <DetailedReport sessionData={this.getSessionData(value.userSessions, this.state.currentSessionId)}> Detailed report </DetailedReport>}  
                        </Layout>
-                }
+                     }
+                  }
             </UserContext.Consumer>
         )
     }
@@ -279,4 +291,4 @@ class SessionView extends React.Component <any, any> {
 
 }
 
-export default SessionView
+export default withCookies(SessionView)

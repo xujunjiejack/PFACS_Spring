@@ -33,6 +33,14 @@ const GoogleLoginButton = styled(GoogleLogin)`
     top: 495px;
     justify-content: center;
 `
+const FirebaseLoginButton = styled(Button)`
+    position: absolute;
+    width: 508px;
+    height: 97px;
+    left: 468px;
+    top: 495px;
+    justify-content: center;
+`
 
 /* Interface */
 interface ILoginProps {
@@ -79,7 +87,12 @@ class LoginPage extends React.Component <any, ILoginProps> {
           // firebase.database().ref("/users/DU7k6DVcJmS0ASOBvMv6nqCByuh2").once('value').then((snapshot) =>{
           //   console.log(snapshot.val());
           // }).catch( (error) =>{ console.log(error) } );
-          this.props.setUser("Dummy", token, credential.id_token) 
+          if (user !== null)
+            this.props.setUser(user.displayName, token, credential.idToken) 
+          else {
+            this.props.setUser("Dummy", token, credential.idToken) 
+          }
+        
           this.props.history.push("/")
         // ...
         }
@@ -106,12 +119,13 @@ class LoginPage extends React.Component <any, ILoginProps> {
                   <TitleText>
                       PFACS Teacher Dashboard
                   </TitleText>
-                  <Button onClick={ this.firebaseLogin }>
+                  
+                  <FirebaseLoginButton onClick={ this.firebaseLogin }>
                     Firebase login with Google provider
-                  </Button>
-                  <GoogleLoginButton clientId="908046556011-80kbve0btf4nnn1o4vd010a0ag59tfj5.apps.googleusercontent.com" 
+                  </FirebaseLoginButton>
+                  {/* <GoogleLoginButton clientId="908046556011-80kbve0btf4nnn1o4vd010a0ag59tfj5.apps.googleusercontent.com" 
                           scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.rosters.readonly"
-                  onSuccess={this.onSuccess} onFailure={this.onFailure}/>
+                  onSuccess={this.onSuccess} onFailure={this.onFailure}/> */}
                   
                 </div>
               }

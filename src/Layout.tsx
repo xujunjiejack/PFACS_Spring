@@ -44,11 +44,14 @@ const SessionButton = styled.div`
 `
 
 const UserNameButton = styled.div`
-    position: absolute;
+    display: flex;
+    align-items: center;
     // left: 86.25%;
-    right: 7.5%;
-    top: 23.26%;
-    bottom: 25.58%;
+    left: 0px;  
+    width: 100px;
+    // right: 7.5%;
+    // top: 23.26%;
+    // bottom: 25.58%;
 
     font-family: Roboto;
     font-style: normal;
@@ -62,10 +65,11 @@ const UserNameButton = styled.div`
 `
 
 const StyledButton = styled(Button)`
-    position: absolute;
-    right: 1.5%;
-    top: 23.26%;
+    // position: absolute;
+    // right: 1.5%;
+    // top: 23.26%;
     color: #FFFFFF;
+    width: 100px;
     z-index: 1;
     font-family: Roboto;
     font-style: normal;
@@ -96,11 +100,14 @@ export class Layout extends React.Component<ILayoutProps, any> {
 
     public render(){
         return (
+            // Why after reload, the name will get deleted? I think it's the props
             <TopBarContainer>
                 <TopBarBackground/>
                 <SessionButton onClick={this.navigateToSessions}> Sessions </SessionButton>
-                <UserNameButton> {this.props.userName} </UserNameButton>                
-                <StyledButton onClick={this.logoutAction}> Log out </StyledButton>
+                <div style={{display: "flex", flexDirection:"row", left: "80%", position: "relative"}}>
+                    <UserNameButton> {this.props.userName} </UserNameButton>                
+                    <StyledButton onClick={this.logoutAction}> Log out </StyledButton>
+                </div>
                 {/* The log out button will clear all user logged information */}
                 {this.props.children}
 
