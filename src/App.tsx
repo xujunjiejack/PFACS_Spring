@@ -24,7 +24,7 @@ import {IGoogleClassroomInfo} from "./data_structure/GoogleClassroomInfo"
 
 import * as firebase from "firebase" 
 
-import {CookiesProvider, useCookies, withCookies} from "react-cookie"
+import {withCookies} from "react-cookie"
 
 library.add(faTachometerAlt)
 library.add(faFileAlt)
