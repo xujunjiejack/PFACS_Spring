@@ -70,7 +70,7 @@ const BackgroundContainer = styled(Grid)`
     height: 100vh;
     // left: 121px;
     top: 43px;
-    background: rgb(241, 241, 241);
+    background: transparent;
 `
 
 /* Main Component */

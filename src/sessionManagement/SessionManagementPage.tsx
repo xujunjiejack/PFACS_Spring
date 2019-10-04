@@ -32,8 +32,9 @@ const ReportIcon = styled(FontAwesomeIcon)`
 
 const DashboardButton = styled.button`
     border-radius: 6px;
-    background-color: white;
-    border-width: 1px;
+    // background-color: white;
+    background: #F4F4F4;
+    border-width: 0px;
     border-color: rgb(0,0,0,0.1);
     display: flex;
     align-items: center;
@@ -64,9 +65,10 @@ const DashboardButton = styled.button`
 
 
 const ReportButton = styled.button`
+    background: #F4F4F4;
     border-radius: 6px;
-    background-color: white;
-    border-width: 1px;
+    // background-color: white;
+    border-width: 0px;
     border-color: rgb(0,0,0,0.1);
     display: flex;
     align-items: center;
@@ -101,7 +103,7 @@ const SessionLabel = styled.div`
     font-weight: bold;
     font-size: 18px;
     line-height: normal;
-
+    text-align: left;
     color: #000000;
 `
 

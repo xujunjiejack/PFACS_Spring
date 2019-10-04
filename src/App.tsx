@@ -196,7 +196,7 @@ class App extends React.Component <any, IAppState> {
 
   public render() {
     return (
-      <div className="App" style={{background:"#f1f1f1", height:"100vh", width:"100vw"}}>
+      <div className="App" style={{background:"#ffffff", height:"100vh", width:"100vw"}}>
         <Router history={history}>
           <div>
           <Route exact={true} path="/" render={
