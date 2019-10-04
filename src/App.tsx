@@ -92,6 +92,8 @@ const dummyData2: ISessionData = {
 const dummyData=[dummyData1, dummyData2]
 
 
+// A contigency session data plan
+
 /*** 
  * Dummy data two for Google classroom
  */
@@ -118,36 +120,48 @@ class App extends React.Component <any, IAppState> {
   
   public constructor(props: any){
     super(props)
-    this.state = {...initialUser, userSessions: dummyData, currentSessionId: "", currentView: "dashboard", classrooms: dummyClassroomData, allUserData:[]} 
+    const cookies = this.props.cookies;
+    const userSessionCookie = cookies.get("userSessions")
+    const userSessions = userSessionCookie !== undefined? userSessionCookie : dummyData 
+    this.state = {...initialUser, userSessions, currentSessionId: "", currentView: "dashboard", classrooms: dummyClassroomData, allUserData:[]} 
   }
 
   public addNewSession = ( newSession: ISessionData ) => {
-      this.setState( 
-        {
-          userSessions: [
-          ...this.state.userSessions, newSession]
-        } 
-      )
+    const userSessions = [
+      ...this.state.userSessions, newSession]  
+    this.setState( { userSessions } )
+    const { cookies } = this.props;
+    cookies.set("userSessions", userSessions, {path:"/"})
   }
 
-  public setUser = (userName: string, userAccessToken: string, userIdToken: string ) => {
+  public setUserSession = () =>{
+    const { cookies } = this.props;
+    
+  }
+
+  public setUser = (userName: string, userAccessToken: string, userIdToken: string, userSessions? ) => {
     // TODO: grab data in for user sessions from the database.
     const { cookies } = this.props;
  
     cookies.set('userName', userName, { path: '/' });
     cookies.set('userAccessToken', userAccessToken, { path: '/' });
     cookies.set('userIdToken', userIdToken, { path: '/' });
+    // cookies.set("userSessions", userSessions, {path:"/"})
+    if (userSessions === undefined){
+
+      userSessions = this.state.userSessions
+    } else{
+      cookies.set("userSessions", userSessions, {path:"/"})      
+    }
+    
     if (this.state.userName === "" ){
-      this.setState({userName, userAccessToken, userIdToken, userSessions: dummyData})
+      this.setState({userName, userAccessToken, userIdToken, userSessions: userSessions})
     }
   }
 
   private setAllUserData=(data) =>{
     const studentID = data.map(d => d.playerUniqueID)
     const studentName = data.map(d => d.userEmail)
-    console.log(studentID)
-    console.log(studentName)
-    
     const studentNameIDMap = {}
     studentName.forEach((e,i) => {
       studentNameIDMap[e] = studentID[i]
@@ -164,8 +178,10 @@ class App extends React.Component <any, IAppState> {
     cookies.remove("userName")
     cookies.remove("userIdToken")
     cookies.remove("userAccessToken")
+    cookies.remove("userSessions")
 
     this.setState({userName: "", userAccessToken:"", userIdToken:"", userSessions:[]})
+
     firebase.auth().signOut().then( () =>{console.log("firebase logout successful")} ).catch((e) =>{console.log(e)})
   }
   

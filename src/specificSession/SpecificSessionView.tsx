@@ -252,9 +252,7 @@ class SessionView extends React.Component <any, any> {
         // here is the set up of the session 
         // I remembered that I already made it work with socket 
         if (session){
-          console.log(session.studentIDNamePair)
           const wrappedData = this.wrapDataThroughIdNamePair(session.studentIds, session.studentIDNamePair)
-          console.log(wrappedData)
           return wrappedData
         }
         return []
