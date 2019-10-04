@@ -45,6 +45,21 @@ const DashboardButton = styled.button`
     margin-right: 16px;
     right: 110px;
     position: absolute;
+
+    :hover{
+        background-color: #5A9AF8;
+        color: white;
+    }
+
+    &.active {
+        
+        :hover{
+          background-color: #357AE0;
+          color: white;
+        }
+        background-color: #5A9AF8;
+        color: white;
+    }
 `
 
 
@@ -59,10 +74,23 @@ const ReportButton = styled.button`
     height: 35px;
     width: 120px;
     font-size:12px;
-    justify-content: center;
+    justify-content: center;    
     right: 0px;
     position: absolute;
     
+    :hover{
+        background-color: #5A9AF8;
+        color: white;
+    }
+
+    &.active {
+        :hover{
+            background-color: #357AE0;
+            color: white;
+        }
+        background-color: #5A9AF8;
+        color: white;
+    }
 `
 
 const SessionLabel = styled.div`
