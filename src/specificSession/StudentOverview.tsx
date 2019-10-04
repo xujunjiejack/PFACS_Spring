@@ -30,9 +30,7 @@ export class StudentOverview extends React.Component<IStudentOverviewProps, any>
     public componentDidMount(){
         // this.myRef.current !== null ? console.log("ref" + this.myRef.current) : console.log("myref node is null")
         const containerWidth = this.myRef.current.getBoundingClientRect().width
-        console.log(this.myRef.current.getBoundingClientRect().width)
         const elementARow = Math.floor(containerWidth / 90)
-        console.log(elementARow)
         if (this.state.studentData !== undefined){
             const emptyBlockNum = this.state.studentData.length % elementARow
             if (emptyBlockNum !== 0) {

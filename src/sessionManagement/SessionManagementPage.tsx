@@ -321,8 +321,8 @@ class Session extends React.Component <any, any> {
         //     }  
         // })
         if (cookies.get("userName") !== undefined && cookies.get("userAccessToken") !== undefined && cookies.get("userIdToken") !== undefined){
-            this.props.setUser( cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken") )    
-        }  
+            this.props.setUser( cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken"), cookies.get("userSessions") )    
+        }
     }
 
     private onReload() {

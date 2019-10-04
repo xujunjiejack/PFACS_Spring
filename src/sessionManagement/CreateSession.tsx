@@ -108,7 +108,6 @@ class CreateSession extends React.Component<any, any>{
         firebase.firestore().collection('users').get().then((snapshot) => {
             const docArray: Array<any> = []
             snapshot.forEach((doc) => {
-                console.log(doc.id, '=>', doc.data());
                 docArray.push(doc.data())
 
             });
@@ -118,9 +117,6 @@ class CreateSession extends React.Component<any, any>{
             // this.props.setAllUserData( docArray )
             const studentID = docArray.map(d => d.playerUniqueID)
             const studentName = docArray.map(d => d.userEmail)
-            console.log(studentID)
-            console.log(studentName)
-
             const studentNameIDMap = {}
             studentName.forEach((e, i) => {
                 studentNameIDMap[e] = studentID[i]
@@ -252,7 +248,6 @@ class CreateSession extends React.Component<any, any>{
     }
 
     private formOnChange = (e: any) => {
-        console.log(this.state)
         this.setState({ [e.target.name]: e.target.value })
     }
 

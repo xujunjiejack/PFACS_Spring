@@ -6,8 +6,8 @@ export enum StudentStatus {
     Stuck
 }
 
-const IN_PROGRESS_TO_STUCK_SECONDS = 10
-const STUCK_TO_DISCONNECTED_SECONDS = 30
+const IN_PROGRESS_TO_STUCK_SECONDS = 30
+const STUCK_TO_DISCONNECTED_SECONDS = 60
 
 
 export class Student {
@@ -47,13 +47,8 @@ export class Student {
     public startTimer (setStatusFunction : any ) : void {
       if (this.status === StudentStatus.InProgress){
         this.statusTimeout = setTimeout(()=>{
-          console.log("stuck");
-          console.log(this);
-          setStatusFunction(this.id, StudentStatus.Stuck);
-          
+          setStatusFunction(this.id, StudentStatus.Stuck);  
           this.statusTimeout = setTimeout( () =>{
-            console.log("probably idle");
-            console.log(this);
             setStatusFunction(this.id, StudentStatus.Idle);
           }, STUCK_TO_DISCONNECTED_SECONDS * 1000);
         }, 1000 * IN_PROGRESS_TO_STUCK_SECONDS);
