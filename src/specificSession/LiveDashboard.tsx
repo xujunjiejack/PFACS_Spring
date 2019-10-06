@@ -58,7 +58,6 @@ const Rect = styled.div <{status: StudentStatus}> `
     background-color: ${props=>generateColorBasedOnStatus(props.status)};
     margin-right: 6px;
     margin-left: 30px;
-    // display: block;
     display: inline-block;   
 `
 
@@ -176,7 +175,7 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
 
         let tableData = {
           // {'header': "Collection and Storage"},
-          // "C&S Views": {often: 1, rarely: 0, notUse: 0},
+          // "Collection Views": {often: 1, rarely: 0, notUse: 0},
           // "Variable modifications": {often: 2, rarely: 0, notUse: 0},
           // "Storage Increases": {often: 3, rarely: 0, notUse: 0},
 
@@ -190,7 +189,7 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
           // "Successful insights": {often: 8, rarely: 0, notUse: 0},
           // "Good predictions": {often: 9, rarely: 0, notUse: 0},
 
-          "C&S Views": {often: 0, rarely: 0, notUse: 0},
+          "Collection Views": {often: 0, rarely: 0, notUse: 0},
           "Variable modifications": {often: 0, rarely: 0, notUse: 0},
           "Storage Increases": {often: 0, rarely: 0, notUse: 0},
 
@@ -208,9 +207,9 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
         for (let s in sArray) {
           console.log(sArray[s]);
 
-          if (sArray[s]["collectViews"] > 3) { tableData["C&S Views"]["often"]++;}
-          else if (sArray[s]["collectViews"] > 1) { tableData["C&S Views"]["rarely"]++;}
-          else if (sArray[s]["collectViews"] === 0) { tableData["C&S Views"]["notUse"]++;}
+          if (sArray[s]["collectViews"] > 3) { tableData["Collection Views"]["often"]++;}
+          else if (sArray[s]["collectViews"] > 1) { tableData["Collection Views"]["rarely"]++;}
+          else if (sArray[s]["collectViews"] === 0) { tableData["Collection Views"]["notUse"]++;}
 
 
           if (sArray[s]["storageBuys"] > 2) {
@@ -247,7 +246,6 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
           else if (sArray[s]["successfulInsightCount"] === 0) { tableData["Successful insights"]["notUse"]++;}
 
         }
-        // console.log(tableData);
         return tableData;
       }
 
@@ -272,11 +270,6 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
         });
       }
       
-
-      // public componentWillMount(){
-    
-      // }
-      
       public convertIdsToIdNamePair (ids: string[]){
         const idNamePairRet = {}
         ids.forEach((id) =>{
@@ -295,8 +288,6 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
         this.setState({loading: true, studentData: this.props.studentData})
         
         // set dummy data for right now, if the second time change, it shouldn't be dummy data, just minor performance issue 
-        // this.setState({studentData}) 
-        
         console.log("live dashboard");
         const studentIds = this.props.studentData.map(s => s.id)
         socket.emit('listen to live data', { "students": studentIds} );
@@ -308,9 +299,6 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
 
       public componentWillUnmount(){
         // close connection
-        // axios.post("/mongodata/endlivedata").then(res => {
-        //   console.log(res.data)
-        // });
         socket.emit('stop listening student status')
         this.props.studentData.forEach(s => {
           s.clearTimeout()   
@@ -318,7 +306,6 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
       }
 
       public onMouseOverASpecificStudentEvent = (studentData: Student) =>{
-        // console.log(studentData.name)
           if (this.state.lockSpecificDetail){
             return
           }
@@ -376,10 +363,10 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
                               Engaged
                           
                               <Rect status={StudentStatus.Stuck}/>
-                              Idle for 30 seconds
+                              Idle for 2 minutes
                               
                               <Rect status={StudentStatus.Absent}/>
-                              Idle for 1 minute
+                              Idle for 5 minutes
                           </div>
 
                         </Card>
