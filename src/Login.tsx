@@ -7,6 +7,7 @@ import {UserContext} from "./Context"
 import {IGoogleClassroomInfo} from "./data_structure/GoogleClassroomInfo";
 import * as firebase from "firebase"
 import {Button} from "semantic-ui-react"
+import { withCookies } from 'react-cookie';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAbY4nV71yiRKOo83KAv0c2xm-IV5fmH6k",
@@ -115,7 +116,18 @@ class LoginPage extends React.Component <any, ILoginProps> {
 
             <UserContext.Consumer>
               {value => 
-                <div>
+                {
+                  const { cookies } = this.props;
+                  if (cookies !== undefined){
+                      if (cookies.get("userName") !== undefined && cookies.get("userName") !== ""){
+                          setTimeout(()=>{
+                              this.props.history.push("/sessions")
+                          }, 3000)
+                          return <div> User logged in. Redirecting </div>
+                      }
+                  }
+
+                  return <div>
                   <TitleText>
                       PFACS Teacher Dashboard
                   </TitleText>
@@ -128,6 +140,7 @@ class LoginPage extends React.Component <any, ILoginProps> {
                   onSuccess={this.onSuccess} onFailure={this.onFailure}/> */}
                   
                 </div>
+                }
               }
             </UserContext.Consumer>
         )
@@ -208,5 +221,5 @@ class LoginPage extends React.Component <any, ILoginProps> {
     }
 }
 
-export default LoginPage
+export default withCookies(LoginPage)
 
