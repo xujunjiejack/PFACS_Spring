@@ -101,6 +101,7 @@ const SessionLabel = styled.div`
     font-weight: bold;
     font-size: 18px;
     line-height: normal;
+    text-align: left;
 
     color: #000000;
 `
