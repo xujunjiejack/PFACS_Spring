@@ -20,7 +20,7 @@ const HeaderContainer = styled.div`
   position: relative;
   // width: 1143px;
   width: 100%;
-  height: 110px;
+  height: 80px;
   top: 0px;
   display: flex;
   align-items: center;
@@ -30,32 +30,34 @@ const HeaderContainer = styled.div`
 `
 
 const Title = styled.label`
-  position: absolute;
-  left: 4.29%;
-  top: 25.49%;
-  bottom: 50%;
+  // position: relative;
+  // left: 8px;
+  // top: 25.49%;
+  // bottom: 50%;
   font-family: Roboto;
   font-style: normal;
   font-weight: bold;
-  font-size: 24px;
+  font-size: 28px;
   line-height: normal;
 
   color: #000000;
 `
 
 const StartTime = styled.div`
-  position: absolute;
-  left: 4.37%;
-  top: 58.71%;
-  bottom: 13.73%;
+  // position: absolute;
+  // left: 8px;
+  // top: 58.71%;
+  // bottom: 13.73%;
 
   font-family: Roboto;
   font-style: normal;
   font-weight: light;
   font-size: 20px;
   line-height: normal;
+  text-align: left;
+  padding-top: 8px;
 
-  color: #9C9C9C;
+  color: rgba(156, 156, 156, 0.75);
 `
 
 const StyledButtonGroup = styled(ButtonGroup)`
@@ -212,13 +214,15 @@ class SessionView extends React.Component <any, any> {
                       <Grid.Column width="1"/>
                       <Grid.Column width="14">
                         <HeaderContainer>
-                          <Title>
-                            { this.getSessionTitle(value.userSessions, this.state.currentSessionId) }
-                          </Title>
+                          <div style={{position:"absolute", left: "8px",top: "15%", display: "flex", flexDirection:"column", bottom:"13%"}}>
+                            <Title>
+                              { this.getSessionTitle(value.userSessions, this.state.currentSessionId) }
+                            </Title>
         
-                          <StartTime>
-                            { this.getSessionTime(value.userSessions, this.state.currentSessionId) }
-                          </StartTime>
+                            <StartTime>
+                              { this.getSessionTime(value.userSessions, this.state.currentSessionId) }
+                            </StartTime>
+                          </div>
 
                           <StyledButtonGroup>                              
                             <ReportButton style={{fontSize: "20px", width:"200px"}} onClick={this.dashboardClick} className={ this.state.currentView === "dashboard" ? "active": "" }>
@@ -229,9 +233,16 @@ class SessionView extends React.Component <any, any> {
                               Report
                             </EndSessionButton>
                           </StyledButtonGroup>
-        
+
                         </HeaderContainer>
                         </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row style={{padding:"0 8px 0 8px"}}>
+                          <Grid.Column width="1"/>
+                          <Grid.Column width="14">
+                          <div style={{height:"1px", backgroundColor:"rgba(0, 0, 0, 0.08)", width:"100%"}}/>
+                          </Grid.Column>
+                        
                         </Grid.Row>
                       </Grid>
 

@@ -41,7 +41,10 @@ const DashboardButton = styled.button`
     cursor: pointer;
     height: 35px;
     width: 120px;
+
+    font-family: Roboto;
     font-size:12px;
+
     justify-content: center;
     margin-right: 16px;
     right: 110px;
@@ -75,7 +78,10 @@ const ReportButton = styled.button`
     cursor: pointer;
     height: 35px;
     width: 120px;
+
     font-size:12px;
+    font-family: Roboto;
+
     justify-content: center;    
     right: 0px;
     position: absolute;
@@ -276,11 +282,11 @@ const SessionStartTime = styled.div`
     color: #8F8F8F;
 `
 
-const StudentNumber2 = styled.div`
+const StudentNumber2 = styled.div<{onGoing: boolean}>`
     position: relative;
     width: 96.98px;
     height: 22px;
-    left: 200px;
+    left: ${ props=>props.onGoing?  "110px" : 110+110+"px" };
     top: 1px;
 
     font-family: Roboto;
@@ -293,13 +299,14 @@ const StudentNumber2 = styled.div`
 `
 
 const OngoingLabel2 = styled.div`
-    position: absolute;
+    // position: absolute;
     height: 25px;
     left: 300px;
     top: 3px;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: Roboto;
     vertical-align: middle;
     background: #E1E1E1;
     border-radius: 8px;
@@ -395,7 +402,7 @@ class Session extends React.Component <any, any> {
                                             <Grid.Column width="8" style={{paddingLeft: "0px"}}>
                                                 <SessionLabel> Sessions </SessionLabel>
                                             </Grid.Column>
-                                            <Grid.Column width="8">
+                                            <Grid.Column width="8" style={{display:"flex", alignItems:"center"}}>
                                                 <CreateNewButtonSmall onClick={this.navigateToCreation}> Create a new session </CreateNewButtonSmall>  
                                             </Grid.Column>
                                         </Grid.Row>
@@ -426,7 +433,7 @@ class Session extends React.Component <any, any> {
                             <div style={{display: "flex", alignItems:"center"}}>
                                 <SessionLabel2>{dummy.sessionName} </SessionLabel2>
                                 { dummy.ongoing ?  <OngoingLabel2> Ongoing </OngoingLabel2> : <div/>}
-                                <StudentNumber2> {dummy.studentNumber} Students </StudentNumber2> 
+                                <StudentNumber2 onGoing={dummy.ongoing}> {dummy.studentNumber} Students </StudentNumber2> 
                                 
                                 <DashboardButton onClick={()=>this.dashboardClick(dummy.sessionId)}>
                                     <span>

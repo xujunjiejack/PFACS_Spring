@@ -130,12 +130,10 @@ class StudentGraphUsage extends React.Component <any, any>{
                 </Table.Row>
             )
         } )
-
         return rows;
     }
 
     private menuOnChange= (event, data)=>{
-        // console.log(data)
         this.setState({tableNumber: data.value})
     }
 
@@ -150,15 +148,10 @@ class StudentGraphUsage extends React.Component <any, any>{
 
         return (
             <Card style={{width:"100%", boxShadow:"none"}}>
-                <Card.Content style={{overflowY:"scroll"}}>
-                    <CardHeader textAlign="left" style={{display:"flex", fontFamily:"Roboto", paddingTop:`18px`, marginBottom: "20px", marginLeft: "10px"}} >
-                        <p style={{paddingTop:"5px", margin:"0px"}}>Class Overview</p>
-                        {/* <Dropdown selection placeholder="Collection and storage"  onChange={this.menuOnChange} options={optionsForDropDown}
-                            defaultValue={"0"}
-                            style={{
-                            fontSize:"16px", position:"relative", left:"30%"}}/> */}
-                            
-                        {/* </Dropdown> */}
+                <Card.Content style={{overflowY:"scroll", padding:"0"}}>
+                    <CardHeader textAlign="left" style={{display:"flex", fontFamily:"Roboto", paddingTop:`16px`, marginBottom: "20px", marginLeft: "10px"}} >
+                        <p style={{margin:"0px"}}>Class Overview</p>
+
                     </CardHeader>
 
                     {/* <Table basic='very' style={{marginLeft: "10px"}}>
