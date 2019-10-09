@@ -120,10 +120,10 @@ class StudentStatusRect extends React.Component<IStudentStatusRectProps, IStuden
                 return "Absent"
 
             case StudentStatus.Stuck:
-                return "Idle for 30 seconds"
+                return "Idle for 2 minutes"
 
             case StudentStatus.Idle:
-                return "Idle for 2 minute"
+                return "Idle for 5 minutes"
 
             default:
                 return ""
