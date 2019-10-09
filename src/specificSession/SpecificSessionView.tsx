@@ -39,7 +39,7 @@ const Title = styled.label`
   font-weight: bold;
   font-size: 28px;
   line-height: normal;
-
+  text-align:left;
   color: #000000;
 `
 
@@ -237,9 +237,9 @@ class SessionView extends React.Component <any, any> {
                         </HeaderContainer>
                         </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row style={{padding:"0 8px 0 8px"}}>
+                        <Grid.Row style={{padding:"8px 8px 0 8px"}}>
                           <Grid.Column width="1"/>
-                          <Grid.Column width="14">
+                          <Grid.Column width="14" >
                           <div style={{height:"1px", backgroundColor:"rgba(0, 0, 0, 0.08)", width:"100%"}}/>
                           </Grid.Column>
                         
