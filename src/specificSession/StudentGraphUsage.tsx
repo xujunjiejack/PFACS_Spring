@@ -2,6 +2,7 @@ import * as React from "react";
 // import { Card, CardHeader, Grid, Table, TableBody, TableCell, TableHeader, Tab, Dropdown} from "semantic-ui-react";
 import { Card, CardHeader, Grid, Table} from "semantic-ui-react";
 import styled from "styled-components";
+import * as _ from "lodash"
 // import { create } from 'istanbul-reports';
 
 /* CSS For Component */
@@ -24,7 +25,7 @@ const CustomizedTableCell = styled(Table.Cell)`
 /* Main Component */
 class StudentGraphUsage extends React.Component <any, any>{
 
-    private headerMatch = {collectionAndStorage: ["C&S Views", "Variable modifications", "Storage Increases"],
+    private headerMatch = {collectionAndStorage: ["Collection Views", "Variable modifications", "Storage Increases"],
                         dataVisAndGraph: ["bar graph", "line graph", "heatmap"],
                         insghtAndInferences: ["Made insights", "Successful insights", "Good predictions"]}
 
@@ -42,7 +43,7 @@ class StudentGraphUsage extends React.Component <any, any>{
 
         let tableData = {
             // {'header': "Collection and Storage"},
-            "C&S Views": {often: 0, rarely: 0, notUse: 0},
+            "Collection Views": {often: 0, rarely: 0, notUse: 0},
             "Variable modifications": {often: 0, rarely: 0, notUse: 0},
             "Storage Increases": {often: 0, rarely: 0, notUse: 0},
   
@@ -243,7 +244,7 @@ function IndividualTableRow(props) {
                 fontSize: "14px",
             }}
         >
-            <Table.Cell width={7} style={{...cellStyle}} textAlign="left">{rowData[0]}</Table.Cell>
+            <Table.Cell width={7} style={{...cellStyle}} textAlign="left">{_.startCase(rowData[0])}</Table.Cell>
             <Table.Cell width={3} style={cellStyle}>{rowData[1]}</Table.Cell>
             <Table.Cell width={3} style={cellStyle}>{rowData[2]}</Table.Cell>
             <Table.Cell width={3} style={cellStyle}>{rowData[3]}</Table.Cell>
@@ -266,7 +267,7 @@ function IndividualTable(props) {
                             backgroundColor: "transparent",
                         }}
                     >
-                        <p style={tableName}>{data.tableName}</p>
+                        <p style={tableName}>{_.startCase(data.tableName)}</p>
                     </Grid.Column>
                     <Grid.Column
                         width="11"
@@ -337,7 +338,7 @@ function OverviewNineColumns(props) {
         return <div/>
     }
 
-    const collectionAndStorageKeys=["C&S Views", "Variable modifications", "Storage Increases"]
+    const collectionAndStorageKeys=["Collection Views", "Variable modifications", "Storage Increases"]
     const dataVisGraphKeys=["bar graph","line graph","heatmap"]
     const insightKeys = ["Made insights","Successful insights", "Good predictions"]
     const data = [

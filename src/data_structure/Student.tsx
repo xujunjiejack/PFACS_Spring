@@ -6,8 +6,8 @@ export enum StudentStatus {
     Stuck
 }
 
-const IN_PROGRESS_TO_STUCK_SECONDS = 30
-const STUCK_TO_DISCONNECTED_SECONDS = 60
+const IN_PROGRESS_TO_STUCK_SECONDS = 120
+const STUCK_TO_DISCONNECTED_SECONDS = 300
 
 
 export class Student {
