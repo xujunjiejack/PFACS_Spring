@@ -23,8 +23,8 @@ const socket = openSocket("http://localhost:3001/studentstatus")
 
 /* CSS for components */
 const GridHeaderStyle = {
-  paddingLeft: "50px",
-  paddingTop: "32px",
+  paddingLeft: "8px",
+  paddingTop: "16px",
   fontFamily: "Roboto",
   fontStyle: "normal",
   fontWeight: "normal",
@@ -104,7 +104,6 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
         this.state = {studentChosen: undefined, response: undefined, accessToken: undefined, currentView: "dashboard", sessionData: this.props.sessionData, 
         studentData: this.props.studentData, doesShowSpecificDetail: false, specificStudentData: undefined, loading: false, classOverviewData: {}, lockSpecificDetail: false}
 
-
         socket.on("receive initial data", message =>{
           console.log("receive initial data")
           // The initial data will decide the initial status 
@@ -118,15 +117,15 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
               
               if (searchResults.length > 0) {
                 const studentNeedToBeUpdated = searchResults[0];
-                ///////******* TODO: can propList be a shared variable across this and live status update and makeTableData ? *********///////
+              
                 let propList = ["currentTurn", "currentScreen", "currentCash", "currentFans", "lastActTime", "madeInsight", "successfulInsight", "twoSongsReleased", "upgradedStorage", "barUse", "lineUse", "heatmapUse", "barChartUsed", "storageBuys", "insightCount", "successfulInsightCount", "releasedSongCount", "collectViews"];
                 for (let p in propList) {
-                  // console.log(p);
                   studentNeedToBeUpdated[propList[p]] = document[propList[p]];
                 }
                 
                 studentNeedToBeUpdated.status = this.calculateWhetherOnline(document.lastActTime);
                 studentNeedToBeUpdated.startTimer(this.statusSetFunction);
+
                 // decide on the status based on the last active time 
                 newUpdatedStudentData.push(studentNeedToBeUpdated)
                 updatedStudentDataArray = updatedStudentDataArray.filter(s => s.id !== document.playerUniqueID)
@@ -134,19 +133,12 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
           }
 
           updatedStudentDataArray = updatedStudentDataArray.concat(newUpdatedStudentData);
-
-          console.log(this.props.studentData);
-          this.setState({studentData: updatedStudentDataArray});
-          this.setState({classOverviewData: this.makeTableData(updatedStudentDataArray)});
+          this.setState({studentData: updatedStudentDataArray, classOverviewData: this.makeTableData(updatedStudentDataArray)});
         })
 
         socket.on("live status update", (message: any) => {
           // convert data from the backend. 
-          console.log("Data update");
-          // const newStudentData: Student[] = [];
-          this.setState({loading: false});
           const updatedDocuments = message;
-          console.log(updatedDocuments.length);
           let updatedStudentDataArray = this.state.studentData;
           const newUpdatedStudentData: Student[] = [];
           for (const document of updatedDocuments) {
@@ -155,7 +147,6 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
                 const studentNeedToBeUpdated = searchResults[0];
                 let propList = ["currentTurn", "currentScreen", "currentCash", "currentFans", "lastActTime", "madeInsight", "successfulInsight", "twoSongsReleased", "upgradedStorage", "barUse", "lineUse", "heatmapUse", "barChartUsed", "storageBuys", "insightCount", "successfulInsightCount", "releasedSongCount", "collectViews"];
                 for (let p in propList) {
-                  // console.log(p);
                   studentNeedToBeUpdated[propList[p]] = document[propList[p]];
                 }
                 studentNeedToBeUpdated.statusReset(this.statusSetFunction);
@@ -170,8 +161,6 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
       }
 
       public makeTableData(sArray: Student[]) : Object{
-
-        //**** TODO: Pending cols - Variable modifications, and good predictions
 
         let tableData = {
           // {'header': "Collection and Storage"},
@@ -214,9 +203,6 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
 
           if (sArray[s]["storageBuys"] > 2) {
             tableData["Storage Increases"]["often"]++;
-            //sArray[s][""]
-            //*** TODO: Make table counts come from student attributes
-            //*** add student property - bar graph use - frequent, often, rare; and so on
           } 
           else if (sArray[s]["storageBuys"] > 0) {tableData["Storage Increases"]["rarely"]++;}
           else if (sArray[s]["storageBuys"] === 0) {tableData["Storage Increases"]["notUse"]++;}
@@ -244,7 +230,6 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
           if (sArray[s]["successfulInsightCount"] > 3) { tableData["Successful insights"]["often"]++;}
           else if (sArray[s]["successfulInsightCount"] > 1) { tableData["Successful insights"]["rarely"]++;}
           else if (sArray[s]["successfulInsightCount"] === 0) { tableData["Successful insights"]["notUse"]++;}
-
         }
         return tableData;
       }
@@ -253,6 +238,7 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
         this.setState( ( prevState )=>{
           const otherStudentData = prevState.studentData.filter( s => s.id !== id)
           const searchResults = prevState.studentData.filter( s => s.id === id)
+          
           if (searchResults.length > 0) {
             const studentNeedToBeUpdated = searchResults[0]
             studentNeedToBeUpdated.status = status
@@ -285,8 +271,9 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
         // const idNames = this.convertIdsToIdNamePair(this.props.studentData)
         // const studentData = this.wrapData(idNames);
         
-        this.setState({loading: true, studentData: this.props.studentData})
-        
+        // this.setState({loading: true, studentData: this.props.studentData})
+        this.setState({loading: false, studentData: this.props.studentData})
+
         // set dummy data for right now, if the second time change, it shouldn't be dummy data, just minor performance issue 
         console.log("live dashboard");
         const studentIds = this.props.studentData.map(s => s.id)
@@ -336,8 +323,8 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
               <React.Fragment>
                   {this.state.loading ? <div> loading </div> : 
 
-                  <Grid style={{position: "relative"}}>
-                  <Grid.Row style={{height: "75vh"}}>
+                  <Grid style={{position: "relative", marginTop:"0"}}>
+                  <Grid.Row style={{height: "75vh", paddingTop:"0"}}>
                   <Grid.Column width="1"/>
                     <Grid.Column width="7">
                         <Card style={{width:"100%",  height:"100%", borderWidth: "0px",boxShadow:"none"}} >
@@ -348,7 +335,7 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
                               {/* Need some non-hard code later */}
                           </CardHeader>
 
-                          <CardContent style={{padding: "20px 50px 0px 50px", borderWidth:"0px"}}>
+                          <CardContent style={{padding: "20px 50px 0px 8px", borderWidth:"0px"}}>
                             {/* the goal is to connect the left with right */}
                             {/* Pass the function to control the data in the on hover */}
                             <StudentOverview showDetailed={this.showDetailed} studentData={this.state.studentData}
@@ -358,7 +345,7 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
                             />
                           </CardContent>
 
-                          <div style={{fontSize: "16px", paddingLeft:"50px" , textAlign: "left", position:"absolute", bottom:"40px"}}>
+                          <div style={{fontSize: "16px", paddingLeft:"8px" , textAlign: "left", position:"absolute", bottom:"40px"}}>
                               <Rect status={StudentStatus.InProgress}/>
                               Engaged
                           
@@ -368,7 +355,7 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
                               <Rect status={StudentStatus.Absent}/>
                               Idle for 5 minutes
                           </div>
-
+                          <div style={{height: "100%", width: "1px", backgroundColor:"rgba(0, 0, 0, 0.10)", position:"absolute", right:"0", top:"0" }}>  </div>
                         </Card>
                     </Grid.Column>
 

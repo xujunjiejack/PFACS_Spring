@@ -37,6 +37,7 @@ const SessionButton = styled.div`
     font-weight: normal;
     font-size: 18px;
     line-height: normal;
+    
 
     color: #FFFFFF;
     cursor: pointer;
@@ -64,7 +65,7 @@ const UserNameButton = styled.div`
     z-index: 1;
 `
 
-const StyledButton = styled(Button)`
+const LogoutButton = styled(Button)`
     // position: absolute;
     // right: 1.5%;
     // top: 23.26%;
@@ -106,7 +107,7 @@ export class Layout extends React.Component<ILayoutProps, any> {
                 <SessionButton onClick={this.navigateToSessions}> Sessions </SessionButton>
                 <div style={{display: "flex", flexDirection:"row", left: "80%", position: "relative"}}>
                     <UserNameButton> {this.props.userName} </UserNameButton>                
-                    <StyledButton onClick={this.logoutAction}> Log out </StyledButton>
+                    <LogoutButton onClick={this.logoutAction}> Log out </LogoutButton>
                 </div>
                 {/* The log out button will clear all user logged information */}
                 {this.props.children}

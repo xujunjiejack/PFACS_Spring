@@ -131,12 +131,10 @@ class StudentGraphUsage extends React.Component <any, any>{
                 </Table.Row>
             )
         } )
-
         return rows;
     }
 
     private menuOnChange= (event, data)=>{
-        // console.log(data)
         this.setState({tableNumber: data.value})
     }
 
@@ -151,15 +149,10 @@ class StudentGraphUsage extends React.Component <any, any>{
 
         return (
             <Card style={{width:"100%", boxShadow:"none"}}>
-                <Card.Content style={{overflowY:"scroll"}}>
-                    <CardHeader textAlign="left" style={{display:"flex", fontFamily:"Roboto", paddingTop:`18px`, marginBottom: "20px", marginLeft: "10px"}} >
-                        <p style={{paddingTop:"5px", margin:"0px"}}>Class Overview</p>
-                        {/* <Dropdown selection placeholder="Collection and storage"  onChange={this.menuOnChange} options={optionsForDropDown}
-                            defaultValue={"0"}
-                            style={{
-                            fontSize:"16px", position:"relative", left:"30%"}}/> */}
-                            
-                        {/* </Dropdown> */}
+                <Card.Content style={{overflowY:"scroll", padding:"0"}}>
+                    <CardHeader textAlign="left" style={{display:"flex", fontFamily:"Roboto", paddingTop:`16px`, marginBottom: "20px", marginLeft: "10px"}} >
+                        <p style={{margin:"0px"}}>Class Overview</p>
+
                     </CardHeader>
 
                     {/* <Table basic='very' style={{marginLeft: "10px"}}>
@@ -241,11 +234,13 @@ const StyledHeaderCell = styled(Table.HeaderCell)`
 
 function IndividualTableRow(props) {
     const rowData = props.rowData as Array<string>
+    const index = props.index as number
 
     return (
         <Table.Row
             style={{
-                backgroundColor: "rgba(228, 226, 226, 0.48)",
+                // backgroundColor: "rgba(228, 226, 226, 0.48)",
+                backgroundColor: index % 2 == 0 ?  "rgba(234, 249, 255, 0.65)" : "#ffffff",  
                 textAlign: "center",
                 fontWeight: "normal",
                 fontSize: "14px",
@@ -265,7 +260,7 @@ function IndividualTable(props) {
 
     return (
         <div style={props.style}>
-            <div style={seperatedLine} />
+            {/* <div style={seperatedLine} /> */}
             <Grid style={{ width: "100%" }}>
                 <Grid.Row>
                     <Grid.Column
@@ -328,9 +323,9 @@ function IndividualTable(props) {
                                 </Table.Row>
                             </Table.Header>
                             <Table.Body>
-                                <IndividualTableRow rowData={data.data[0]} />
-                                <IndividualTableRow rowData={data.data[1]} />
-                                <IndividualTableRow rowData={data.data[2]} />
+                                <IndividualTableRow rowData={data.data[0]} index={0} />
+                                <IndividualTableRow rowData={data.data[1]} index={1} />
+                                <IndividualTableRow rowData={data.data[2]} index={2} />
                             </Table.Body>
                         </Table>
                     </Grid.Column>
