@@ -73,6 +73,7 @@ export function StudentCurrentDetails(props: any) {
     return (
             <Card
                 style={{
+                    boxShadow:"none",
                     width: "100%",
                     padding: "0px 50px 0px 50px" 
                 }}
@@ -120,7 +121,7 @@ export function StudentCurrentDetails(props: any) {
                                     <Data> {props.student.currentTurn - 30} </Data>
                                 </div>
                             </Grid.Column>
-                            <Grid.Column width="8">
+                            <Grid.Column width="8" style={{ paddingLeft: 0 }}>
                                 <DataTitle> Current cash </DataTitle>
                                 <Data> {showCash(props.student.currentCash)} </Data>
                             </Grid.Column>

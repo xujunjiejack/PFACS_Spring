@@ -234,11 +234,13 @@ const StyledHeaderCell = styled(Table.HeaderCell)`
 
 function IndividualTableRow(props) {
     const rowData = props.rowData as Array<string>
+    const index = props.index as number
 
     return (
         <Table.Row
             style={{
-                backgroundColor: "rgba(228, 226, 226, 0.48)",
+                // backgroundColor: "rgba(228, 226, 226, 0.48)",
+                backgroundColor: index % 2 == 0 ?  "rgba(234, 249, 255, 0.65)" : "#ffffff",  
                 textAlign: "center",
                 fontWeight: "normal",
                 fontSize: "14px",
@@ -258,7 +260,7 @@ function IndividualTable(props) {
 
     return (
         <div style={props.style}>
-            <div style={seperatedLine} />
+            {/* <div style={seperatedLine} /> */}
             <Grid style={{ width: "100%" }}>
                 <Grid.Row>
                     <Grid.Column
@@ -321,9 +323,9 @@ function IndividualTable(props) {
                                 </Table.Row>
                             </Table.Header>
                             <Table.Body>
-                                <IndividualTableRow rowData={data.data[0]} />
-                                <IndividualTableRow rowData={data.data[1]} />
-                                <IndividualTableRow rowData={data.data[2]} />
+                                <IndividualTableRow rowData={data.data[0]} index={0} />
+                                <IndividualTableRow rowData={data.data[1]} index={1} />
+                                <IndividualTableRow rowData={data.data[2]} index={2} />
                             </Table.Body>
                         </Table>
                     </Grid.Column>

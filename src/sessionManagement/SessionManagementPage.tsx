@@ -11,6 +11,13 @@ import {Grid, GridColumn, GridRow} from "semantic-ui-react"
 import { withCookies, Cookies } from "react-cookie";
 
 
+const DeleteIcon = styled(FontAwesomeIcon)`
+    position: relative;
+    width: 24px;
+    height: 24px;
+    curosr: pointer;
+`
+
 /* CSS For the components */
 const DashboardIcon = styled(FontAwesomeIcon)`
     position: relative;
@@ -47,7 +54,43 @@ const DashboardButton = styled.button`
 
     justify-content: center;
     margin-right: 16px;
-    right: 110px;
+    right: 170px;
+    position: absolute;
+
+    :hover{
+        background-color: #5A9AF8;
+        color: white;
+    }
+
+    &.active {
+        
+        :hover{
+          background-color: #357AE0;
+          color: white;
+        }
+        background-color: #5A9AF8;
+        color: white;
+    }
+`
+
+const DeleteButton = styled.button`
+    border-radius: 6px;
+    // background-color: white;
+    background: #F4F4F4;
+    border-width: 0px;
+    border-color: rgb(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    height: 35px;
+    width: 40px;
+
+    font-family: Roboto;
+    font-size:12px;
+
+    justify-content: center;
+    margin-right: 16px;
+    right: 0;
     position: absolute;
 
     :hover{
@@ -83,7 +126,7 @@ const ReportButton = styled.button`
     font-family: Roboto;
 
     justify-content: center;    
-    right: 0px;
+    right: 60px;
     position: absolute;
     
     :hover{
@@ -454,6 +497,11 @@ class Session extends React.Component <any, any> {
                                     </span>
                                 </ReportButton>
 
+                                <DeleteButton onClick={ ()=>{this.props.deleteASession(dummy)} }>
+                                    <span>
+                                        <DeleteIcon icon={["far", "trash-alt"]} size="2x" style={{color: "red"}}/>
+                                    </span>
+                                </DeleteButton>
                             </div>                     
 
                             <SessionStartTime> {dummy.startTime} </SessionStartTime>

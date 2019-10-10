@@ -8,7 +8,7 @@
  **********************/
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faFileAlt } from "@fortawesome/free-regular-svg-icons";
+import { faFileAlt, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { faTachometerAlt } from '@fortawesome/free-solid-svg-icons'
 import { createHashHistory } from "history"
 import * as React from 'react';
@@ -22,10 +22,11 @@ import Session from "./sessionManagement/SessionManagementPage";
 import SessionView from "./specificSession/SpecificSessionView";
 import { IGoogleClassroomInfo } from "./data_structure/GoogleClassroomInfo"
 import * as firebase from "firebase"
-import { withCookies } from "react-cookie"
+import { withCookies, Cookies } from "react-cookie"
 
 library.add(faTachometerAlt)
 library.add(faFileAlt)
+library.add(faTrashAlt)
 
 /***
  * Interface
@@ -144,6 +145,15 @@ class App extends React.Component<any, IAppState> {
     }
   }
 
+  public deleteUserSession = (userSessionToBeDeleted) =>{
+    console.log("deleting a user session")
+    const newUserSessionsWithoutOne = this.state.userSessions.filter( s => s.sessionId !== userSessionToBeDeleted.sessionId)
+    const { cookies } = this.props;
+    this.setState( {userSessions: newUserSessionsWithoutOne} )
+    cookies.set("userSEssions", newUserSessionsWithoutOne, {path: "/"})
+    
+  }
+
   private setAllUserData = (data) => {
     const studentID = data.map(d => d.playerUniqueID)
     const studentName = data.map(d => d.userEmail)
@@ -206,7 +216,7 @@ class App extends React.Component<any, IAppState> {
               render={
                 props =>
                   <UserContext.Provider value={{ ...this.state }} >
-                    <Session history={props.history} setUser={this.setUser} changeCurrentSession={this.changeCurrentSession} logoutAction={this.logout} />
+                    <Session history={props.history} setUser={this.setUser} changeCurrentSession={this.changeCurrentSession} logoutAction={this.logout} deleteASession={this.deleteUserSession}/>
                   </UserContext.Provider>
               }
             />
