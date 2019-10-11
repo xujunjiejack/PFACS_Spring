@@ -325,11 +325,11 @@ const SessionStartTime = styled.div`
     color: #8F8F8F;
 `
 
-const StudentNumber2 = styled.div<{onGoing: boolean}>`
+const StudentNumber2 = styled.div<{isOnGoing: boolean}>`
     position: relative;
     width: 96.98px;
     height: 22px;
-    left: ${ props=>props.onGoing?  "110px" : 110+110+"px" };
+    left: ${ props=>props.isOnGoing?  "110px" : 110+110+"px" };
     top: 1px;
 
     font-family: Roboto;
@@ -465,7 +465,7 @@ class Session extends React.Component <any, any> {
                             <div style={{display: "flex", alignItems:"center"}}>
                                 <SessionLabel2>{dummy.sessionName} </SessionLabel2>
                                 { dummy.ongoing ?  <OngoingLabel2> Ongoing </OngoingLabel2> : <div/>}
-                                <StudentNumber2 onGoing={dummy.ongoing}> {dummy.studentNumber} Students </StudentNumber2> 
+                                <StudentNumber2 isOnGoing={dummy.ongoing}> {dummy.studentNumber} Students </StudentNumber2> 
                                 
                                 <DashboardButton onClick={()=>this.dashboardClick(dummy.sessionId)}>
                                     <span>

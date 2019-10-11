@@ -192,7 +192,7 @@ class SessionView extends React.Component <any, any> {
           })
         }
     }
-
+    
     public render(){
 
         return (
