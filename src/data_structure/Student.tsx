@@ -35,7 +35,7 @@ export class Student {
     public statusReset( setStatusFunction : any ){
       
       if (this.statusTimeout !== undefined)
-        clearTimeout(this.statusTimeout);
+        clearInterval(this.statusTimeout);
       // The bug is that when I switch between report and class overview, the timeout seems to have ended. Hmm. Actually, I don't
       // get the memory management. Does those status rect still. I think yes. Because this is a part of the student object which 
       // gets created in the specific session. 
@@ -71,7 +71,7 @@ export class Student {
 
     public clearTimeout(){
         if (this.statusTimeout !== undefined)
-          clearTimeout(this.statusTimeout)
+          clearInterval(this.statusTimeout)
     }
 
     private calculateWhetherOnline = (lastActiveTime): StudentStatus => {
