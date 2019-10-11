@@ -346,17 +346,17 @@ function OverviewNineColumns(props) {
     const data = [
         {
             tableName:"Collection and Storage",
-            headers:["Often", "Rarely", "never"],
+            headers:["Often", "Rarely", "Never"],
             data: collectionAndStorageKeys.map(k => [k, props.tableData[k].often, props.tableData[k].rarely, props.tableData[k].notUse]) 
         },
         {
             tableName:"Data Vis and graph",
-            headers:["Often", "Rarely", "never"],
+            headers:["Often", "Rarely", "Never"],
             data: dataVisGraphKeys.map(k => [k, props.tableData[k].often, props.tableData[k].rarely, props.tableData[k].notUse]) 
         },
         {
             tableName:"Insights",
-            headers:["Often", "Rarely", "never"],
+            headers:["Often", "Rarely", "Never"],
             data: insightKeys.map(k => [k, props.tableData[k].often, props.tableData[k].rarely, props.tableData[k].notUse]) 
         }
 

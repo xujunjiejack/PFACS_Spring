@@ -141,9 +141,14 @@ class CreateSession extends React.Component<any, any>{
             )
             this.setState({ allStudentCheckStatusMap: m, allStudentNameIDMap: m2, googleClassroomDataInfo: classrooms, isLoading: false })
         })
-            .catch((err) => {
-                console.log('Error ', err);
-            });
+        .catch((err) => {
+            console.log('Error ', err);
+        });
+
+        const { cookies } = this.props;
+        if (cookies.get("userName") !== undefined && cookies.get("userAccessToken") !== undefined && cookies.get("userIdToken") !== undefined){
+            this.props.setUser( cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken"), cookies.get("userSessions") )    
+        }
     }
 
     // public componentDidUpdate(prevProps: any){

@@ -389,17 +389,6 @@ class Session extends React.Component <any, any> {
 
     public componentDidMount (){
         const { cookies } = this.props;
-        // window.addEventListener("load", ()=>{
-        //     if (cookies.get("userName") !== undefined && cookies.get("userAccessToken") !== undefined && cookies.get("userIdToken") !== undefined){
-        //         this.props.setUser( cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken") )    
-        //     }  
-        // })
-
-        // window.addEventListener("onload", ()=>{
-        //     if (cookies.get("userName") !== undefined && cookies.get("userAccessToken") !== undefined && cookies.get("userIdToken") !== undefined){
-        //         this.props.setUser( cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken") )    
-        //     }  
-        // })
         if (cookies.get("userName") !== undefined && cookies.get("userAccessToken") !== undefined && cookies.get("userIdToken") !== undefined){
             this.props.setUser( cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken"), cookies.get("userSessions") )    
         }

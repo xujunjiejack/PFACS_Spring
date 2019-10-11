@@ -177,6 +177,12 @@ class SessionView extends React.Component <any, any> {
     //   });
     // }
     
+    public componentDidMount(){
+      const { cookies } = this.props;
+        if (cookies.get("userName") !== undefined && cookies.get("userAccessToken") !== undefined && cookies.get("userIdToken") !== undefined){
+            this.props.setUser( cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken"), cookies.get("userSessions") )    
+        }
+    }
 
     public componentDidUpdate(prevProps: any){
         if (prevProps.currentSessionId !== this.props.currentSessionId || prevProps.currentView !== this.props.currentView ) {
