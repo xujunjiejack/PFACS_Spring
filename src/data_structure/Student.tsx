@@ -45,24 +45,45 @@ export class Student {
     }
     // Question, why does this get called multiple times?
     public startTimer (setStatusFunction : any ) : void {
-      if (this.status === StudentStatus.InProgress){
-        this.statusTimeout = setTimeout(()=>{
-          setStatusFunction(this.id, StudentStatus.Stuck);  
-          this.statusTimeout = setTimeout( () =>{
-            setStatusFunction(this.id, StudentStatus.Idle);
-          }, STUCK_TO_DISCONNECTED_SECONDS * 1000);
-        }, 1000 * IN_PROGRESS_TO_STUCK_SECONDS);
+      // if (this.status === StudentStatus.InProgress){
+      //   this.statusTimeout = setTimeout(()=>{
+      //     setStatusFunction(this.id, StudentStatus.Stuck);  
+      //     this.statusTimeout = setTimeout( () =>{
+      //       setStatusFunction(this.id, StudentStatus.Idle);
+      //     }, STUCK_TO_DISCONNECTED_SECONDS * 1000);
+      //   }, 1000 * IN_PROGRESS_TO_STUCK_SECONDS);
+      // }
+      // else if (this.status === StudentStatus.Stuck){
+      //   this.statusTimeout = setTimeout( () =>{
+      //     setStatusFunction(this.id, StudentStatus.Idle);
+      //   }, STUCK_TO_DISCONNECTED_SECONDS * 1000);
+      // }
+      if (this.statusTimeout === undefined){
+        setStatusFunction(this.id, this.calculateWhetherOnline(this.lastActTime))
+        this.statusTimeout = setInterval(()=>{
+          console.log("calculating whether online")
+          setStatusFunction(this.id, this.calculateWhetherOnline(this.lastActTime))
+          this.statusTimeout = undefined
+        }, 1000)
       }
-      else if (this.status === StudentStatus.Stuck){
-        this.statusTimeout = setTimeout( () =>{
-          setStatusFunction(this.id, StudentStatus.Idle);
-        }, STUCK_TO_DISCONNECTED_SECONDS * 1000);
-      }
+
     }
 
     public clearTimeout(){
         if (this.statusTimeout !== undefined)
           clearTimeout(this.statusTimeout)
+    }
+
+    private calculateWhetherOnline = (lastActiveTime): StudentStatus => {
+      let currentDate = new Date()
+      let timeStampInSecond = Math.floor(currentDate.getTime()/1000)
+      let timeDifference = timeStampInSecond - lastActiveTime
+      if (timeDifference < IN_PROGRESS_TO_STUCK_SECONDS){
+        return StudentStatus.InProgress
+      } else if (timeDifference >= IN_PROGRESS_TO_STUCK_SECONDS && timeDifference < STUCK_TO_DISCONNECTED_SECONDS){
+        return StudentStatus.Stuck
+      } 
+      return StudentStatus.Idle
     }
 
     // public status() {

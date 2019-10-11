@@ -225,7 +225,7 @@ class App extends React.Component<any, IAppState> {
               render={
                 props =>
                   <UserContext.Provider value={{ ...this.state }}  >
-                    <CreateSession history={props.history} addNewSession={this.addNewSession} changeCurrentSession={this.changeCurrentSession} classroomInfoData={this.state.classrooms} logoutAction={this.logout} />
+                    <CreateSession history={props.history} setUser={this.setUser} addNewSession={this.addNewSession} changeCurrentSession={this.changeCurrentSession} classroomInfoData={this.state.classrooms} logoutAction={this.logout} />
                   </UserContext.Provider>
               }
             />
@@ -234,7 +234,7 @@ class App extends React.Component<any, IAppState> {
               render={
                 props =>
                   <UserContext.Provider value={{ ...this.state }}  >
-                    <SessionView history={props.history} currentSessionId={this.state.currentSessionId} currentSessionView={this.state.currentView} changeCurrentSession={this.changeCurrentSession} logoutAction={this.logout} />
+                    <SessionView history={props.history} setUser={this.setUser} currentSessionId={this.state.currentSessionId} currentSessionView={this.state.currentView} changeCurrentSession={this.changeCurrentSession} logoutAction={this.logout} />
                   </UserContext.Provider>
               }
             />
@@ -251,6 +251,9 @@ class App extends React.Component<any, IAppState> {
     this.setState({
       currentSessionId: sessionId, currentView: sessionCurrentView
     })
+    const {cookies} = this.props
+    cookies.set( "sessionId",sessionId, {path:"/"} )
+    cookies.set( "sessionCurrentView", sessionCurrentView, {path:"/"} )
   }
 }
 

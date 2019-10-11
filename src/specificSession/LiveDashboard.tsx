@@ -334,7 +334,9 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
                               <TotalStudentLabel> 24 Total students</TotalStudentLabel>
                               {/* Need some non-hard code later */}
                           </CardHeader>
-
+                        {/* The idea is that everytime the data is loaded, 
+                            I will set up a timer to update the student information. 
+                        */}
                           <CardContent style={{padding: "20px 50px 0px 8px", borderWidth:"0px"}}>
                             {/* the goal is to connect the left with right */}
                             {/* Pass the function to control the data in the on hover */}
@@ -348,7 +350,7 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
                           <div style={{fontSize: "16px", paddingLeft:"8px" , textAlign: "left", position:"absolute", bottom:"40px"}}>
                               <Rect status={StudentStatus.InProgress}/>
                               Engaged
-                          
+
                               <Rect status={StudentStatus.Stuck}/>
                               Idle for 2 minutes
                               
@@ -400,9 +402,9 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
       let currentDate = new Date()
       let timeStampInSecond = Math.floor(currentDate.getTime()/1000)
       let timeDifference = timeStampInSecond - lastActiveTime
-      if (timeDifference < 30){
+      if (timeDifference < 120){
         return StudentStatus.InProgress
-      } else if (timeDifference >= 30 && timeDifference < 120){
+      } else if (timeDifference >= 120 && timeDifference < 300){
         return StudentStatus.Stuck
       } 
       return StudentStatus.Idle
