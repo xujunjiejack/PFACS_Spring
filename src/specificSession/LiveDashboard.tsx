@@ -99,45 +99,17 @@ interface ILiveDashboardState {
 /* Main component */
 class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
 
+    public liveUpdateListener;
+
     public constructor(props: any) {
         super(props)
         this.state = {studentChosen: undefined, response: undefined, accessToken: undefined, currentView: "dashboard", sessionData: this.props.sessionData, 
         studentData: this.props.studentData, doesShowSpecificDetail: false, specificStudentData: undefined, loading: false, classOverviewData: {}, lockSpecificDetail: false}
-
-        socket.on("receive initial data", message =>{
-          console.log("receive initial data")
-          // The initial data will decide the initial status 
-          // get rid of the loading problem 
-          this.setState({loading: false})
-          const updatedDocuments = message  
-          let updatedStudentDataArray = this.state.studentData
-          const newUpdatedStudentData: Student[] = []
-          for (const document of updatedDocuments) {  
-              const searchResults = this.state.studentData.filter( s => s.id === document.playerUniqueID)
-              
-              if (searchResults.length > 0) {
-                const studentNeedToBeUpdated = searchResults[0];
-              
-                let propList = ["currentTurn", "currentScreen", "currentCash", "currentFans", "lastActTime", "madeInsight", "successfulInsight", "twoSongsReleased", "upgradedStorage", "barUse", "lineUse", "heatmapUse", "barChartUsed", "storageBuys", "insightCount", "successfulInsightCount", "releasedSongCount", "collectViews"];
-                for (let p in propList) {
-                  studentNeedToBeUpdated[propList[p]] = document[propList[p]];
-                }
-                
-                studentNeedToBeUpdated.status = this.calculateWhetherOnline(document.lastActTime);
-                studentNeedToBeUpdated.startTimer(this.statusSetFunction);
-
-                // decide on the status based on the last active time 
-                newUpdatedStudentData.push(studentNeedToBeUpdated)
-                updatedStudentDataArray = updatedStudentDataArray.filter(s => s.id !== document.playerUniqueID)
-              }
-          }
-
-          updatedStudentDataArray = updatedStudentDataArray.concat(newUpdatedStudentData);
-          this.setState({studentData: updatedStudentDataArray, classOverviewData: this.makeTableData(updatedStudentDataArray)});
-        })
-
-        socket.on("live status update", (message: any) => {
+        console.log("constructing")
+       
+        this.liveUpdateListener = (message: any) => {
           // convert data from the backend. 
+          console.log("Getting live data")
           const updatedDocuments = message;
           let updatedStudentDataArray = this.state.studentData;
           const newUpdatedStudentData: Student[] = [];
@@ -157,7 +129,9 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
           updatedStudentDataArray = updatedStudentDataArray.concat(newUpdatedStudentData);
           this.setState({studentData: updatedStudentDataArray});
           this.setState({classOverviewData: this.makeTableData(updatedStudentDataArray)});
-        });
+        }
+
+        socket.on("live status update", this.liveUpdateListener);
       }
 
       public makeTableData(sArray: Student[]) : Object{
@@ -194,7 +168,7 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
         };
 
         for (let s in sArray) {
-          console.log(sArray[s]);
+          // console.log(sArray[s]);
 
           if (sArray[s]["collectViews"] > 3) { tableData["Collection Views"]["often"]++;}
           else if (sArray[s]["collectViews"] > 1) { tableData["Collection Views"]["rarely"]++;}
@@ -208,15 +182,19 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
           else if (sArray[s]["storageBuys"] === 0) {tableData["Storage Increases"]["notUse"]++;}
 
           if (sArray[s]["barUse"] > 3) { tableData["bar graph"]["often"]++;
-        console.log("bar use often"); console.log(sArray[s]);}
+        // console.log("bar use often"); console.log(sArray[s]);
+          }
           else if (sArray[s]["barUse"] > 1) { tableData["bar graph"]["rarely"]++;
-        console.log("line use often"); console.log(sArray[s]);}
+        // console.log("line use often"); console.log(sArray[s]);
+          }
           else if (sArray[s]["barUse"] === 0) { tableData["bar graph"]["notUse"]++;}
 
           if (sArray[s]["lineUse"] > 3) { tableData["line graph"]["often"]++; 
-          console.log("line use often"); console.log(sArray[s]);}
+          // console.log("line use often"); console.log(sArray[s]);
+          }
           else if (sArray[s]["lineUse"] > 1) { tableData["line graph"]["rarely"]++; 
-          console.log("line use "); console.log(sArray[s]);}
+          // console.log("line use "); console.log(sArray[s]);
+          }
           else if (sArray[s]["lineUse"] === 0) { tableData["line graph"]["notUse"]++;}
 
           if (sArray[s]["heatmapUse"] > 3) { tableData["heatmap"]["often"]++;}
@@ -287,6 +265,8 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
       public componentWillUnmount(){
         // close connection
         socket.emit('stop listening student status')
+        socket.off('live status update', this.liveUpdateListener)
+        console.log("stop listening student status")
         this.props.studentData.forEach(s => {
           s.clearTimeout()   
         });
@@ -382,8 +362,6 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
         }
     }
 
-
-
     private showDetailed = (studentId: string) => {
         return this.setState({studentChosen: studentId}) ;
       }
@@ -412,3 +390,37 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
 }
 
 export default LiveDashboard
+
+// Random code
+// socket.on("receive initial data", message =>{
+//   console.log("receive initial data")
+//   // The initial data will decide the initial status 
+//   // get rid of the loading problem 
+//   this.setState({loading: false})
+//   const updatedDocuments = message  
+//   let updatedStudentDataArray = this.state.studentData
+//   const newUpdatedStudentData: Student[] = []
+//   for (const document of updatedDocuments) {  
+//       const searchResults = this.state.studentData.filter( s => s.id === document.playerUniqueID)
+      
+//       if (searchResults.length > 0) {
+//         const studentNeedToBeUpdated = searchResults[0];
+      
+//         let propList = ["currentTurn", "currentScreen", "currentCash", "currentFans", "lastActTime", "madeInsight", "successfulInsight", "twoSongsReleased", "upgradedStorage", "barUse", "lineUse", "heatmapUse", "barChartUsed", "storageBuys", "insightCount", "successfulInsightCount", "releasedSongCount", "collectViews"];
+//         for (let p in propList) {
+//           studentNeedToBeUpdated[propList[p]] = document[propList[p]];
+//         }
+        
+//         studentNeedToBeUpdated.status = this.calculateWhetherOnline(document.lastActTime);
+//         studentNeedToBeUpdated.startTimer(this.statusSetFunction);
+
+//         // decide on the status based on the last active time 
+//         newUpdatedStudentData.push(studentNeedToBeUpdated)
+//         updatedStudentDataArray = updatedStudentDataArray.filter(s => s.id !== document.playerUniqueID)
+//       }
+//   }
+
+//   updatedStudentDataArray = updatedStudentDataArray.concat(newUpdatedStudentData);
+//   this.setState({studentData: updatedStudentDataArray, classOverviewData: this.makeTableData(updatedStudentDataArray)});
+// })
+

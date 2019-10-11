@@ -10,7 +10,7 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faFileAlt, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { faTachometerAlt } from '@fortawesome/free-solid-svg-icons'
-import { createHashHistory } from "history"
+import { createHashHistory, createBrowserHistory } from "history"
 import * as React from 'react';
 import { Route, Router } from "react-router"
 
@@ -54,7 +54,7 @@ interface ISessionData {
   emails: string[]
 }
 
-const history = createHashHistory()
+const history = createBrowserHistory()
 /*** 
  * Dummy data two for sessions 
  */

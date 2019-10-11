@@ -246,10 +246,10 @@ function IndividualTableRow(props) {
                 fontSize: "14px",
             }}
         >
-            <Table.Cell width={7} style={{...cellStyle}} textAlign="left">{_.startCase(rowData[0])}</Table.Cell>
-            <Table.Cell width={3} style={cellStyle}>{rowData[1]}</Table.Cell>
-            <Table.Cell width={3} style={cellStyle}>{rowData[2]}</Table.Cell>
-            <Table.Cell width={3} style={cellStyle}>{rowData[3]}</Table.Cell>
+            <Table.Cell key={"c1"} width={7} style={{...cellStyle}} textAlign="left">{_.startCase(rowData[0])}</Table.Cell>
+            <Table.Cell key={"c2"} width={3} style={cellStyle}>{rowData[1]}</Table.Cell>
+            <Table.Cell key={"c3"} width={3} style={cellStyle}>{rowData[2]}</Table.Cell>
+            <Table.Cell key={"c4"} width={3} style={cellStyle}>{rowData[3]}</Table.Cell>
         </Table.Row>
     )
 }
@@ -323,9 +323,9 @@ function IndividualTable(props) {
                                 </Table.Row>
                             </Table.Header>
                             <Table.Body>
-                                <IndividualTableRow rowData={data.data[0]} index={0} />
-                                <IndividualTableRow rowData={data.data[1]} index={1} />
-                                <IndividualTableRow rowData={data.data[2]} index={2} />
+                                <IndividualTableRow key={"row1"} rowData={data.data[0]} index={0} />
+                                <IndividualTableRow key={"row2"} rowData={data.data[1]} index={1} />
+                                <IndividualTableRow key={"row3"} rowData={data.data[2]} index={2} />
                             </Table.Body>
                         </Table>
                     </Grid.Column>
@@ -366,50 +366,11 @@ function OverviewNineColumns(props) {
             <div style={mainStack}>
                 {" "}
                 {data.map( (t,i,array) => 
-                    <React.Fragment>
+                    <React.Fragment key={t.tableName + i}>
                         <IndividualTable key={t.tableName + i} tableData={t} style={{ marginBottom: 
                             (i !== array.length-1) ? "8px": "0px", width: "100%" }}/> 
                             {(i !== array.length-1) ? <br/> : <div/>}
-                        </React.Fragment>)}
-
-                {/* <IndividualTable
-                    tableData={{
-                        tableName: "Collection and Storage",
-                        headers: ["header1", "header2", "header3"],
-                        data: [
-                            ["row1", "0", "0", "0"],
-                            ["row2", "0", "0", "0"],
-                            ["row3", "0", "0", "0"],
-                        ],
-                    }}
-                    style={{ marginBottom: "8px", width: "100%" }}
-                />{" "}
-                <br />
-                <IndividualTable
-                    tableData={{
-                        tableName: "Graph",
-                        headers: ["header1", "header2", "header3"],
-                        data: [
-                            ["row1", "0", "0", "0"],
-                            ["row2", "0", "0", "0"],
-                            ["row3", "0", "0", "0"],
-                        ],
-                    }}
-                    style={{ marginBottom: "8px", width: "100%" }}
-                />{" "}
-                <br />
-                <IndividualTable
-                    tableData={{
-                        tableName: "Table 2",
-                        headers: ["header1", "header2", "header3"],
-                        data: [
-                            ["row1", "0", "0", "0"],
-                            ["row2", "0", "0", "0"],
-                            ["row3", "0", "0", "0"],
-                        ],
-                    }}
-                    style={{ marginBottom: "8px", width: "100%" }}
-                />{" "} */}
+                    </React.Fragment>)}
             </div>
     )
 }

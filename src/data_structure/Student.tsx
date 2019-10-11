@@ -26,21 +26,25 @@ export class Student {
       this.statusReset = this.statusReset.bind(this)
       this.startTimer = this.startTimer.bind(this)
       this.statusTimeout = undefined;
+      this.clearTimeout = this.clearTimeout.bind(this)
     }
     
     public setStatus(newStatus: StudentStatus) {
       this.status = newStatus;
     }
     
-    public statusReset( setStatusFunction : any ){
-      
-      if (this.statusTimeout !== undefined)
-        clearTimeout(this.statusTimeout);
+    public statusReset( setStatusFunction : any ){ 
+      console.log("status resetting")    
+      if (this.statusTimeout !== undefined){
+        clearInterval(this.statusTimeout);
+        this.statusTimeout = undefined
+      }
+
       // The bug is that when I switch between report and class overview, the timeout seems to have ended. Hmm. Actually, I don't
       // get the memory management. Does those status rect still. I think yes. Because this is a part of the student object which 
       // gets created in the specific session. 
       // Chain of timeout 
-      this.status = StudentStatus.InProgress
+      // this.status = StudentStatus.InProgress
       this.startTimer(setStatusFunction)
     }
     // Question, why does this get called multiple times?
@@ -63,15 +67,16 @@ export class Student {
         this.statusTimeout = setInterval(()=>{
           console.log("calculating whether online")
           setStatusFunction(this.id, this.calculateWhetherOnline(this.lastActTime))
-          this.statusTimeout = undefined
         }, 1000)
       }
 
     }
 
-    public clearTimeout(){
-        if (this.statusTimeout !== undefined)
-          clearTimeout(this.statusTimeout)
+    public clearTimeout(){ 
+      if (this.statusTimeout !== undefined){
+          clearInterval(this.statusTimeout)
+          this.statusTimeout= undefined
+        }
     }
 
     private calculateWhetherOnline = (lastActiveTime): StudentStatus => {
