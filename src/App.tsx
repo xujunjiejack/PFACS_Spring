@@ -134,7 +134,7 @@ class App extends React.Component<any, IAppState> {
 
     // Determine whether the user sessions needs to be updated.
     if (userSessions === undefined) {
-      userSessions = this.state.userSessions
+      userSessions = dummyData
     } else {
       cookies.set("userSessions", userSessions, { path: "/" })
     }
