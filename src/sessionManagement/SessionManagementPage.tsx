@@ -8,7 +8,8 @@ import {ISession, UserContext} from "../Context"
 import {Layout} from "../Layout"
 // import {Grid, GridColumn, GridRow, Container} from "semantic-ui-react"
 import {Grid, GridColumn, GridRow} from "semantic-ui-react"
-import { withCookies, Cookies } from "react-cookie";
+// import { withCookies, Cookies } from "react-cookie";
+import { withCookies } from "react-cookie";
 
 
 const DeleteIcon = styled(FontAwesomeIcon)`

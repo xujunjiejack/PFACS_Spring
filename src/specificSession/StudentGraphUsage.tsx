@@ -194,12 +194,12 @@ const mainStack = {
     paddingRight: "10px"
 } as React.CSSProperties
 
-const seperatedLine = {
-    width: "100%",
-    height: 1,
-    overflow: "visible",
-    backgroundColor: "rgba(178, 178, 178, 1)",
-} as React.CSSProperties
+// const seperatedLine = {
+//     width: "100%",
+//     height: 1,
+//     overflow: "visible",
+//     backgroundColor: "rgba(178, 178, 178, 1)",
+// } as React.CSSProperties
 
 const tableName = {
     width: "100%",
@@ -240,7 +240,7 @@ function IndividualTableRow(props) {
         <Table.Row
             style={{
                 // backgroundColor: "rgba(228, 226, 226, 0.48)",
-                backgroundColor: index % 2 == 0 ?  "rgba(234, 249, 255, 0.65)" : "#ffffff",  
+                backgroundColor: index % 2 === 0 ?  "rgba(234, 249, 255, 0.65)" : "#ffffff",  
                 textAlign: "center",
                 fontWeight: "normal",
                 fontSize: "14px",

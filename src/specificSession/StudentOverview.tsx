@@ -1,6 +1,6 @@
 import * as React from "react";
 // import { Grid, GridColumn, GridRow } from "semantic-ui-react";
-import { Grid } from "semantic-ui-react";
+// import { Grid } from "semantic-ui-react";
 // import styled from "styled-components";
 // import { Student, StudentStatus } from "../data_structure/Student";
 import { Student } from "../data_structure/Student";

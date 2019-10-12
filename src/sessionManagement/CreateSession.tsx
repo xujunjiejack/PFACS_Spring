@@ -1,5 +1,6 @@
 // import axios from "axios";
-import { Map, get } from "immutable";
+// import { Map, get } from "immutable";
+import { Map } from "immutable";
 import * as React from "react";
 import { Button, Form, Grid } from 'semantic-ui-react'
 import styled from "styled-components"
@@ -7,7 +8,7 @@ import { ChooseStudentsRow } from "./ChooseStudentContainer"
 import { Layout } from "../Layout"
 import { IGoogleClassroomInfo } from "../data_structure/GoogleClassroomInfo"
 import { UserContext } from '../Context';
-import { string } from 'prop-types';
+// import { string } from 'prop-types';
 import * as firebase from "firebase"
 import { withCookies } from "react-cookie";
 
@@ -78,7 +79,7 @@ class CreateSession extends React.Component<any, any>{
 
     public constructor(props: any) {
         super(props)
-        let m = Map<string, boolean>()
+        // let m = Map<string, boolean>()
 
         // the only problem right now is this:
         // at the initial stage of the (before login), the classroomInfodata in the props will be null
