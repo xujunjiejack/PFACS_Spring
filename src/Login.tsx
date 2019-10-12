@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as React from "react";
-import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
+// import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
+import {GoogleLoginResponse} from "react-google-login"
 import styled from "styled-components";
 import {TitleText} from "./AppStyle";
 import {UserContext} from "./Context"
@@ -26,14 +27,14 @@ provider.addScope("https://www.googleapis.com/auth/classroom.courses.readonly ht
 
 
 /* CSS For different componenets*/
-const GoogleLoginButton = styled(GoogleLogin)`
-    position: absolute;
-    width: 508px;
-    height: 97px;
-    left: 468px;
-    top: 495px;
-    justify-content: center;
-`
+// const GoogleLoginButton = styled(GoogleLogin)`
+//     position: absolute;
+//     width: 508px;
+//     height: 97px;
+//     left: 468px;
+//     top: 495px;
+//     justify-content: center;
+// `
 const FirebaseLoginButton = styled(Button)`
     position: absolute;
     width: 508px;

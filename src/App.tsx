@@ -10,7 +10,7 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faFileAlt, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { faTachometerAlt } from '@fortawesome/free-solid-svg-icons'
-import { createHashHistory, createBrowserHistory } from "history"
+import { createBrowserHistory } from "history"
 import * as React from 'react';
 import { Route, Router } from "react-router"
 
@@ -22,7 +22,7 @@ import Session from "./sessionManagement/SessionManagementPage";
 import SessionView from "./specificSession/SpecificSessionView";
 import { IGoogleClassroomInfo } from "./data_structure/GoogleClassroomInfo"
 import * as firebase from "firebase"
-import { withCookies, Cookies } from "react-cookie"
+import { withCookies } from "react-cookie"
 
 library.add(faTachometerAlt)
 library.add(faFileAlt)
