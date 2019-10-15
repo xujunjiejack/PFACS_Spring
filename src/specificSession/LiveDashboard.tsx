@@ -20,7 +20,9 @@ import {StudentCurrentDetails} from "./StudentCurrentDetails";
 import {idNamesPair} from "./../studentsIDsName";
 
 // const socket = openSocket("http://127.0.0.1:3001/studentstatus")
-const socket = socketIOClient("localhost:3001/studentstatus")
+// console.log("socket ip " + process.env.SOCKETIP);
+const BACKEND = 'http://localhost';
+const socket = socketIOClient(BACKEND + ":3001/studentstatus");
 
 /* CSS for components */
 const GridHeaderStyle = {
