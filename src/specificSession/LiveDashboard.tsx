@@ -13,13 +13,14 @@ import {ISession, UserContext} from "../Context"
 import StudentGraphUsage from "./StudentGraphUsage";
 import {StudentOverview} from "./StudentOverview";
 // import * as openSocket from 'socket.io-client'; 
-import openSocket from 'socket.io-client'; 
+// import openSocket from 'socket.io-client'; 
+import socketIOClient from 'socket.io-client'; 
+
 import {StudentCurrentDetails} from "./StudentCurrentDetails";
 import {idNamesPair} from "./../studentsIDsName";
 
-// Now I'm totally lost about how I should approach this problem
-// the problem that I need to reflect the data in the server onto the frontend. 
-const socket = openSocket("http://localhost:3001/studentstatus")
+// const socket = openSocket("http://127.0.0.1:3001/studentstatus")
+const socket = socketIOClient("localhost:3001/studentstatus")
 
 /* CSS for components */
 const GridHeaderStyle = {
