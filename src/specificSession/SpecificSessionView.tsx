@@ -13,7 +13,6 @@ import LiveDashboard from "./LiveDashboard";
 // import * as openSocket from 'socket.io-client'; 
 import {idNamesPair} from "./../studentsIDsName";
 import { withCookies } from "react-cookie";
-// const socket = openSocket("http://localhost:8080/studentstatus")
 
 /* CSS For Component */
 const HeaderContainer = styled.div`
@@ -44,11 +43,6 @@ const Title = styled.label`
 `
 
 const StartTime = styled.div`
-  // position: absolute;
-  // left: 8px;
-  // top: 58.71%;
-  // bottom: 13.73%;
-
   font-family: Roboto;
   font-style: normal;
   font-weight: light;
@@ -147,17 +141,8 @@ class SessionView extends React.Component <any, any> {
 
     public constructor(props: any){
         super(props) 
-        this.state = {studentData: this.wrapData(["anna","hemmingway"]), currentView: this.props.currentSessionView, currentSessionId: this.props.currentSessionId}
+        this.state = {studentData: [], currentView: this.props.currentSessionView, currentSessionId: this.props.currentSessionId}
     }
-
-    public wrapData = (studentIds: string[]): Student[] => {
-        // the name and the progress will be done here
-        // the data will also change here
-        // here things can only be set as a default, the actual data will only be received on mount. Due to the live data
-        
-        return studentIds.map(s => new Student(s, StudentStatus.InProgress, s, 10000, 10, 100000, "Make songs"))
-    }
-
 
     public wrapDataThroughIdNamePair = (studentIds: string[], nameIdPair): Student[] => {
       // just for dummy data 
@@ -169,13 +154,6 @@ class SessionView extends React.Component <any, any> {
         return new Student(nameIdPair[s] , StudentStatus.Idle, s, 10000, 10, 100000, "Make songs");
       });
     }
-
-    // public wrapDataThroughEmail = (studentIds: string[], names: string[]): Student[] => {
-    //   // just for dummy data 
-    //   return studentIds.map((s,i) => {
-    //     return new Student(nameIdPair[s] , StudentStatus.Idle, s, 10000, 10, 100000, "Make songs");
-    //   });
-    // }
     
     public componentDidMount(){
       const { cookies } = this.props;
@@ -214,7 +192,7 @@ class SessionView extends React.Component <any, any> {
                        <p style={{height: `5vh`}}>    
                         {/*  */}
                        </p>
-                      {/* I can add grid to it */}
+                    
                       <Grid style={{position: "relative"}}>
                       <Grid.Row> 
                       <Grid.Column width="1"/>
@@ -266,8 +244,6 @@ class SessionView extends React.Component <any, any> {
 
     private getStudentData = (allSessions: ISession[], currentSessionId: string) => {
         const session = this.getSessionData(allSessions, currentSessionId)
-        // here is the set up of the session 
-        // I remembered that I already made it work with socket 
         if (session){
           const wrappedData = this.wrapDataThroughIdNamePair(session.studentIds, session.studentIDNamePair)
           return wrappedData

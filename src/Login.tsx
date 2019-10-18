@@ -27,14 +27,6 @@ provider.addScope("https://www.googleapis.com/auth/classroom.courses.readonly ht
 
 
 /* CSS For different componenets*/
-// const GoogleLoginButton = styled(GoogleLogin)`
-//     position: absolute;
-//     width: 508px;
-//     height: 97px;
-//     left: 468px;
-//     top: 495px;
-//     justify-content: center;
-// `
 const FirebaseLoginButton = styled(Button)`
     position: absolute;
     width: 508px;
@@ -59,36 +51,15 @@ class LoginPage extends React.Component <any, ILoginProps> {
         this.state = {studentChosen: undefined, response: undefined, accessToken: undefined }
         this.onSuccess = this.onSuccess.bind(this)
         this.firebaseLogin = this.firebaseLogin.bind(this)
-        // this.responseGoogle = this.responseGoogle.bind(this)
-      }
+    }
 
     public async firebaseLogin () {
       firebase.auth().signInWithPopup(provider).then( (result : firebase.auth.UserCredential) =>  {
-        // This gives you a Google Access Token. You can use it to access the Google API.
         if (result !== null){
           const credential = result.credential as any 
           const token = (result.credential as any).accessToken;
-          // The signed-in user info.
           const user = result.user;
-          console.log("firebase login");
-          console.log(result.credential);
-          console.log(user);
-          // firebase.firestore().collection('users').get().then((snapshot) => {
-          //   const docArray : Array<Object> = [] 
-          //   snapshot.forEach((doc) => {
-          //     console.log(doc.id, '=>', doc.data());
-          //     docArray.push(doc.data())
-          //   });
-
-          //   // setAllUserData : ([Object] ) => void
-          //   this.props.setAllUserData( docArray )
-          // })
-          // .catch((err) => {
-          //   console.log('Error ', err);
-          // });
-          // firebase.database().ref("/users/DU7k6DVcJmS0ASOBvMv6nqCByuh2").once('value').then((snapshot) =>{
-          //   console.log(snapshot.val());
-          // }).catch( (error) =>{ console.log(error) } );
+          
           if (user !== null)
             this.props.setUser(user.displayName, token, credential.idToken) 
           else {
@@ -96,25 +67,14 @@ class LoginPage extends React.Component <any, ILoginProps> {
           }
         
           this.props.history.push("/")
-        // ...
         }
-        // What is this id??
-        // const email = await this.getStudentEmailList(response.getAuthResponse().access_token)        
       }).catch((error) => {
-        // Handle Errors here.
-        // const errorCode = error.code;
-        // const errorMessage = error.message;
-        // The email of the user's account used.
-        // const email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        // const credential = error.credential;
-        // ...
+        console.log(error)
       });
     }
 
     public render(){
         return(
-
             <UserContext.Consumer>
               {value => 
                 {
@@ -127,20 +87,17 @@ class LoginPage extends React.Component <any, ILoginProps> {
                           return <div> User logged in. Redirecting </div>
                       }
                   }
-
-                  return <div>
-                  <TitleText>
-                      PFACS Teacher Dashboard
-                  </TitleText>
+                  return (
+                  <div>
+                    <TitleText>
+                        PFACS Teacher Dashboard
+                    </TitleText>
                   
-                  <FirebaseLoginButton onClick={ this.firebaseLogin }>
-                    Firebase login with Google provider
-                  </FirebaseLoginButton>
-                  {/* <GoogleLoginButton clientId="908046556011-80kbve0btf4nnn1o4vd010a0ag59tfj5.apps.googleusercontent.com" 
-                          scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.rosters.readonly"
-                  onSuccess={this.onSuccess} onFailure={this.onFailure}/> */}
-                  
-                </div>
+                    <FirebaseLoginButton onClick={ this.firebaseLogin }>
+                      Firebase login with Google provider
+                    </FirebaseLoginButton>
+                  </div>
+                  )
                 }
               }
             </UserContext.Consumer>
@@ -149,33 +106,12 @@ class LoginPage extends React.Component <any, ILoginProps> {
     
     // use this to get data https://developers.google.com/classroom/reference/rest/
     private async onSuccess (response: any) {
-      console.log("success")
-      // The course data looks like {courses: {id, name}}
-      // setUser(userName: string, userAccessToken:string, userIdToken:string )
-      console.log(response);
       this.props.setUser(response.getId, response.getAuthResponse().access_token, response.getAuthResponse().id_token);
-
-      // Need to save the things in the cookie. 
-      // axios({url:`https://classroom.googleapis.com/v1/courses/${firstId}/students`, method:"list"}).then(console.log).catch(console.log)
-      // const email = await this.getStudentEmailList(response.getAuthResponse().access_token)
       this.props.history.push("/");
       
       return ;
     }
   
-    // private async responseGoogle(response: any) {
-    //   console.log(response);
-    //   console.log("success")
-    //   // The course data looks like {courses: {id, name}}
-    //   // setUser(userName: string, userAccessToken:string, userIdToken:string )
-    //   this.props.setUser(response.getId, response.getAuthResponse().access_token, response.getAuthResponse().id_token) 
-    
-    //   // Need to save the things in the cookie. 
-    //   // axios({url:`https://classroom.googleapis.com/v1/courses/${firstId}/students`, method:"list"}).then(console.log).catch(console.log)
-    //   const email = await this.getStudentEmailList(response.getAuthResponse().access_token)
-    //   this.props.history.push("/")
-    // }
-
     private async getStudentDataFromCourseId(data: any, accessToken: any){
       
       const result = data.courses.map(async (course: any) => {
@@ -185,12 +121,8 @@ class LoginPage extends React.Component <any, ILoginProps> {
         const courseId = course.id
         const googleStudentResponse = await axios.get(`https://classroom.googleapis.com/v1/courses/${courseId}/students`, {headers:{Authorization:`Bearer  ${accessToken}`}})
         const studentData: any[] = googleStudentResponse.data.students
-        
-        // data structure: {students: [{courseId:"", profile: { emailAddress:"", name:{familyName:"", givenName:"" }}}]}
         classroomInfo.studentID = studentData.map(s => s.profile.emailAddress)
         classroomInfo.studentName = studentData.map(s=> s.profile.name.givenName)
-        // I need to find a way for the classroomInfo unique id as well. It definitely is 
-        // better than the name which can have duplicate. I probably should change the 
         console.log(classroomInfo)
         return classroomInfo
       } ) 
@@ -204,7 +136,6 @@ class LoginPage extends React.Component <any, ILoginProps> {
         
         const classrooms = await this.getStudentDataFromCourseId(data, accessToken)
 
-        // I need to change something here to map course into different GoogleClassroomInfo for App.tsx
         this.props.setClassroom(classrooms)
 
         return new Promise((resolve, reject) => {resolve(["OK"])})

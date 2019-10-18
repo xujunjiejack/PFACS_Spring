@@ -11,8 +11,6 @@ const STUCK_TO_DISCONNECTED_SECONDS = 300
 
 
 export class Student {
-    // constructor(public name:string, public status: StudentStatus, public id: string){
-    // },
     private statusTimeout?: NodeJS.Timeout;
 
     constructor(public name:string, public status: StudentStatus, public id: string, 
@@ -39,29 +37,11 @@ export class Student {
         clearInterval(this.statusTimeout);
         this.statusTimeout = undefined
       }
-
-      // The bug is that when I switch between report and class overview, the timeout seems to have ended. Hmm. Actually, I don't
-      // get the memory management. Does those status rect still. I think yes. Because this is a part of the student object which 
-      // gets created in the specific session. 
-      // Chain of timeout 
-      // this.status = StudentStatus.InProgress
       this.startTimer(setStatusFunction)
     }
-    // Question, why does this get called multiple times?
+
+
     public startTimer (setStatusFunction : any ) : void {
-      // if (this.status === StudentStatus.InProgress){
-      //   this.statusTimeout = setTimeout(()=>{
-      //     setStatusFunction(this.id, StudentStatus.Stuck);  
-      //     this.statusTimeout = setTimeout( () =>{
-      //       setStatusFunction(this.id, StudentStatus.Idle);
-      //     }, STUCK_TO_DISCONNECTED_SECONDS * 1000);
-      //   }, 1000 * IN_PROGRESS_TO_STUCK_SECONDS);
-      // }
-      // else if (this.status === StudentStatus.Stuck){
-      //   this.statusTimeout = setTimeout( () =>{
-      //     setStatusFunction(this.id, StudentStatus.Idle);
-      //   }, STUCK_TO_DISCONNECTED_SECONDS * 1000);
-      // }
       if (this.statusTimeout === undefined){
         setStatusFunction(this.id, this.calculateWhetherOnline(this.lastActTime))
         this.statusTimeout = setInterval(()=>{
@@ -89,15 +69,5 @@ export class Student {
         return StudentStatus.Stuck
       } 
       return StudentStatus.Idle
-    }
-
-    // public status() {
-
-    // }
-    
+    }   
 }
-
-// export class Student {
-//     constructor(public name:string, public status: StudentStatus, public id: string){
-//     }
-// }

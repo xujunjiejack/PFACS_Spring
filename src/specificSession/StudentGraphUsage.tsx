@@ -3,7 +3,6 @@ import * as React from "react";
 import { Card, CardHeader, Grid, Table} from "semantic-ui-react";
 import styled from "styled-components";
 import * as _ from "lodash"
-// import { create } from 'istanbul-reports';
 
 /* CSS For Component */
 const ColorText = styled.div`
@@ -18,16 +17,50 @@ const ColorText = styled.div`
 	font-variant-numeric: proportional-nums;
 `
 
-const CustomizedTableCell = styled(Table.Cell)`
-    justify-content: center;
+const StyledHeaderCell = styled(Table.HeaderCell)`
+    &&& {   
+        background: red;
+        border-width: 0px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: normal;
+    }
 `
+
+const mainStack = {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    overflow: "hidden",
+    marginLeft:"10px",
+    paddingRight: "10px"
+} as React.CSSProperties
+
+const tableName = {
+    width: "100%",
+    position: "relative",
+    top: "16px",
+    fontFamily: `"Roboto", "Roboto", sans-serif`,
+    color: "#000000",
+    fontSize: "14px",
+    letterSpacing: 0,
+    lineHeight: 1.5,
+    fontWeight: 900,
+    fontStyle: "normal",
+    textAlign:"left"
+} as React.CSSProperties
+
+const cellStyle = {
+    borderWidth: "0px",
+    paddingTop: "5px",
+    paddingBottom: "5px",
+}
 
 /* Main Component */
 class StudentGraphUsage extends React.Component <any, any>{
-
-    private headerMatch = {collectionAndStorage: ["Collection Views", "Variable modifications", "Storage Increases"],
-                        dataVisAndGraph: ["bar graph", "line graph", "heatmap"],
-                        insghtAndInferences: ["Made insights", "Successful insights", "Good predictions"]}
 
     // The prop will include the table data.
     constructor(prop: any){
@@ -35,12 +68,6 @@ class StudentGraphUsage extends React.Component <any, any>{
         /*
             Change the data here. 
         */
-        // const tableData2 = [
-        //     {graph: "Bar", often: 10, lessOften: 15, notUse: 10},
-        //     {graph: "Line", often: 15, lessOften: 15, notUse: 10},
-        //     {graph: "Heat Map", often: 15, lessOften: 5, notUse: 3},
-        // ]
-
         let tableData = {
             // {'header': "Collection and Storage"},
             "Collection Views": {often: 0, rarely: 0, notUse: 0},
@@ -62,175 +89,24 @@ class StudentGraphUsage extends React.Component <any, any>{
         this.state = {tableData, tableNumber: 0}
     }
 
-    public createTableWith9Rows (data) {
-        
-        // let collectionAndStorageRow = this.headerMatch.collectionAndStorage.map( variable =>{
-        //     return (
-        //         <Table.Row>
-        //             <Table.Cell>{variable}</Table.Cell>
-        //             <CustomizedTableCell> <ColorText> {data[variable].often} </ColorText> </CustomizedTableCell>
-        //             <CustomizedTableCell> <ColorText> {data[variable].rarely} </ColorText> </CustomizedTableCell>
-        //             <CustomizedTableCell> <ColorText> {data[variable].notUse} </ColorText> </CustomizedTableCell>
-        //         </Table.Row>
-        //     )
-        // } )
-        if (Object.keys(data).length === 0){
-            return []
-        }
-        let allRow = Object.keys(this.headerMatch).map( rowHeader =>{
-            console.log(this.headerMatch[rowHeader])
-            return this.headerMatch[rowHeader].map( 
-                variable =>{
-                    return (
-                        <Table.Row>
-                            <Table.Cell>{variable}</Table.Cell>
-                            <CustomizedTableCell> <ColorText> {data[variable].often} </ColorText> </CustomizedTableCell>
-                            <CustomizedTableCell> <ColorText> {data[variable].rarely} </ColorText> </CustomizedTableCell>
-                            <CustomizedTableCell> <ColorText> {data[variable].notUse} </ColorText> </CustomizedTableCell>
-                        </Table.Row>
-                    )
-                } 
-            ) 
-        }  )
-
-        // let rows = data.map( (d) =>
-        //     {
-        //         return (
-        //             <Table.Row>
-        //                 <Table.Cell>{d.graph}</Table.Cell>
-        //                 <CustomizedTableCell> <ColorText> {d.often} </ColorText> </CustomizedTableCell>
-        //                 <CustomizedTableCell> <ColorText> {d.lessOften} </ColorText> </CustomizedTableCell>
-        //                 <CustomizedTableCell> <ColorText> {d.notUse} </ColorText> </CustomizedTableCell>
-        //             </Table.Row>
-        //         )
-        //         }
-        //     )
-        return allRow
-    }
-
-    public makeTable2 (tableNumber: number, data) {
-        if (Object.keys(data).length === 0){
-            return []
-        }
-
-        // console.log(Object.keys(data))
-        let options = {
-            0: "collectionAndStorage",
-            1: "dataVisAndGraph",
-            2: "insghtAndInferences"
-        };
-        let tableKeys = this.headerMatch[options[tableNumber]];
-
-        let rows = tableKeys.map( variable =>{
-            return (
-                <Table.Row>
-                    <Table.Cell>{variable}</Table.Cell>
-                    <CustomizedTableCell> <ColorText> {data[variable].often} </ColorText> </CustomizedTableCell>
-                    <CustomizedTableCell> <ColorText> {data[variable].rarely} </ColorText> </CustomizedTableCell>
-                    <CustomizedTableCell> <ColorText> {data[variable].notUse} </ColorText> </CustomizedTableCell>
-                </Table.Row>
-            )
-        } )
-        return rows;
-    }
-
-    private menuOnChange= (event, data)=>{
-        this.setState({tableNumber: data.value})
-    }
-
     // This detailed view will include the table view of using different view
     public render(){
-        
-        // let optionsForDropDown =[
-        //     {key:"0", text:"Collection and Storage", value:"0"},
-        //     {key:"1", text:"Graph", value:"1"},
-        //     {key:"2", text:"Insights and Inference", value:"2"},
-        // ]
-
         return (
             <Card style={{width:"100%", boxShadow:"none"}}>
                 <Card.Content style={{overflowY:"scroll", padding:"0"}}>
+
                     <CardHeader textAlign="left" style={{display:"flex", fontFamily:"Roboto", paddingTop:`16px`, marginBottom: "20px", marginLeft: "10px"}} >
                         <p style={{margin:"0px"}}>Class Overview</p>
-
                     </CardHeader>
 
-                    {/* <Table basic='very' style={{marginLeft: "10px"}}>
-                        <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell/> 
-                            <Table.HeaderCell> Often </Table.HeaderCell>
-                            <Table.HeaderCell> Rarely </Table.HeaderCell>
-                            <Table.HeaderCell> Not at all </Table.HeaderCell>
-
-                        </Table.Row>
-                        </Table.Header>
-
-                        <Table.Body>
-                            {this.makeTable2(this.state.tableNumber, this.props.tableData)}
-                            {this.createTableWith9Rows(this.state.tableData)}
-                        </Table.Body>
-                    </Table> */}
-
                     <OverviewNineColumns tableData={this.props.tableData}/>
+
                 </Card.Content>
             </Card>
         )
     }
 
 }
-// Open Preview: Command + P
-// Learn more: https://framer.com/api
-
-const mainStack = {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    overflow: "hidden",
-    marginLeft:"10px",
-    paddingRight: "10px"
-} as React.CSSProperties
-
-// const seperatedLine = {
-//     width: "100%",
-//     height: 1,
-//     overflow: "visible",
-//     backgroundColor: "rgba(178, 178, 178, 1)",
-// } as React.CSSProperties
-
-const tableName = {
-    width: "100%",
-    position: "relative",
-    top: "16px",
-    fontFamily: `"Roboto", "Roboto", sans-serif`,
-    color: "#000000",
-    fontSize: "14px",
-    letterSpacing: 0,
-    lineHeight: 1.5,
-    fontWeight: 900,
-    fontStyle: "normal",
-    textAlign:"left"
-} as React.CSSProperties
-
-const cellStyle = {
-    // width: "50px",
-    borderWidth: "0px",
-    paddingTop: "5px",
-    paddingBottom: "5px",
-}
-
-const StyledHeaderCell = styled(Table.HeaderCell)`
-    &&& {   
-        background: red;
-        border-width: 0px;
-        text-align: center;
-        font-size: 14px;
-        font-weight: normal;
-    }
-`
 
 function IndividualTableRow(props) {
     const rowData = props.rowData as Array<string>
@@ -239,7 +115,6 @@ function IndividualTableRow(props) {
     return (
         <Table.Row
             style={{
-                // backgroundColor: "rgba(228, 226, 226, 0.48)",
                 backgroundColor: index % 2 === 0 ?  "rgba(234, 249, 255, 0.65)" : "#ffffff",  
                 textAlign: "center",
                 fontWeight: "normal",
@@ -260,7 +135,6 @@ function IndividualTable(props) {
 
     return (
         <div style={props.style}>
-            {/* <div style={seperatedLine} /> */}
             <Grid style={{ width: "100%" }}>
                 <Grid.Row>
                     <Grid.Column

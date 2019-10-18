@@ -40,7 +40,6 @@ export class ChooseStudentsRow extends React.Component<IChooseStudentContainerPr
     }
 
     public componentDidUpdate(prevProps: IChooseStudentContainerProps) {
-        // Typical usage (don't forget to compare props):
 
         if (prevProps.allStudentsCheckitems !== this.props.allStudentsCheckitems){
             const everyStudentCheckedArray = this.props.classInfo.studentName.map(s=> this.props.allStudentsCheckitems.get(s))

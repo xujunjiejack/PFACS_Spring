@@ -26,7 +26,6 @@ function generateColorBasedOnStatus(status: StudentStatus){
 
 const Rectangular = styled.div <{status: StudentStatus}>`
     background-color: ${props => generateColorBasedOnStatus(props.status)};
-    // min-width: 40px;
     font-size: 1.2em;
     color: black;
     display: flex;
@@ -43,25 +42,6 @@ const Rectangular = styled.div <{status: StudentStatus}>`
     }
 `
 
-// const GhostRectangular = styled.div <{status: StudentStatus}>`
-//     background-color: transparent;
-//     // min-width: 40px;
-//     font-size: 1.2em;
-//     color: black;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     margin-bottom: 16px;
-//     margin-left: 3px;
-//     width: 85px;
-//     height: 60px;
-    
-//     &.active1 {
-//         border: 5px solid red;
-//         outline: none;
-//     }
-// `
-
 interface IStudentStatusRectProps{
     student: Student,
     showDetailed: (studentId:string) => void,
@@ -73,12 +53,6 @@ interface IStudentStatusRectProps{
 interface IStudentStatusRectState{
     rectActive: boolean
 }
-
-// function GhostStatusRect() {
-//     return(
-//         <GhostRectangular status={StudentStatus.Idle}/>
-//     )    
-// }
 
 class StudentStatusRect extends React.Component<IStudentStatusRectProps, IStudentStatusRectState> {
 

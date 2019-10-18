@@ -236,57 +236,6 @@ const CreateNewButtonSmall = styled.div`
       }
 `
 
-// const LabelOfNoOfStudents = styled.div`
-//     position: absolute;
-//     width: 117px;
-//     height: 17px;
-//     left: 889px;
-//     top: 183px;
-
-//     font-family: Roboto;
-//     font-style: normal;
-//     font-weight: normal;
-//     font-size: 14px;
-//     line-height: normal;
-
-//     color: #474747;
-// `
-
-// const Line = styled.div`
-//     position: absolute;
-//     width: 1206.01px;
-//     height: 0px;
-//     left: 120px;
-//     top: 217px;
-
-//     border: 1px solid #C4C4C4;
-//     transform: rotate(-0.24deg);
-// `
-
-// const SessionRowContainer = styled.div`
-//     position: absolute;
-//     width: 1122px;
-//     height: 61px;
-//     left: 120px;
-//     top: 229px;
-// `
-
-// const StartTime = styled.div`
-//     position: absolute;
-//     left: 0%;
-//     right: 76.17%;
-//     top: 68.85%;
-//     bottom: 0%;
-
-//     font-family: Roboto;
-//     font-style: normal;
-//     font-weight: normal;
-//     font-size: 16px;
-//     line-height: normal;
-
-//     color: #8F8F8F;
-// `
-
 const SessionRowContainer2 = styled.div`
     position: relative;
     // width: 1132px;
@@ -366,11 +315,6 @@ class Session extends React.Component <any, any> {
             <UserContext.Consumer>
                 { value => 
                     {
-                        //    if (value.userName === "" || value.userName === undefined || value.userName === null) {
-                        //        return <div/>
-                        //    } else {
-                        //         return this.createThisPage(value) 
-                        //    }
                         const { cookies } = this.props;
                         if (cookies !== undefined){
                             if (cookies.get("userName") === undefined || cookies.get("userName")=== ""){
@@ -395,11 +339,6 @@ class Session extends React.Component <any, any> {
         }
     }
 
-    private onReload() {
-        this.props.setUser()
-        // I will set the user information. 
-    }
-
     private navigateToCreation = ()=> {
         this.props.history.push("/createsession")
     }
@@ -422,9 +361,6 @@ class Session extends React.Component <any, any> {
 
             default:
                 return (
-                    // like the user name will be gone hmm. One way is to extract the data from Cookie 
-                    // if the context is the same 
-                    // or I can just set the user.
                     <Layout history={this.props.history} userName={context.userName} logoutAction={this.props.logoutAction}>
                         <Grid style={{position:"absolute", top:"43px", width:"100%"}}>
                             <GridRow>

@@ -86,6 +86,14 @@ const TopBarContainer = styled.div`
     height: 43px;
     left: 0px;
     top: 0px;
+    background: #454545;
+`
+
+const TopBarRightButtonGroupContainer = styled.div`
+    display: flex;
+    flexDirection:row; 
+    left: 80%;
+    position: relative
 `
 
 /* Props interface  */
@@ -95,21 +103,20 @@ interface ILayoutProps{
     logoutAction?: (history)=>void
 }
 
+
 /* Main Class  */
 export class Layout extends React.Component<ILayoutProps, any> {
-    // The way I wrote the layout is not efficient. need better optimization
 
     public render(){
         return (
-            // Why after reload, the name will get deleted? I think it's the props
             <TopBarContainer>
-                <TopBarBackground/>
                 <SessionButton onClick={this.navigateToSessions}> Sessions </SessionButton>
-                <div style={{display: "flex", flexDirection:"row", left: "80%", position: "relative"}}>
+                
+                <TopBarRightButtonGroupContainer>
                     <UserNameButton> {this.props.userName} </UserNameButton>                
                     <LogoutButton onClick={this.logoutAction}> Log out </LogoutButton>
-                </div>
-                {/* The log out button will clear all user logged information */}
+                </TopBarRightButtonGroupContainer>
+
                 {this.props.children}
 
             </TopBarContainer>
