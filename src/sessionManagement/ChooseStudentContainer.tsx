@@ -82,9 +82,7 @@ export class ChooseStudentsRow extends React.Component<IChooseStudentContainerPr
 
     private masterClick = (e: any, data: any) => {
         const isChecked = data.checked
-
         if (isChecked){
-            // set all students checkbox to true 
             const studentCheckbox = this.state.studentCheckbox
             let updatedMap = studentCheckbox
             this.props.classInfo.studentName.forEach(
@@ -104,7 +102,6 @@ export class ChooseStudentsRow extends React.Component<IChooseStudentContainerPr
             this.props.setAllStudentCheckitems(updatedMap)
             this.setState({none: true, studentCheckbox: updatedMap, all: false})
         }
-        
     }
 
 
@@ -112,16 +109,10 @@ export class ChooseStudentsRow extends React.Component<IChooseStudentContainerPr
         const studentName =  data.label
         const isChecked = data.checked
         const updatedCheckItems: Map<string,boolean> = this.state.studentCheckbox.set(studentName, isChecked)
-
-        // Check whether all students or none students
         const valueArray = this.props.classInfo.studentName.map(s=> updatedCheckItems.get(s))
         const none = valueArray.every(x=> x === false)
         const all = valueArray.every(x=> x === true)
         this.props.setAllStudentCheckitems(updatedCheckItems)
         this.setState( {studentCheckbox: updatedCheckItems, all, none} )
-        
-        // this.props.enrolledStudent.push(studentName)
     }
-
-
 }

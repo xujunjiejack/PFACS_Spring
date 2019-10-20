@@ -1,15 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import axios from "axios";
 import * as React from "react";
-// import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
 import styled from "styled-components"
-// import {HeaderText, TitleText} from "../AppStyle";
-import {ISession, UserContext} from "../Context"
-import {Layout} from "../Layout"
-// import {Grid, GridColumn, GridRow, Container} from "semantic-ui-react"
-import {Grid, GridColumn, GridRow} from "semantic-ui-react"
-// import { withCookies, Cookies } from "react-cookie";
+import { ISession, UserContext } from "../Context"
+import { Layout } from "../Layout"
+import { Grid, GridColumn, GridRow } from "semantic-ui-react"
 import { withCookies } from "react-cookie";
+import * as globalStyle from "../AppStyle"
 
 
 const DeleteIcon = styled(FontAwesomeIcon)`
@@ -154,6 +150,8 @@ const SessionLabel = styled.div`
     font-size: 18px;
     line-height: normal;
     text-align: left;
+    display: flex;
+    align-items: center;
     color: #000000;
 `
 
@@ -244,54 +242,41 @@ const SessionRowContainer2 = styled.div`
     margin-bottom: 40px;
 `
 
-const SessionLabel2 = styled.div`
-
+const SessionNameText = styled(globalStyle.Header500)`
     position: relative;
     width: 30% ;
     text-align: left;
     height: 24px;
     top: 0px;
 
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 20px;
-    line-height: normal;
+    display: flex;
+    align-items: center;
 
-    color: #176FBF;
+    color: ${globalStyle.colors.baseBlueStone};
 `
 
-const SessionStartTime = styled.div`
+const SessionStartTimeText = styled(globalStyle.Header200)`
     width: 422px;
     height: 19px;
     top: 42px;
-    margin-top: 15px;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: normal;
+    // margin-top: 15px;
+
     text-align: left;
-    color: #8F8F8F;
+
+    color: ${globalStyle.colors.baseBlueStone50};
 `
 
-const StudentNumber2 = styled.div<{isOnGoing: boolean}>`
+const StudentNumber = styled(globalStyle.Header400)<{ isOnGoing: boolean }>`
     position: relative;
     width: 96.98px;
     height: 22px;
-    left: ${ props=>props.isOnGoing?  "110px" : 110+110+"px" };
+    left: ${ props => props.isOnGoing ? "110px" : 110 + 110 + "px"};
     top: 1px;
-
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 18px;
-    line-height: normal;
 
     color: #000000;
 `
 
-const OngoingLabel2 = styled.div`
+const OngoingLabel = styled(globalStyle.Header300)`
     // position: absolute;
     height: 25px;
     left: 300px;
@@ -299,57 +284,58 @@ const OngoingLabel2 = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: Roboto;
+
     vertical-align: middle;
-    background: #E1E1E1;
+    background: ${globalStyle.colors.basePacificBlue};
+    color: ${globalStyle.colors.baseDoctor}
     border-radius: 8px;
+
     width: 110px;
 `
 
 /* Main Component */
-class Session extends React.Component <any, any> {
+class Session extends React.Component<any, any> {
 
-    public render(){
+    public render() {
 
         return (
             <UserContext.Consumer>
-                { value => 
-                    {
-                        const { cookies } = this.props;
-                        if (cookies !== undefined){
-                            if (cookies.get("userName") === undefined || cookies.get("userName")=== ""){
-                                setTimeout(()=>{
-                                    this.props.history.push("/login")
-                                }, 3000)
-                                return <div> Redirecting to login </div>
-                                
-                            }
+                {value => {
+                    const { cookies } = this.props;
+                    if (cookies !== undefined) {
+                        if (cookies.get("userName") === undefined || cookies.get("userName") === "") {
+                            setTimeout(() => {
+                                this.props.history.push("/login")
+                            }, 3000)
+                            return <div> Redirecting to login </div>
+
                         }
-                        return this.createThisPage(value) 
-                    } 
+                    }
+                    return this.createThisPage(value)
+                }
                 }
             </UserContext.Consumer>
         )
     }
 
-    public componentDidMount (){
+    public componentDidMount() {
         const { cookies } = this.props;
-        if (cookies.get("userName") !== undefined && cookies.get("userAccessToken") !== undefined && cookies.get("userIdToken") !== undefined){
-            this.props.setUser( cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken"), cookies.get("userSessions") )    
+        if (cookies.get("userName") !== undefined && cookies.get("userAccessToken") !== undefined && cookies.get("userIdToken") !== undefined) {
+            this.props.setUser(cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken"), cookies.get("userSessions"))
         }
     }
 
-    private navigateToCreation = ()=> {
+    private navigateToCreation = () => {
         this.props.history.push("/createsession")
     }
 
-    private createThisPage = (context: any)=>{
-        
+    private createThisPage = (context: any) => {
+
         const sessionNumber = context.userSessions.length;
         switch (sessionNumber) {
 
             case 0:
-                return( 
+                return (
                     <Layout history={this.props.history} userName={context.userName} logoutAction={this.props.logoutAction}>
                         <div>
                             <SessionLabel> SESSIONS </SessionLabel>
@@ -362,60 +348,61 @@ class Session extends React.Component <any, any> {
             default:
                 return (
                     <Layout history={this.props.history} userName={context.userName} logoutAction={this.props.logoutAction}>
-                        <Grid style={{position:"absolute", top:"43px", width:"100%"}}>
+                        <Grid style={{ position: "absolute", top: "43px", width: "100%" }}>
                             <GridRow>
-                                <GridColumn width="1"/>
-                                <GridColumn width="14" style={{background:"#FFFFFF", width:"100%", height:"75vh", margin:"14px", padding:"50px 50px 50px 50px"}}>
-                                        <Grid>
-                                        <Grid.Row >
-                                            <Grid.Column width="8" style={{paddingLeft: "0px"}}>
+                                <GridColumn width="1" />
+                                <GridColumn width="14" style={{ background: "#FFFFFF", width: "100%", height: "75vh", margin: "14px", padding: "50px 50px 50px 50px" }}>
+                                    <Grid>
+                                        <Grid.Row>
+                                            <Grid.Column width="8" style={{ paddingLeft: "0px" }}>
                                                 <SessionLabel> Sessions </SessionLabel>
                                             </Grid.Column>
-                                            <Grid.Column width="8" style={{display:"flex", alignItems:"center"}}>
-                                                <CreateNewButtonSmall onClick={this.navigateToCreation}> Create a new session </CreateNewButtonSmall>  
+                                            <Grid.Column width="8" style={{ display: "flex", alignItems: "center" }}>
+                                                <CreateNewButtonSmall onClick={this.navigateToCreation}> Create a new session </CreateNewButtonSmall>
                                             </Grid.Column>
                                         </Grid.Row>
                                         <Grid.Row>
                                             {/* <Container> */}
-                                            <ul style={{listStyleType:"none", paddingLeft:"0", width:"100%"}}>
+                                            <ul style={{ listStyleType: "none", paddingLeft: "0", width: "100%" }}>
                                                 {this.createSessions(context.userSessions)}
                                             </ul>
                                             {/* </Container> */}
                                         </Grid.Row>
-
-                                        </Grid>                                        
+                                    </Grid>
                                 </GridColumn>
                             </GridRow>
                         </Grid>
                     </Layout>
-                )   
-            }
+                )
+        }
     }
 
     private createSessions = (dummyDataList: ISession[]) => {
-        return(
+        return (
             <div>
-                {dummyDataList.map(dummy => 
-                    <li  key={dummy.sessionName}>
+                {dummyDataList.map(dummy =>
+                    <li key={dummy.sessionName}>
                         <SessionRowContainer2 key={dummy.sessionName}>
 
-                            <div style={{display: "flex", alignItems:"center"}}>
-                                <SessionLabel2>{dummy.sessionName} </SessionLabel2>
-                                { dummy.ongoing ?  <OngoingLabel2> Ongoing </OngoingLabel2> : <div/>}
-                                <StudentNumber2 isOnGoing={dummy.ongoing}> {dummy.studentNumber} Students </StudentNumber2> 
+                            <div style={{ display: "flex", alignItems: "center" }}>
+                                <SessionNameText>{dummy.sessionName} </SessionNameText>
                                 
-                                <DashboardButton onClick={()=>this.dashboardClick(dummy.sessionId)}>
+                                {dummy.ongoing ? <OngoingLabel> Ongoing </OngoingLabel> : <div />}
+                                
+                                <StudentNumber isOnGoing={dummy.ongoing}> {dummy.studentNumber} Students </StudentNumber>
+
+                                <DashboardButton onClick={() => this.dashboardClick(dummy.sessionId)}>
                                     <span>
-                                        <DashboardIcon icon="tachometer-alt" size="2x"/>
+                                        <DashboardIcon icon="tachometer-alt" size="2x" />
                                     </span>
                                     <span>
                                         Dashboard
                                     </span>
                                 </DashboardButton>
-                                
-                                <ReportButton onClick={()=>this.reportClick(dummy.sessionId)}>
+
+                                <ReportButton onClick={() => this.reportClick(dummy.sessionId)}>
                                     <span>
-                                        <ReportIcon icon={["far","file-alt"]} size="2x"/>
+                                        <ReportIcon icon={["far", "file-alt"]} size="2x" />
                                     </span>
 
                                     <span>
@@ -423,15 +410,15 @@ class Session extends React.Component <any, any> {
                                     </span>
                                 </ReportButton>
 
-                                <DeleteButton onClick={ ()=>{this.props.deleteASession(dummy)} }>
+                                <DeleteButton onClick={() => { this.props.deleteASession(dummy) }}>
                                     <span>
-                                        <DeleteIcon icon={["far", "trash-alt"]} size="2x" style={{color: "red"}}/>
+                                        <DeleteIcon icon={["far", "trash-alt"]} size="2x" style={{ color: "red" }} />
                                     </span>
                                 </DeleteButton>
-                            </div>                     
+                            </div>
 
-                            <SessionStartTime> {dummy.startTime} </SessionStartTime>
-                            
+                            <SessionStartTimeText> {dummy.startTime} </SessionStartTimeText>
+
                         </SessionRowContainer2>
                     </li>
                 )}

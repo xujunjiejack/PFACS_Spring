@@ -1,19 +1,11 @@
-// import axios from "axios"
 import * as React from 'react';
-// import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
 import {GoogleLoginResponse} from "react-google-login";
-// import {Route, Router} from "react-router"
-// import {Button, ButtonGroup, Card, CardContent,CardHeader, Grid, GridColumn, GridRow, Header } from "semantic-ui-react"
 import {Card, CardContent,CardHeader, Grid } from "semantic-ui-react";
 import styled from "styled-components";
-// import {HeaderText, TitleText} from "../AppStyle";
 import {Student, StudentStatus} from '../data_structure/Student';
 import {ISession, UserContext} from "../Context"
-// import {Layout} from "../Layout"
 import StudentGraphUsage from "./StudentGraphUsage";
-import {StudentOverview} from "./StudentOverview";
-// import * as openSocket from 'socket.io-client'; 
-// import openSocket from 'socket.io-client'; 
+import {StudentOverview} from "./StudentOverview"; 
 import socketIOClient from 'socket.io-client'; 
 
 import {StudentCurrentDetails} from "./StudentCurrentDetails";
@@ -21,8 +13,10 @@ import {idNamesPair} from "./../studentsIDsName";
 
 // const socket = openSocket("http://127.0.0.1:3001/studentstatus")
 // console.log("socket ip " + process.env.SOCKETIP);
-const BACKEND = 'http://localhost';
+// const BACKEND = 'http://localhost';
+const BACKEND = window.location.hostname;
 const socket = socketIOClient(BACKEND + ":3001/studentstatus");
+
 
 /* CSS for components */
 const GridHeaderStyle = {

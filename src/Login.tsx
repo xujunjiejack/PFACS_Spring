@@ -8,7 +8,8 @@ import {UserContext} from "./Context"
 import {IGoogleClassroomInfo} from "./data_structure/GoogleClassroomInfo";
 import * as firebase from "firebase"
 import {Button} from "semantic-ui-react"
-import { withCookies } from 'react-cookie';
+import {withCookies} from 'react-cookie';
+import * as globalStyles from "./AppStyle"
 
 const firebaseConfig = {
   apiKey: "AIzaSyAbY4nV71yiRKOo83KAv0c2xm-IV5fmH6k",
@@ -28,12 +29,20 @@ provider.addScope("https://www.googleapis.com/auth/classroom.courses.readonly ht
 
 /* CSS For different componenets*/
 const FirebaseLoginButton = styled(Button)`
-    position: absolute;
-    width: 508px;
-    height: 97px;
-    left: 468px;
-    top: 495px;
-    justify-content: center;
+    &&& {
+        position: absolute;
+        width: 508px;
+        height: 97px;
+        left: 468px;
+        top: 495px;
+        justify-content: center;
+        background-color: ${globalStyles.colors.basePacificBlue}
+    }
+`
+
+const LoginButtonText = styled(globalStyles.Header800)`
+    color: ${globalStyles.colors.baseDoctor}
+    
 `
 
 /* Interface */
@@ -74,16 +83,20 @@ class LoginPage extends React.Component <any, ILoginProps> {
     }
 
     public render(){
+        const { cookies } = this.props;
+        const redirectToSessionPageInSeconds = (seconds) => {
+          setTimeout(()=>{
+            this.props.history.push("/sessions")
+          }, seconds)
+        }
+
         return(
             <UserContext.Consumer>
               {value => 
                 {
-                  const { cookies } = this.props;
                   if (cookies !== undefined){
                       if (cookies.get("userName") !== undefined && cookies.get("userName") !== ""){
-                          setTimeout(()=>{
-                              this.props.history.push("/sessions")
-                          }, 3000)
+                          redirectToSessionPageInSeconds(3000)
                           return <div> User logged in. Redirecting </div>
                       }
                   }
@@ -94,7 +107,7 @@ class LoginPage extends React.Component <any, ILoginProps> {
                     </TitleText>
                   
                     <FirebaseLoginButton onClick={ this.firebaseLogin }>
-                      Firebase login with Google provider
+                      <LoginButtonText>Log in with Google</LoginButtonText>
                     </FirebaseLoginButton>
                   </div>
                   )
