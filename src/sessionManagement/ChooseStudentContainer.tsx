@@ -4,8 +4,22 @@ import * as React from "react";
 import { Checkbox, GridColumn, GridRow} from 'semantic-ui-react'
 
 import {IGoogleClassroomInfo} from "../data_structure/GoogleClassroomInfo"
+import styled from "styled-components"
+import * as globalStyle from "../AppStyle"
 
-
+const ClassroomHeader = styled(GridRow)`
+    &&& {
+    height:51px;
+    display: flex;
+    align-items:center;
+    background:${globalStyle.colors.basePacificBlue};
+    margin-top: 0;
+    padding-left: 14px;
+    padding-right: 14px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    }
+`
 
 /* Interface for props and states */
 interface IChooseStudentContainerProps {
@@ -52,11 +66,13 @@ export class ChooseStudentsRow extends React.Component<IChooseStudentContainerPr
     public render(){
         return(
             <React.Fragment>
-                <GridRow style={{height:"51px", background:"#F4F4F4", marginTop: 0, padding: "14px", display: "flex", alignItems:"center"}}>
-                    <Checkbox label={this.props.classInfo.className}  indeterminate={!this.state.none && !this.state.all} checked={this.decideMasterCheckbox()}
+                <ClassroomHeader>
+                    <Checkbox label={this.props.classInfo.className} 
+                        style={{fontColor: globalStyle.colors.baseDoctor}}
+                        indeterminate={!this.state.none && !this.state.all} checked={this.decideMasterCheckbox()}
                         onChange = {this.masterClick}
                     />
-                </GridRow>
+                </ClassroomHeader>
                 
                 <GridRow style={{marginTop: 0}}>
                     {

@@ -8,22 +8,16 @@ import { IGoogleClassroomInfo } from "../data_structure/GoogleClassroomInfo"
 import { UserContext } from '../Context';
 import * as firebase from "firebase"
 import { withCookies } from "react-cookie";
+import * as globalStyle from "../AppStyle";
 
 /* CSS for the component */
-const CreateAssessmentLabel = styled.div`
+const CreateAssessmentLabel = styled(globalStyle.Header600)`
     position: relative;
     width: 842px;
     height: 30px;
-    // left: 319px;
     top: 40px;
 
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 18px;
-    line-height: normal;
-
-    color: #000000;
+    color: ${globalStyle.colors.baseBlueStone};
     display: flex;
     justify-content: left;
     align-items:center;
@@ -68,13 +62,27 @@ const BackgroundContainer = styled(Grid)`
     top: 43px;
     background: transparent;
 `
+  
+const SessionTitleLabel = styled(globalStyle.Header500)`
+    color: ${globalStyle.colors.baseBlueStone};
+    display: flex; 
+    justify-content: left;
+    margin-bottom: 10px
+`
+
+const StudentTitleLabel = styled(globalStyle.Header500)`
+    color: ${globalStyle.colors.baseBlueStone};
+    display: flex; 
+    justify-content: left;
+    margin-bottom: 10px
+`
 
 /* Main Component */
 class CreateSession extends React.Component<any, any>{
 
     public constructor(props: any) {
         super(props)
-        this.state = { isLoading: true }
+        this.state = { isLoading: true, title: "" }
     }
 
     public componentDidMount() {
@@ -151,7 +159,7 @@ class CreateSession extends React.Component<any, any>{
 
                                     {/* Session title */}
                                     <Form.Field>
-                                        <label style={{ display: "flex", justifyContent: "left", marginBottom: "10px" }}>Session Title</label>
+                                        <SessionTitleLabel>Session Title</SessionTitleLabel>
                                         <input placeholder='Session Title' value={this.state.title} name="title" onChange={this.formOnChange} style={{ width: "100%" }} />
                                     </Form.Field>
 
@@ -159,9 +167,9 @@ class CreateSession extends React.Component<any, any>{
 
                                     {/* Session check box */}
                                     <Form.Field>
-                                        <label style={{ display: "flex", justifyContent: "left", marginBottom: "10px" }}>
+                                        <StudentTitleLabel>
                                             Students (From Google Classroom)
-                                        </label>
+                                        </StudentTitleLabel>
 
                                         {/* Given the data and generate it*/}
                                         <ChooseStudentContainer>
@@ -183,7 +191,7 @@ class CreateSession extends React.Component<any, any>{
 
                                     {/* Create Session */}
                                     <Form.Field>
-                                        <Button onClick={this.createSession} style={{ position: "absolute", left: `0px` }}>
+                                        <Button disabled={ this.state.title === "" } onClick={this.createSession} style={{ position: "absolute", left: `0px` }}>
                                             Create Session
                                         </Button>
                                     </Form.Field>

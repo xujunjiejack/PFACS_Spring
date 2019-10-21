@@ -10,6 +10,7 @@ import LiveDashboard from "./LiveDashboard";
 // import * as openSocket from 'socket.io-client'; 
 import {idNamesPair} from "./../studentsIDsName";
 import { withCookies } from "react-cookie";
+import * as globalStyle from "../AppStyle"
 
 /* CSS For Component */
 const HeaderContainer = styled.div`
@@ -25,30 +26,15 @@ const HeaderContainer = styled.div`
   padding: 10px 20px 4px 20px;
 `
 
-const Title = styled.label`
-  // position: relative;
-  // left: 8px;
-  // top: 25.49%;
-  // bottom: 50%;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 28px;
-  line-height: normal;
+const Title = styled(globalStyle.Header700)`
   text-align:left;
-  color: #000000;
+  color: ${globalStyle.colors.baseBlueStone};
 `
 
-const StartTime = styled.div`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: light;
-  font-size: 20px;
-  line-height: normal;
+const StartTime = styled(globalStyle.Header400)`
   text-align: left;
-  padding-top: 8px;
-
-  color: rgba(156, 156, 156, 0.75);
+  
+  color: ${globalStyle.colors.baseBlueStone50}
 `
 
 const StyledButtonGroup = styled(ButtonGroup)`

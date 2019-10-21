@@ -11,8 +11,8 @@
 import {History} from "history";
 import * as React from "react";
 import styled from "styled-components";
-// import { GoogleLogout } from 'react-google-login';
-import { Button } from 'semantic-ui-react';
+import { Button, Grid, GridColumn } from 'semantic-ui-react';
+import * as globalStyle from "./AppStyle"
 
 /* CSS For different componenets*/
 const TopBarBackground = styled.div`
@@ -26,43 +26,29 @@ const TopBarBackground = styled.div`
 `
 
 const SessionButton = styled.div`
-    position: absolute;
-    left: 8.96%;
-    right: 85.97%;
-    top: 23.26%;
-    bottom: 25.58%;
+    color: #FFFFFF;
+    cursor: pointer;
+    z-index: 1;
+`
 
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 18px;
-    line-height: normal;
+const SessionButtonText = styled(globalStyle.Header500)`
+    color: ${globalStyle.colors.baseBlueStone}
+`
+
+const UserNameButton = styled.div`
+    display: flex;
+    align-items: center;
     
+    left: 0px;  
+    width: 100px;
 
     color: #FFFFFF;
     cursor: pointer;
     z-index: 1;
 `
 
-const UserNameButton = styled.div`
-    display: flex;
-    align-items: center;
-    // left: 86.25%;
-    left: 0px;  
-    width: 100px;
-    // right: 7.5%;
-    // top: 23.26%;
-    // bottom: 25.58%;
-
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 18px;
-    line-height: normal;
-
-    color: #FFFFFF;
-    cursor: pointer;
-    z-index: 1;
+const UserNameText = styled(globalStyle.Header500)`
+    color: ${globalStyle.colors.baseBlueStone}
 `
 
 const LogoutButton = styled(Button)`
@@ -79,14 +65,18 @@ const LogoutButton = styled(Button)`
     line-height: normal;
 `
 
-const TopBarContainer = styled.div`
-    position: relative;
-    // width: 1440px;
-    width: 100vw;
-    height: 43px;
-    left: 0px;
-    top: 0px;
-    background: #454545;
+const TopBarContainer = styled(Grid.Row)`
+    &&&  {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        position: relative;
+        display: flex;
+        width: 100vw;
+        // height: 44px;
+        left: 0px;
+        alignItems: center;
+        background: ${globalStyle.colors.lightNeutral25};
+    }
 `
 
 const TopBarRightButtonGroupContainer = styled.div`
@@ -109,17 +99,34 @@ export class Layout extends React.Component<ILayoutProps, any> {
 
     public render(){
         return (
-            <TopBarContainer>
-                <SessionButton onClick={this.navigateToSessions}> Sessions </SessionButton>
-                
-                <TopBarRightButtonGroupContainer>
-                    <UserNameButton> {this.props.userName} </UserNameButton>                
-                    <LogoutButton onClick={this.logoutAction}> Log out </LogoutButton>
-                </TopBarRightButtonGroupContainer>
+            <React.Fragment>
+            <Grid style={{marginTop: 0, marginBottom: 0, padding:0}}>
+                <TopBarContainer>
+                    <GridColumn width={1}/>
+                    <GridColumn width={1} style={{display: "flex", alignItems: "center"}}>
+                        <SessionButton onClick={this.navigateToSessions}> 
+                            <SessionButtonText> Sessions </SessionButtonText>
+                        </SessionButton>
+                    </GridColumn>
+                    <GridColumn width={10}>
 
-                {this.props.children}
+                    </GridColumn>
 
-            </TopBarContainer>
+                    <GridColumn width={3} style={{display:"flex", alignItems:"center", justifyContent:"flex-end"}}>
+                        <UserNameButton> <UserNameText> {this.props.userName} </UserNameText> </UserNameButton>
+                        <LogoutButton onClick={this.logoutAction}> Log out </LogoutButton>   
+                    </GridColumn>
+                    
+                    {/* 
+                    <TopBarRightButtonGroupContainer>
+                            <UserNameButton> <UserNameText> {this.props.userName} </UserNameText> </UserNameButton>                
+                            <LogoutButton onClick={this.logoutAction}> Log out </LogoutButton>
+                    </TopBarRightButtonGroupContainer> 
+                    */}
+                </TopBarContainer>
+            </Grid>
+            {this.props.children}
+            </React.Fragment>
         )
     }
 

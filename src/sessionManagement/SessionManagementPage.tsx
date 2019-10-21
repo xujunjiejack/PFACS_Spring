@@ -34,10 +34,15 @@ const ReportIcon = styled(FontAwesomeIcon)`
     margin-right: 8px;
 `
 
-const DashboardButton = styled.button`
+
+const ViewButtonText = styled(globalStyle.Header100)`
+    color:${globalStyle.colors.baseBlueStone}
+`
+
+const ViewActionButton = styled.button`
     border-radius: 6px;
-    // background-color: white;
-    background: #F4F4F4;
+    background: ${globalStyle.colors.lightNeutral25};
+    // background: #F4F4F4;
     border-width: 0px;
     border-color: rgb(0,0,0,0.1);
     display: flex;
@@ -46,113 +51,43 @@ const DashboardButton = styled.button`
     height: 35px;
     width: 120px;
 
-    font-family: Roboto;
-    font-size:12px;
-
     justify-content: center;
-    margin-right: 16px;
-    right: 170px;
-    position: absolute;
-
+    margin-right: 8px;
+    text-decoration: none;
     :hover{
-        background-color: #5A9AF8;
-        color: white;
+        background-color: ${globalStyle.colors.basePacificBlue25};
     }
 
-    &.active {
-        
+    &.active { 
         :hover{
-          background-color: #357AE0;
-          color: white;
+        background-color: #357AE0;
         }
-        background-color: #5A9AF8;
-        color: white;
-    }
+        background-color: ${globalStyle.colors.basePacificBlue25};
+    },
+    outline: none;
 `
 
-const DeleteButton = styled.button`
-    border-radius: 6px;
-    // background-color: white;
-    background: #F4F4F4;
-    border-width: 0px;
-    border-color: rgb(0,0,0,0.1);
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    height: 35px;
+const DashboardButton = styled(ViewActionButton)`
+    width: 120px;
+    margin-right: 8px;
+    margin-left: 12px;
+`
+
+const DeleteButton = styled(ViewActionButton)`
     width: 40px;
-
-    font-family: Roboto;
-    font-size:12px;
-
-    justify-content: center;
-    margin-right: 16px;
-    right: 0;
-    position: absolute;
-
-    :hover{
-        background-color: #5A9AF8;
-        color: white;
-    }
-
-    &.active {
-        
-        :hover{
-          background-color: #357AE0;
-          color: white;
-        }
-        background-color: #5A9AF8;
-        color: white;
-    }
 `
 
-
-const ReportButton = styled.button`
-    background: #F4F4F4;
-    border-radius: 6px;
-    // background-color: white;
-    border-width: 0px;
-    border-color: rgb(0,0,0,0.1);
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    height: 35px;
+const ReportButton = styled(ViewActionButton)`
     width: 120px;
-
-    font-size:12px;
-    font-family: Roboto;
-
-    justify-content: center;    
-    right: 60px;
-    position: absolute;
-    
-    :hover{
-        background-color: #5A9AF8;
-        color: white;
-    }
-
-    &.active {
-        :hover{
-            background-color: #357AE0;
-            color: white;
-        }
-        background-color: #5A9AF8;
-        color: white;
-    }
 `
 
-const SessionLabel = styled.div`
+const SessionLabel = styled(globalStyle.Header600)`
     width: 85px;
     height: 22px;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 18px;
-    line-height: normal;
     text-align: left;
     display: flex;
     align-items: center;
-    color: #000000;
+    color: ${globalStyle.colors.baseBlueStone};
 `
 
 const CreatePrompt = styled.div`
@@ -174,7 +109,7 @@ const CreatePrompt = styled.div`
 const CreateNewButton = styled.div`
     position: absolute;
     width: 221px;
-    height: 56px;
+    height: 44px;
     left: 609px;
     top: 442px;
 
@@ -182,19 +117,25 @@ const CreateNewButton = styled.div`
     box-sizing: border-box;
     border-radius: 10px;
     display: flex;
-    font-family: Roboto, sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 18px;
-    line-height: normal;
 
-    color: #000000;
+    background-color: ${globalStyle.colors.basePacificBlue};
     justify-content: center;
     align-items:center;
     cursor: pointer;
+
+    :hover {
+        background-color: ${globalStyle.colors.baseBlueStone}
+    }
+`
+
+const CreateNewButtonText = styled(globalStyle.Header500)`
+    font-weight: normal;
+    color: ${globalStyle.colors.baseDoctor}
 `
 
 const CreateNewButtonSmall = styled.div`
+
+    &&& {
     position: absolute;
     width: 184px;
     height: 38px;
@@ -202,52 +143,49 @@ const CreateNewButtonSmall = styled.div`
     right: 0px
 
     background: #F4F4F4;
-    // border: 1px solid #000000;
     box-sizing: border-box;
     border-radius: 6px;
+    background-color: ${globalStyle.colors.basePacificBlue};
 
-    font-family: Roboto, sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 15px;
-    line-height: normal;
-
-    color: #000000;
     display: flex;
     justify-content: center;
     align-items:center;
     cursor: pointer;
 
+
     :hover{
-        background-color: #5A9AF8;
-        color: white;
+        background-color: ${globalStyle.colors.baseBlueStone};
       }
   
       &.active {
         
         :hover{
-          background-color: #357AE0;
+          background-color:${globalStyle.colors.baseBlueStone};
           color: white;
         }
-        background-color: #5A9AF8;
+        background-color:${globalStyle.colors.baseBlueStone};
         color: white;
       }
+    }
 `
 
-const SessionRowContainer2 = styled.div`
+const SessionRowContainer2 = styled(GridRow)`
     position: relative;
     // width: 1132px;
     width: 100%;
     margin-top: 15px;
-    margin-bottom: 40px;
+    margin-bottom: 0px;
+    display: flex;
+    alignItems: center;
 `
 
 const SessionNameText = styled(globalStyle.Header500)`
     position: relative;
-    width: 30% ;
+    // width: 30% ;
     text-align: left;
     height: 24px;
     top: 0px;
+    margin-bottom: 0;
 
     display: flex;
     align-items: center;
@@ -270,16 +208,19 @@ const StudentNumber = styled(globalStyle.Header400)<{ isOnGoing: boolean }>`
     position: relative;
     width: 96.98px;
     height: 22px;
-    left: ${ props => props.isOnGoing ? "110px" : 110 + 110 + "px"};
+    // left: ${ props => props.isOnGoing ? "110px" : 110 + 110 + "px"};
     top: 1px;
 
-    color: #000000;
+    color: ${globalStyle.colors.baseBlueStone};
+    margin-bottom: 0px;
+    margin-right: 8px;
 `
 
 const OngoingLabel = styled(globalStyle.Header300)`
     // position: absolute;
+    position: relative;
     height: 25px;
-    left: 300px;
+    left: 100px;
     top: 3px;
     display: flex;
     justify-content: center;
@@ -340,7 +281,9 @@ class Session extends React.Component<any, any> {
                         <div>
                             <SessionLabel> SESSIONS </SessionLabel>
                             <CreatePrompt> Seems like you have no previous PFACS Session </CreatePrompt>
-                            <CreateNewButton onClick={this.navigateToCreation}> Create a new session </CreateNewButton>
+                            <CreateNewButton onClick={this.navigateToCreation}> 
+                                <p> Create a new session </p>
+                            </CreateNewButton>
                         </div>
                     </Layout>
                 )
@@ -358,7 +301,9 @@ class Session extends React.Component<any, any> {
                                                 <SessionLabel> Sessions </SessionLabel>
                                             </Grid.Column>
                                             <Grid.Column width="8" style={{ display: "flex", alignItems: "center" }}>
-                                                <CreateNewButtonSmall onClick={this.navigateToCreation}> Create a new session </CreateNewButtonSmall>
+                                                <CreateNewButtonSmall onClick={this.navigateToCreation}> 
+                                                    <CreateNewButtonText> Create a new session </CreateNewButtonText>
+                                                </CreateNewButtonSmall>
                                             </Grid.Column>
                                         </Grid.Row>
                                         <Grid.Row>
@@ -382,22 +327,21 @@ class Session extends React.Component<any, any> {
             <div>
                 {dummyDataList.map(dummy =>
                     <li key={dummy.sessionName}>
+                        <Grid>
                         <SessionRowContainer2 key={dummy.sessionName}>
-
-                            <div style={{ display: "flex", alignItems: "center" }}>
+                            <GridColumn style={{display: "flex", alignItems: "center"}} width={8}>
                                 <SessionNameText>{dummy.sessionName} </SessionNameText>
-                                
                                 {dummy.ongoing ? <OngoingLabel> Ongoing </OngoingLabel> : <div />}
-                                
+                            </GridColumn>
+                            <GridColumn style={{display: "flex", alignItems: "center", justifyContent: "flex-end"}} width={8}>
                                 <StudentNumber isOnGoing={dummy.ongoing}> {dummy.studentNumber} Students </StudentNumber>
 
                                 <DashboardButton onClick={() => this.dashboardClick(dummy.sessionId)}>
                                     <span>
                                         <DashboardIcon icon="tachometer-alt" size="2x" />
                                     </span>
-                                    <span>
-                                        Dashboard
-                                    </span>
+
+                                    <ViewButtonText> Dashboard </ViewButtonText>
                                 </DashboardButton>
 
                                 <ReportButton onClick={() => this.reportClick(dummy.sessionId)}>
@@ -405,9 +349,7 @@ class Session extends React.Component<any, any> {
                                         <ReportIcon icon={["far", "file-alt"]} size="2x" />
                                     </span>
 
-                                    <span>
-                                        Report
-                                    </span>
+                                    <ViewButtonText> Report </ViewButtonText>
                                 </ReportButton>
 
                                 <DeleteButton onClick={() => { this.props.deleteASession(dummy) }}>
@@ -415,11 +357,16 @@ class Session extends React.Component<any, any> {
                                         <DeleteIcon icon={["far", "trash-alt"]} size="2x" style={{ color: "red" }} />
                                     </span>
                                 </DeleteButton>
-                            </div>
-
-                            <SessionStartTimeText> {dummy.startTime} </SessionStartTimeText>
-
+                            </GridColumn>
+                    
                         </SessionRowContainer2>
+                        <Grid.Row style={{paddingTop: 0}}>
+                            <GridColumn>
+                                <SessionStartTimeText> {dummy.startTime} </SessionStartTimeText>
+                            </GridColumn>    
+                        </Grid.Row>
+                        </Grid>
+
                     </li>
                 )}
             </div>
