@@ -10,6 +10,7 @@ import socketIOClient from 'socket.io-client';
 
 import {StudentCurrentDetails} from "./StudentCurrentDetails";
 import {idNamesPair} from "./../studentsIDsName";
+import * as globalStyle from "../AppStyle"
 
 // const socket = openSocket("http://127.0.0.1:3001/studentstatus")
 // console.log("socket ip " + process.env.SOCKETIP);
@@ -30,17 +31,10 @@ const GridHeaderStyle = {
   borderWidth:"0px"
 }
 
-const TotalStudentLabel = styled.div`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: normal;
-
-  color: #C0C0C0;
+const TotalStudentLabel = styled(globalStyle.Header400)`
+  color: ${globalStyle.colors.baseBlueStone50};
 
   display: inline;
-  // padding-left:60%;
   right: 50px;
   position: absolute
 `
@@ -56,6 +50,15 @@ const Rect = styled.div <{status: StudentStatus}> `
     margin-right: 6px;
     margin-left: 30px;
     display: inline-block;   
+`
+
+const StatusInstruction = styled(globalStyle.Header400)`
+    color: ${globalStyle.colors.baseBlueStone}
+`
+
+const StudentLabel = styled(globalStyle.Header500)`
+    color: ${globalStyle.colors.baseBlueStone};
+    display: inline
 `
 
 function generateColorBasedOnStatus(status: StudentStatus){
@@ -270,8 +273,8 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
                   <Grid.Column width="1"/>
                     <Grid.Column width="7">
                         <Card style={styles.leftCardStyle}>
-                          <CardHeader textAlign="left" style={GridHeaderStyle} >
-                              <div style={{display: "inline", fontSize:"18px", fontWeight: "bold"}}> Students </div>
+                          <CardHeader textAlign="left" style={GridHeaderStyle}>
+                              <StudentLabel> Students </StudentLabel>
                               <TotalStudentLabel> 24 Total students</TotalStudentLabel>
                           </CardHeader>
 
@@ -283,15 +286,27 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
                             />
                           </CardContent>
 
-                          <div style={{fontSize: "16px", paddingLeft:"8px" , textAlign: "left", position:"absolute", bottom:"40px"}}>
-                              <Rect status={StudentStatus.InProgress}/>
-                              Engaged
-
-                              <Rect status={StudentStatus.Stuck}/>
-                              Idle for 2 minutes
+                          <div style={{fontSize: "16px", paddingLeft:"8px" , textAlign: "left", position:"absolute", bottom:"40px", display: "flex"}}>
+                              <div style={{display:"flex", flexDirection:"row", alignItems:"center"}}>
+                                <Rect status={StudentStatus.InProgress}/>
+                                <StatusInstruction>
+                                  Engaged
+                                </StatusInstruction>
+                              </div>
                               
+                              <div style={{display:"flex", flexDirection:"row", marginLeft: "16px", alignItems:"center"}}>
+                                  <Rect status={StudentStatus.Stuck}/>
+                                  <StatusInstruction>
+                                    Idle for 2 minutes
+                                  </StatusInstruction>
+                              </div>
+                              
+                              <div style={{display:"flex", flexDirection:"row", marginLeft: "16px", alignItems:"center"}}>
                               <Rect status={StudentStatus.Absent}/>
-                              Idle for 5 minutes
+                              <StatusInstruction>
+                                Idle for 5 minutes
+                              </StatusInstruction>
+                              </div>
                           </div>
                           <div style={{height: "100%", width: "1px", backgroundColor:"rgba(0, 0, 0, 0.10)", position:"absolute", right:"0", top:"0" }}>  </div>
                         </Card>

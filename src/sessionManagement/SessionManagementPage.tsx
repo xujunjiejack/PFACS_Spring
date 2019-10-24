@@ -124,7 +124,7 @@ const CreateNewButton = styled.div`
     cursor: pointer;
 
     :hover {
-        background-color: ${globalStyle.colors.baseBlueStone}
+        background-color: ${globalStyle.colors.basePacificBlueActive}
     }
 `
 
@@ -154,7 +154,7 @@ const CreateNewButtonSmall = styled.div`
 
 
     :hover{
-        background-color: ${globalStyle.colors.baseBlueStone};
+        background-color: ${globalStyle.colors.basePacificBlueActive};
       }
   
       &.active {
@@ -163,7 +163,7 @@ const CreateNewButtonSmall = styled.div`
           background-color:${globalStyle.colors.baseBlueStone};
           color: white;
         }
-        background-color:${globalStyle.colors.baseBlueStone};
+        background-color:${globalStyle.colors.basePacificBlueActive};
         color: white;
       }
     }

@@ -4,6 +4,7 @@ import ReactToolTip from "react-tooltip";
 // import {Grid, GridColumn, GridRow} from "semantic-ui-react";
 import styled from "styled-components";
 import {Student, StudentStatus} from "../data_structure/Student";
+import * as globalStyle from "../AppStyle"
 
 function generateColorBasedOnStatus(status: StudentStatus){
     switch (status) {
@@ -42,6 +43,10 @@ const Rectangular = styled.div <{status: StudentStatus}>`
     }
 `
 
+const RectText = styled(globalStyle.TextBody)`
+    color: ${globalStyle.colors.baseBlueStone}
+`
+
 interface IStudentStatusRectProps{
     student: Student,
     showDetailed: (studentId:string) => void,
@@ -75,7 +80,7 @@ class StudentStatusRect extends React.Component<IStudentStatusRectProps, IStuden
 
                 <ReactToolTip place="top" type="dark" effect="solid" />
 
-                {this.props.student.name}
+                <RectText> {this.props.student.name} </RectText>
             </Rectangular>
         )
     }

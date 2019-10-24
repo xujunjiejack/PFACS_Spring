@@ -45,20 +45,24 @@ const StyledButtonGroup = styled(ButtonGroup)`
   }
 `
 
-// Why using && can bump the specificty
-// using && to boop the specificty. It is an inherent problem 
-const ReportButton = styled(Button)`
-  && {
-    background: #F5F5F5;
-    border-radius: 6px;
 
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 20px;
-    line-height: normal;
+const DashboardButtonText = styled(globalStyle.Header600)`
+    color: ${globalStyle.colors.baseBlueStone} 
     
-    // color: #5A9AF8;
+    &.active {
+     
+      :hover{
+        color: ${globalStyle.colors.baseDoctor} ;
+      }
+      
+      color: ${globalStyle.colors.baseDoctor};
+    }   
+`
+
+const DashboardButton = styled(Button)`
+  && {
+    background: ${globalStyle.colors.lightNeutral25};
+    border-radius: 6px;
 
     display: flex;
     justify-content: center;
@@ -66,27 +70,40 @@ const ReportButton = styled(Button)`
     cursor: pointer;
 
     :hover{
-      background-color: #5A9AF8;
-      color: white;
+      background-color: ${globalStyle.colors.basePacificBlue};
     }
 
-
+    &.active  ${DashboardButtonText},  &:hover ${DashboardButtonText}  {
+      color: ${globalStyle.colors.baseDoctor}
+    }
+    
     &.active {
      
       :hover{
-        background-color: #357AE0;
-        color: white;
+        background-color: ${globalStyle.colors.basePacificBlueActive};
       }
 
-      background-color: #5A9AF8;
-      color: white;
+      background-color: ${globalStyle.colors.basePacificBlue};
     }
   }
 `
 
+const ReportButtonText = styled(globalStyle.Header600)`
+    color: ${globalStyle.colors.baseBlueStone} 
+    
+    &.active {
+      :hover{
+        color: ${globalStyle.colors.baseDoctor} ;
+      }
+      
+      color: ${globalStyle.colors.baseDoctor};
+    }   
+`
+
+
 const EndSessionButton = styled(Button)`
   && {
-    background: #F5F5F5;
+    background: ${globalStyle.colors.lightNeutral25};
     border-radius: 4px;
 
     font-family: Roboto;
@@ -102,18 +119,20 @@ const EndSessionButton = styled(Button)`
     cursor: pointer;
 
     :hover{
-      background-color: #5A9AF8;
-      color: white;
+      background-color: ${globalStyle.colors.basePacificBlue};
+    }
+
+    &.active  ${ReportButtonText}, &:hover ${ReportButtonText} {
+      color: ${globalStyle.colors.baseDoctor}
     }
 
     &.active {
       
       :hover{
-        background-color: #357AE0;
-        color: white;
+        background-color: ${globalStyle.colors.basePacificBlueActive};
       }
-      background-color: #5A9AF8;
-      color: white;
+
+      background-color: ${globalStyle.colors.basePacificBlue};
     }
   }
 `
@@ -166,7 +185,6 @@ class SessionView extends React.Component <any, any> {
                               this.props.history.push("/login")
                           }, 3000)
                           return <div> Redirecting to login </div>
-                          
                       }
                   }
                   
@@ -181,7 +199,7 @@ class SessionView extends React.Component <any, any> {
                       <Grid.Column width="1"/>
                       <Grid.Column width="14">
                         <HeaderContainer>
-                          <div style={{position:"absolute", left: "8px",top: "15%", display: "flex", flexDirection:"column", bottom:"13%"}}>
+                          <div style={{position:"absolute", left: "8px", display: "flex", flexDirection:"column"}}>
                             <Title>
                               { this.getSessionTitle(value.userSessions, this.state.currentSessionId) }
                             </Title>
@@ -192,12 +210,16 @@ class SessionView extends React.Component <any, any> {
                           </div>
 
                           <StyledButtonGroup>                              
-                            <ReportButton style={{fontSize: "20px", width:"200px"}} onClick={this.dashboardClick} className={ this.state.currentView === "dashboard" ? "active": "" }>
-                              Dashboard
-                            </ReportButton>
+                            <DashboardButton style={{fontSize: "20px", width:"200px"}} onClick={this.dashboardClick} className={ this.state.currentView === "dashboard" ? "active": "" }>
+                              <DashboardButtonText>
+                                Dashboard
+                              </DashboardButtonText>
+                            </DashboardButton>
         
                             <EndSessionButton style={{fontSize: "20px", width:"200px"}} onClick={this.reportClick} className={this.state.currentView === "report" ? "active": ""}>
-                              Report
+                              <ReportButtonText>
+                                Report
+                              </ReportButtonText>
                             </EndSessionButton>
                           </StyledButtonGroup>
 
@@ -216,7 +238,7 @@ class SessionView extends React.Component <any, any> {
                        <br/>
                        {this.state.currentView === "dashboard"? 
                           <LiveDashboard studentData={this.getStudentData(value.userSessions, this.state.currentSessionId)} sessionData={this.getSessionData(value.userSessions, this.state.currentSessionId)}/> 
-                       : 
+                          : 
                           <DetailedReport sessionData={this.getSessionData(value.userSessions, this.state.currentSessionId)}> Detailed report </DetailedReport>}  
                        </Layout>
                      }

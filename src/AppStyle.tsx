@@ -117,6 +117,7 @@ export const colors = {
     basePacificBlue50: "rgba(0, 160, 195, 0.5)",
     basePacificBlue25: "rgba(0, 160, 195, 0.25)",
     basePacificBlue5: "rgba(0, 160, 195, 0.05)",
+    basePacificBlueActive: "#00829E",
     baseBlueStone: "#0E2D34",
     baseBlueStone75: "#3A555A",
     baseBlueStone50: "#798B8E",
@@ -125,7 +126,8 @@ export const colors = {
     lightNeutral: "#C1C7D0;",
     lightNeutral75: "#E5E5E5",
     lightNeutral50: "#EBECF0",
-    lightNeutral25: "#F4F5F7"
+    lightNeutral25: "#F4F5F7",
+
 }
 
 export const RightSection = styled.div`
