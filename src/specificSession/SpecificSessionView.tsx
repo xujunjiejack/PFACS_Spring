@@ -15,7 +15,6 @@ import * as globalStyle from "../AppStyle"
 /* CSS For Component */
 const HeaderContainer = styled.div`
   position: relative;
-  // width: 1143px;
   width: 100%;
   height: 80px;
   top: 0px;

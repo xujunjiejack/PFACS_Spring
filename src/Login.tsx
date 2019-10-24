@@ -10,6 +10,7 @@ import * as firebase from "firebase"
 import {Button} from "semantic-ui-react"
 import {withCookies} from 'react-cookie';
 import * as globalStyles from "./AppStyle"
+import { async } from 'q';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAbY4nV71yiRKOo83KAv0c2xm-IV5fmH6k",
@@ -42,7 +43,6 @@ const FirebaseLoginButton = styled(Button)`
 
 const LoginButtonText = styled(globalStyles.Header800)`
     color: ${globalStyles.colors.baseDoctor}
-    
 `
 
 /* Interface */
@@ -58,58 +58,51 @@ class LoginPage extends React.Component <any, ILoginProps> {
     public constructor(prop: any) {
         super(prop)
         this.state = {studentChosen: undefined, response: undefined, accessToken: undefined }
-        this.onSuccess = this.onSuccess.bind(this)
-        this.firebaseLogin = this.firebaseLogin.bind(this)
     }
 
-    public async firebaseLogin () {
+    public firebaseLogin = async () => {
       firebase.auth().signInWithPopup(provider).then( (result : firebase.auth.UserCredential) =>  {
         if (result !== null){
           const credential = result.credential as any 
           const token = (result.credential as any).accessToken;
           const user = result.user;
           
-          if (user !== null)
+          if (user !== null)           
             this.props.setUser(user.displayName, token, credential.idToken) 
-          else {
+          else 
             this.props.setUser("Dummy", token, credential.idToken) 
-          }
         
           this.props.history.push("/")
         }
-      }).catch((error) => {
-        console.log(error)
-      });
+      }).catch(console.log);
     }
 
     public render(){
         const { cookies } = this.props;
-        const redirectToSessionPageInSeconds = (seconds) => {
-          setTimeout(()=>{
-            this.props.history.push("/sessions")
-          }, seconds)
-        }
+        const redirectToSessionPageInSeconds = seconds => setTimeout(()=>this.props.history.push("/sessions"), seconds)
+        const userNameExistsInCookie = (cookies) => cookies.get("userName") !== undefined && cookies.get("userName") !== ""
+        const redirectMessage = (<div> User logged in. Redirecting </div>)
 
         return(
             <UserContext.Consumer>
               {value => 
                 {
                   if (cookies !== undefined){
-                      if (cookies.get("userName") !== undefined && cookies.get("userName") !== ""){
-                          redirectToSessionPageInSeconds(3000)
-                          return <div> User logged in. Redirecting </div>
+                      if (userNameExistsInCookie(cookies)) {
+                        redirectToSessionPageInSeconds(3000)    
+                        return redirectMessage
                       }
                   }
                   return (
-                  <div>
-                    <TitleText>
-                        PFACS Teacher Dashboard
-                    </TitleText>
-                  
-                    <FirebaseLoginButton onClick={ this.firebaseLogin }>
-                      <LoginButtonText>Log in with Google</LoginButtonText>
-                    </FirebaseLoginButton>
-                  </div>
+                    <React.Fragment>
+                      <TitleText>
+                          PFACS Teacher Dashboard
+                      </TitleText>
+                    
+                      <FirebaseLoginButton onClick={ this.firebaseLogin }>
+                        <LoginButtonText>Log in with Google</LoginButtonText>
+                      </FirebaseLoginButton>
+                    </React.Fragment>
                   )
                 }
               }
@@ -117,30 +110,28 @@ class LoginPage extends React.Component <any, ILoginProps> {
         )
     }
     
-    // use this to get data https://developers.google.com/classroom/reference/rest/
-    private async onSuccess (response: any) {
-      this.props.setUser(response.getId, response.getAuthResponse().access_token, response.getAuthResponse().id_token);
-      this.props.history.push("/");
-      
-      return ;
-    }
-  
     private async getStudentDataFromCourseId(data: any, accessToken: any){
-      
       const result = data.courses.map(async (course: any) => {
+
+        const googleStudentResponse = await axios.get(`https://classroom.googleapis.com/v1/courses/${course.id}/students`, {headers:{Authorization:`Bearer  ${accessToken}`}})
+        const studentData: any[] = googleStudentResponse.data.students
+
         const classroomInfo: IGoogleClassroomInfo = {className:"",  studentName:[], studentNameIDMap: {}}
         classroomInfo.className = course.name
-        
-        const courseId = course.id
-        const googleStudentResponse = await axios.get(`https://classroom.googleapis.com/v1/courses/${courseId}/students`, {headers:{Authorization:`Bearer  ${accessToken}`}})
-        const studentData: any[] = googleStudentResponse.data.students
         classroomInfo.studentID = studentData.map(s => s.profile.emailAddress)
         classroomInfo.studentName = studentData.map(s=> s.profile.name.givenName)
-        console.log(classroomInfo)
         return classroomInfo
-      } ) 
+      }) 
+      // Super inefficient
       return await Promise.all(result)
     }
+
+    // use this to get data https://developers.google.com/classroom/reference/rest/
+    private onSuccess = async (response: any) => {
+      this.props.setUser(response.getId, response.getAuthResponse().access_token, response.getAuthResponse().id_token);
+      this.props.history.push("/");
+    }
+  
 
     private async getStudentEmailList(accessToken: string): Promise<string[]> {
       try {
@@ -158,11 +149,6 @@ class LoginPage extends React.Component <any, ILoginProps> {
       }
       
       return await Promise.reject("error")
-    }
-  
-    private onFailure = (error: any) =>{
-      console.log("error")
-      console.log(error)
     }
 }
 

@@ -9,6 +9,7 @@ import { UserContext } from '../Context';
 import * as firebase from "firebase"
 import { withCookies } from "react-cookie";
 import * as globalStyle from "../AppStyle";
+import { thisTypeAnnotation } from '@babel/types';
 
 /* CSS for the component */
 const CreateAssessmentLabel = styled(globalStyle.Header600)`
@@ -191,7 +192,7 @@ class CreateSession extends React.Component<any, any>{
 
                                     {/* Create Session */}
                                     <Form.Field>
-                                        <Button disabled={ this.state.title === "" } onClick={this.createSession} style={{ position: "absolute", left: `0px` }}>
+                                        <Button disabled={ this.state.title === "" || this.noStudentIsSelected() } onClick={this.createSession} style={{ position: "absolute", left: `0px` }}>
                                             Create Session
                                         </Button>
                                     </Form.Field>
@@ -206,17 +207,21 @@ class CreateSession extends React.Component<any, any>{
         )
     }
 
-    private formOnChange = (e: any) => {
-        this.setState({ [e.target.name]: e.target.value })
-    }
+    private noStudentIsSelected = () => 
+        this.state.allStudentCheckStatusMap !== undefined ?  
+            this.state.allStudentCheckStatusMap.filter((checked) => checked).toArray() === 0 :
+            true
 
-    private formatCurrentTimeString = () => {
-        const date = new Date()
-        return `${date.getMonth() + 1}/${date.getDate()}, ${date.getFullYear()} - Started at ${date.getHours() > 12 ? date.getHours() - 12 : date.getHours()}:${date.getMinutes()}${date.getHours() >= 12 ? "pm" : "am"}`
-    }
+    private setAllStudentItems = (newAllStudentItems: Map<string, boolean>) =>  this.setState({ allStudentCheckStatusMap: newAllStudentItems })
+
+    private formOnChange = (e: any) => this.setState({ [e.target.name]: e.target.value })
+
+    private timeStringFormat = (date : Date) => 
+        `${date.getMonth() + 1}/${date.getDate()}, ${date.getFullYear()} - Started at ${date.getHours() > 12 ? date.getHours() - 12 : date.getHours()}:${date.getMinutes()}${date.getHours() >= 12 ? "pm" : "am"}`
+
+    private formatCurrentTimeString = () => this.timeStringFormat(new Date())
 
     private createSession = () => {
-
         const sessionName = this.state.title
         const studentMaps: Map<string, boolean> = this.state.allStudentCheckStatusMap
         const studentNames = studentMaps.filter((checked, studentName) => checked === true).keySeq().toArray()
@@ -241,10 +246,6 @@ class CreateSession extends React.Component<any, any>{
         this.props.addNewSession(newSessionEntry)
         this.props.changeCurrentSession(sessionId, "dashboard")
         this.props.history.push("/livedashboard")
-    }
-
-    private setAllStudentItems = (newAllStudentItems: Map<string, boolean>) => {
-        this.setState({ allStudentCheckStatusMap: newAllStudentItems })
     }
 }
 

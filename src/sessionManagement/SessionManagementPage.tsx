@@ -7,7 +7,7 @@ import { Grid, GridColumn, GridRow } from "semantic-ui-react"
 import { withCookies } from "react-cookie";
 import * as globalStyle from "../AppStyle"
 
-
+/* CSS For the components */
 const DeleteIcon = styled(FontAwesomeIcon)`
     position: relative;
     width: 24px;
@@ -15,7 +15,6 @@ const DeleteIcon = styled(FontAwesomeIcon)`
     curosr: pointer;
 `
 
-/* CSS For the components */
 const DashboardIcon = styled(FontAwesomeIcon)`
     position: relative;
     width: 25px;
@@ -29,11 +28,9 @@ const ReportIcon = styled(FontAwesomeIcon)`
     position: relative;
     width: 15px;
     height: 20px;
-    // left: 550px;
     cursor: pointer;
     margin-right: 8px;
 `
-
 
 const ViewButtonText = styled(globalStyle.Header100)`
     color:${globalStyle.colors.baseBlueStone}
@@ -169,7 +166,7 @@ const CreateNewButtonSmall = styled.div`
     }
 `
 
-const SessionRowContainer2 = styled(GridRow)`
+const SessionRowContainer = styled(GridRow)`
     position: relative;
     // width: 1132px;
     width: 100%;
@@ -177,18 +174,21 @@ const SessionRowContainer2 = styled(GridRow)`
     margin-bottom: 0px;
     display: flex;
     alignItems: center;
+
+    &&& {
+        padding-bottom:4px;
+    }
 `
 
 const SessionNameText = styled(globalStyle.Header500)`
     position: relative;
-    // width: 30% ;
-    text-align: left;
     height: 24px;
     top: 0px;
     margin-bottom: 0;
 
     display: flex;
     align-items: center;
+    text-align: left;
 
     color: ${globalStyle.colors.baseBlueStone};
 `
@@ -221,7 +221,6 @@ const OngoingLabel = styled(globalStyle.Header300)`
     position: relative;
     height: 25px;
     left: 100px;
-    top: 3px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -238,23 +237,19 @@ const OngoingLabel = styled(globalStyle.Header300)`
 class Session extends React.Component<any, any> {
 
     public render() {
-
+        const { cookies } = this.props;        
+        const userNameExistsInCookie = (cookies) => cookies.get("userName") !== undefined && cookies.get("userName") !== ""
         return (
             <UserContext.Consumer>
                 {value => {
-                    const { cookies } = this.props;
                     if (cookies !== undefined) {
-                        if (cookies.get("userName") === undefined || cookies.get("userName") === "") {
-                            setTimeout(() => {
-                                this.props.history.push("/login")
-                            }, 3000)
+                        if (!userNameExistsInCookie(cookies)) {
+                            setTimeout(() => this.props.history.push("/login"), 3000)
                             return <div> Redirecting to login </div>
-
                         }
                     }
                     return this.createThisPage(value)
-                }
-                }
+                }}
             </UserContext.Consumer>
         )
     }
@@ -328,11 +323,15 @@ class Session extends React.Component<any, any> {
                 {dummyDataList.map(dummy =>
                     <li key={dummy.sessionName}>
                         <Grid>
-                        <SessionRowContainer2 key={dummy.sessionName}>
-                            <GridColumn style={{display: "flex", alignItems: "center"}} width={8}>
+                        <SessionRowContainer key={dummy.sessionName}>
+                            <GridColumn style={{display: "flex", alignItems: "center"}} width={3}>
                                 <SessionNameText>{dummy.sessionName} </SessionNameText>
-                                {dummy.ongoing ? <OngoingLabel> Ongoing </OngoingLabel> : <div />}
                             </GridColumn>
+                            
+                            <GridColumn style={{display:"flex", alignItems:"center"}} width={5}>
+                                {dummy.ongoing ? <OngoingLabel> Ongoing </OngoingLabel> : <div />}
+                            </GridColumn>   
+
                             <GridColumn style={{display: "flex", alignItems: "center", justifyContent: "flex-end"}} width={8}>
                                 <StudentNumber isOnGoing={dummy.ongoing}> {dummy.studentNumber} Students </StudentNumber>
 
@@ -359,7 +358,7 @@ class Session extends React.Component<any, any> {
                                 </DeleteButton>
                             </GridColumn>
                     
-                        </SessionRowContainer2>
+                        </SessionRowContainer>
                         <Grid.Row style={{paddingTop: 0}}>
                             <GridColumn>
                                 <SessionStartTimeText> {dummy.startTime} </SessionStartTimeText>
