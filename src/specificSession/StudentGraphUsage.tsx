@@ -3,6 +3,8 @@ import * as React from "react";
 import { Card, CardHeader, Grid, Table} from "semantic-ui-react";
 import styled from "styled-components";
 import * as _ from "lodash"
+import * as globalStyle from "../AppStyle"
+import { globalAgent } from 'https';
 
 /* CSS For Component */
 const ColorText = styled.div`
@@ -25,6 +27,24 @@ const StyledHeaderCell = styled(Table.HeaderCell)`
         font-size: 14px;
         font-weight: normal;
     }
+`
+
+const StyleHeaderCellText = styled(globalStyle.LiveDashboardTextStyle)`
+    color: ${globalStyle.colors.baseBlueStone};
+`
+
+const ClassViewTitle = styled(globalStyle.Header500)`    
+    color: ${globalStyle.colors.baseBlueStone};
+`
+
+const TableName = styled(globalStyle.Header200)`
+    text-align: left;
+
+    color: ${globalStyle.colors.baseBlueStone};
+`
+
+const StyledCell = styled(globalStyle.LiveDashboardTextStyle)`
+    color: ${globalStyle.colors.baseBlueStone}
 `
 
 const mainStack = {
@@ -96,7 +116,7 @@ class StudentGraphUsage extends React.Component <any, any>{
                 <Card.Content style={{overflowY:"scroll", padding:"0"}}>
 
                     <CardHeader textAlign="left" style={{display:"flex", fontFamily:"Roboto", paddingTop:`16px`, marginBottom: "20px", marginLeft: "10px"}} >
-                        <p style={{margin:"0px"}}>Class Overview</p>
+                        <ClassViewTitle> Class Overview </ClassViewTitle>
                     </CardHeader>
 
                     <OverviewNineColumns tableData={this.props.tableData}/>
@@ -121,10 +141,10 @@ function IndividualTableRow(props) {
                 fontSize: "14px",
             }}
         >
-            <Table.Cell key={"c1"} width={7} style={{...cellStyle}} textAlign="left">{_.startCase(rowData[0])}</Table.Cell>
-            <Table.Cell key={"c2"} width={3} style={cellStyle}>{rowData[1]}</Table.Cell>
-            <Table.Cell key={"c3"} width={3} style={cellStyle}>{rowData[2]}</Table.Cell>
-            <Table.Cell key={"c4"} width={3} style={cellStyle}>{rowData[3]}</Table.Cell>
+            <Table.Cell key={"c1"} width={7} style={{...cellStyle}} textAlign="left"> <StyledCell>{_.startCase(rowData[0])} </StyledCell></Table.Cell>
+            <Table.Cell key={"c2"} width={3} style={cellStyle}> <StyledCell> {rowData[1]} </StyledCell></Table.Cell>
+            <Table.Cell key={"c3"} width={3} style={cellStyle}><StyledCell> {rowData[2]} </StyledCell></Table.Cell>
+            <Table.Cell key={"c4"} width={3} style={cellStyle}><StyledCell> {rowData[3]} </StyledCell></Table.Cell>
         </Table.Row>
     )
 }
@@ -143,7 +163,7 @@ function IndividualTable(props) {
                             backgroundColor: "transparent",
                         }}
                     >
-                        <p style={tableName}>{_.startCase(data.tableName)}</p>
+                       <TableName> {_.startCase(data.tableName)} </TableName>
                     </Grid.Column>
                     <Grid.Column
                         width="11"
@@ -174,7 +194,7 @@ function IndividualTable(props) {
                                         }}
                                     >
                                         {" "}
-                                        {headers[0]}
+                                        <StyleHeaderCellText>{headers[0]} </StyleHeaderCellText>
                                     </StyledHeaderCell>
                                     <StyledHeaderCell
                                         style={{
@@ -183,7 +203,7 @@ function IndividualTable(props) {
                                         }}
                                     >
                                         {" "}
-                                        {headers[1]}
+                                        <StyleHeaderCellText>{headers[1]} </StyleHeaderCellText>
                                     </StyledHeaderCell>
                                     <StyledHeaderCell
                                         style={{
@@ -192,7 +212,7 @@ function IndividualTable(props) {
                                         }}
                                     >
                                         {" "}
-                                        {headers[2]}
+                                        <StyleHeaderCellText>{headers[2]} </StyleHeaderCellText>
                                     </StyledHeaderCell>
                                 </Table.Row>
                             </Table.Header>
@@ -236,7 +256,6 @@ function OverviewNineColumns(props) {
 
     ]
     return (
-
             <div style={mainStack}>
                 {" "}
                 {data.map( (t,i,array) => 

@@ -111,6 +111,17 @@ export const HeaderText = styled.p`
     font-size: 20px;
 `
 
+export const LiveDashboardTextStyle = styled.p`
+      /* LiveDashboardTextStyle */
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 13px;
+      line-height: 16px;
+      /* or 145% */
+      letter-spacing: -0.001em;
+`
+
 export const colors = {
     basePacificBlue: "#00A0C3",
     basePacificBlue75: "rgba(0, 160, 195, 0.75)",

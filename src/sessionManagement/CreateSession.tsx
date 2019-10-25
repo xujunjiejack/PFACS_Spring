@@ -22,7 +22,6 @@ const CreateAssessmentLabel = styled(globalStyle.Header600)`
     display: flex;
     justify-content: left;
     align-items:center;
-    cursor: pointer;
 `
 
 const StyledForm = styled(Form)`
@@ -60,7 +59,7 @@ const BackgroundContainer = styled(Grid)`
     width: 100vw;
     height: 100vh;
     // left: 121px;
-    top: 43px;
+    top: 40px;
     background: transparent;
 `
   
@@ -148,23 +147,23 @@ class CreateSession extends React.Component<any, any>{
                     }
 
                     return <Layout history={this.props.history} userName={value.userName} logoutAction={this.props.logoutAction}>
-                        <BackgroundContainer style={{ margin: "14px 0 0 0" }}>
+                        <BackgroundContainer >
+                            <Grid.Row style={{}}>
 
                             <Grid.Column width={1} />
-                            <Grid.Column width={14} style={{ background: "#FFFFFF", paddingLeft: "40px", paddingRight: "40px" }} >
+                            <Grid.Column width={14} style={{ background: "#FFFFFF", paddingRight: "40px" }} >
                                 <CreateAssessmentLabel>
                                     Create a new assessment
                                 </CreateAssessmentLabel>
 
                                 <StyledForm>
-
                                     {/* Session title */}
                                     <Form.Field>
                                         <SessionTitleLabel>Session Title</SessionTitleLabel>
                                         <input placeholder='Session Title' value={this.state.title} name="title" onChange={this.formOnChange} style={{ width: "100%" }} />
                                     </Form.Field>
 
-                                   <div style={{ height: "24px"  }} />
+                                   <div style={{ height: "24px" }} />
 
                                     {/* Session check box */}
                                     <Form.Field>
@@ -199,6 +198,7 @@ class CreateSession extends React.Component<any, any>{
                                     
                                 </StyledForm>
                             </Grid.Column>
+                            </Grid.Row>
                         </BackgroundContainer>
                     </Layout>
                 }

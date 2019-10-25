@@ -40,7 +40,6 @@ const StyledButtonGroup = styled(ButtonGroup)`
   && {
     height: 62px;
     width: 400px;
-
   }
 `
 

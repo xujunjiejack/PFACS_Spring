@@ -150,7 +150,7 @@ class App extends React.Component<any, IAppState> {
     const newUserSessionsWithoutOne = this.state.userSessions.filter( s => s.sessionId !== userSessionToBeDeleted.sessionId)
     const { cookies } = this.props;
     this.setState( {userSessions: newUserSessionsWithoutOne} )
-    cookies.set("userSEssions", newUserSessionsWithoutOne, {path: "/"})
+    cookies.set("userSessions", newUserSessionsWithoutOne, {path: "/"})
     
   }
 

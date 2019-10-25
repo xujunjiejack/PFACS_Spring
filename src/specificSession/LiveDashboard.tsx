@@ -267,7 +267,6 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
             { value => 
               <React.Fragment>
                   {this.state.loading ? <div> loading </div> : 
-
                   <Grid style={styles.liveDashboardContainer}>
                   <Grid.Row style={styles.liveDashboardRowContainer}>
                   <Grid.Column width="1"/>

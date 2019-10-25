@@ -37,6 +37,10 @@ const Rectangular = styled.div <{status: StudentStatus}>`
     width: 85px;
     height: 60px;
     
+    &:first-of-type {
+        margin-left: 0px;
+    }
+
     &.active1 {
         border: 5px solid red;
         outline: none;
