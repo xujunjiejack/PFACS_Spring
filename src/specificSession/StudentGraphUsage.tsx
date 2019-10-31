@@ -113,7 +113,7 @@ class StudentGraphUsage extends React.Component <any, any>{
     public render(){
         return (
             <Card style={{width:"100%", boxShadow:"none"}}>
-                <Card.Content style={{overflowY:"scroll", padding:"0"}}>
+                <Card.Content style={{overflowY:"auto", padding:"0"}}>
 
                     <CardHeader textAlign="left" style={{display:"flex", fontFamily:"Roboto", paddingTop:`16px`, marginBottom: "20px", marginLeft: "10px"}} >
                         <ClassViewTitle> Class Overview </ClassViewTitle>

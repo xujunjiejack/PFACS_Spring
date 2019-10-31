@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {GoogleLoginResponse} from "react-google-login";
-import {Card, CardContent,CardHeader, Grid } from "semantic-ui-react";
+import {Card, CardContent,CardHeader, Grid, Button} from "semantic-ui-react";
 import styled from "styled-components";
 import {Student, StudentStatus} from '../data_structure/Student';
 import {ISession, UserContext} from "../Context"
@@ -18,10 +18,9 @@ import * as globalStyle from "../AppStyle"
 const BACKEND = window.location.hostname;
 const socket = socketIOClient(BACKEND + ":3001/studentstatus");
 
-
 /* CSS for components */
 const GridHeaderStyle = {
-  paddingLeft: "8px",
+  // paddingLeft: "8px",
   paddingTop: "16px",
   fontFamily: "Roboto",
   fontStyle: "normal",
@@ -213,9 +212,7 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
     
     public convertIdsToIdNamePair (ids: string[]){
       const idNamePairRet = {}
-      ids.forEach((id) =>{
-        idNamePairRet[id] = idNamesPair[id]
-      })
+      ids.forEach(id => idNamePairRet[id] = idNamesPair[id])
       return idNamePairRet
     }
 
@@ -253,13 +250,13 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
         this.setState({doesShowSpecificDetail: false, specificStudentData: undefined})
     }
 
-    public onClickOnASpecificStudentEvent = (studentData: Student) => {
-      this.setState({doesShowSpecificDetail: true, specificStudentData: studentData, lockSpecificDetail: true})
-    }
+    public onClickOnASpecificStudentEvent = (studentData: Student) => 
+        this.setState({doesShowSpecificDetail: true, specificStudentData: studentData, lockSpecificDetail: true})
+    
 
-    public onCloseOnASpecificStudentEvent = () =>{
-      this.setState({lockSpecificDetail: false, doesShowSpecificDetail: false, specificStudentData: undefined})
-    }
+    public onCloseOnASpecificStudentEvent = () =>
+        this.setState({lockSpecificDetail: false, doesShowSpecificDetail: false, specificStudentData: undefined})
+    
 
     public render(){
         return (
@@ -277,7 +274,7 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
                               <TotalStudentLabel> 24 Total students</TotalStudentLabel>
                           </CardHeader>
 
-                          <CardContent style={{padding: "20px 50px 0px 8px", borderWidth:"0px"}}>
+                          <CardContent style={{padding: "0px 20px 0px 0px", borderWidth:"0px",}}>
                             <StudentOverview showDetailed={this.showDetailed} studentData={this.state.studentData}
                               onMouseOverASpecificStudentEvent= {this.onMouseOverASpecificStudentEvent}
                               onMouseOutASpecificStudentEvent={this.onMouseOutASpecificStudentEvent}
@@ -285,7 +282,7 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
                             />
                           </CardContent>
 
-                          <div style={{fontSize: "16px", paddingLeft:"8px" , textAlign: "left", position:"absolute", bottom:"40px", display: "flex"}}>
+                          <div style={{fontSize: "16px", textAlign: "left", position:"absolute", bottom:"16px", display: "flex"}}>
                               <div style={{display:"flex", flexDirection:"row", alignItems:"center"}}>
                                 <Rect status={StudentStatus.InProgress}/>
                                 <StatusInstruction>
@@ -302,9 +299,9 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
                               
                               <div style={{display:"flex", flexDirection:"row", marginLeft: "16px", alignItems:"center"}}>
                               <Rect status={StudentStatus.Absent}/>
-                              <StatusInstruction>
-                                Idle for 5 minutes
-                              </StatusInstruction>
+                                <StatusInstruction>
+                                  Idle for 5 minutes
+                                </StatusInstruction>
                               </div>
                           </div>
                           <div style={{height: "100%", width: "1px", backgroundColor:"rgba(0, 0, 0, 0.10)", position:"absolute", right:"0", top:"0" }}>  </div>
@@ -324,9 +321,9 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
         )
     }
 
-    private showDetailed = (studentId: string) => {
-        return this.setState({studentChosen: studentId}) ;
-    }
+    private showDetailed = (studentId: string) => 
+        this.setState({studentChosen: studentId});
+    
 }
 
 const styles = {

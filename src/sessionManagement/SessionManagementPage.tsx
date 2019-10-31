@@ -3,15 +3,17 @@ import * as React from "react";
 import styled from "styled-components"
 import { ISession, UserContext } from "../Context"
 import { Layout } from "../Layout"
-import { Grid, GridColumn, GridRow } from "semantic-ui-react"
+import { Grid, GridColumn, GridRow, Icon } from "semantic-ui-react"
 import { withCookies } from "react-cookie";
 import * as globalStyle from "../AppStyle"
+import * as firebase from "firebase"
+import * as date from "date-fns"
 
 /* CSS For the components */
 const DeleteIcon = styled(FontAwesomeIcon)`
     position: relative;
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     curosr: pointer;
 `
 
@@ -33,7 +35,10 @@ const ReportIcon = styled(FontAwesomeIcon)`
 `
 
 const ViewButtonText = styled(globalStyle.Header100)`
-    color:${globalStyle.colors.baseBlueStone}
+    line-height:0px;    
+
+    color:${globalStyle.colors.baseBlueStone};
+    
 `
 
 const ViewActionButton = styled.button`
@@ -71,7 +76,13 @@ const DashboardButton = styled(ViewActionButton)`
 `
 
 const DeleteButton = styled(ViewActionButton)`
-    width: 40px;
+    width: 40px; 
+    margin-right: 0;
+    
+`
+
+const EditButton = styled(ViewActionButton)`
+    width : 40px;
 `
 
 const ReportButton = styled(ViewActionButton)`
@@ -209,7 +220,7 @@ const SessionStartTimeText = styled(globalStyle.Header200)`
     color: ${globalStyle.colors.baseBlueStone50};
 `
 
-const StudentNumber = styled(globalStyle.Header400)<{ isOnGoing: boolean }>`
+const StudentNumber = styled(globalStyle.Header400) <{ isOnGoing: boolean }>`
     position: relative;
     width: 96.98px;
     height: 22px;
@@ -241,8 +252,16 @@ const OngoingLabel = styled(globalStyle.Header300)`
 /* Main Component */
 class Session extends React.Component<any, any> {
 
+    public constructor(props) {
+        super(props)
+        console.log("Testing rules")
+        // firebase.firestore().collection('access-test').where("teachers", "array-contains", "EaK1hFdseVTlqSPNCSi1sOJgqo72")
+        // .get().then(snapShot => snapShot.docs.forEach(d => console.log(d.id))).catch(console.log)
+
+    }
+
     public render() {
-        const { cookies } = this.props;        
+        const { cookies } = this.props;
         const userNameExistsInCookie = (cookies) => cookies.get("userName") !== undefined && cookies.get("userName") !== ""
         return (
             <UserContext.Consumer>
@@ -266,9 +285,7 @@ class Session extends React.Component<any, any> {
         }
     }
 
-    private navigateToCreation = () => {
-        this.props.history.push("/createsession")
-    }
+    private navigateToCreation = () => this.props.history.push("/createsession")
 
     private createThisPage = (context: any) => {
 
@@ -281,19 +298,19 @@ class Session extends React.Component<any, any> {
                         <div>
                             <Grid style={{ position: "absolute", top: "43px", width: "100%" }}>
                                 <GridRow>
-                                <GridColumn width="1" />
-                                <GridColumn width="14" style={{ background: "#FFFFFF", width: "100%", height: "75vh", margin: "14px", padding: "50px 50px 50px 50px" }}>
-                                    <Grid>
-                                        <Grid.Row>
-                                            <SessionLabel> SESSIONS </SessionLabel>
-                                        </Grid.Row>
-                                    </Grid>
-                                </GridColumn>
+                                    <GridColumn width="1" />
+                                    <GridColumn width="14" style={{ background: "#FFFFFF", width: "100%", height: "75vh", margin: "14px", padding: "50px 50px 50px 50px" }}>
+                                        <Grid>
+                                            <Grid.Row>
+                                                <SessionLabel> Sessions </SessionLabel>
+                                            </Grid.Row>
+                                        </Grid>
+                                    </GridColumn>
                                 </GridRow>
                             </Grid>
 
                             <CreatePrompt> Seems like you have no previous PFACS Session </CreatePrompt>
-                            <CreateNewButton onClick={this.navigateToCreation}> 
+                            <CreateNewButton onClick={this.navigateToCreation}>
                                 <p> Create a new session </p>
                             </CreateNewButton>
                         </div>
@@ -303,30 +320,27 @@ class Session extends React.Component<any, any> {
             default:
                 return (
                     <Layout history={this.props.history} userName={context.userName} logoutAction={this.props.logoutAction}>
-                        <Grid style={{ position: "absolute", top: "40px", width: "100%", paddingTop: "20px", paddingBottom:"50px" }}>
-                            <GridRow style={{width: "100%", height:"100px"}}>
-                            {/* height: "75vh" */}
+                        <Grid style={{ position: "relative", top: "0", width: "100%", paddingTop: "0", paddingBottom: "50px" }}>
+                            <GridRow style={{ width: "100%", height: "100px" }}>
                                 <GridColumn width="1" />
 
-                                <GridColumn width="7" style={{display: "flex", alignItems: "center" }}>
+                                <GridColumn width="7" style={{ display: "flex", alignItems: "center" }}>
                                     <SessionLabel> Sessions </SessionLabel>
                                 </GridColumn>
 
-                                <GridColumn width="7"style={{ display: "flex", alignItems: "center" }} >
-                                    <CreateNewButtonSmall onClick={this.navigateToCreation}> 
+                                <GridColumn width="7" style={{ display: "flex", alignItems: "center" }} >
+                                    <CreateNewButtonSmall onClick={this.navigateToCreation}>
                                         <CreateNewButtonText> Create a new session </CreateNewButtonText>
-                                     </CreateNewButtonSmall>
+                                    </CreateNewButtonSmall>
                                 </GridColumn>
-
-                                {/* padding: "50px 50px 50px 50px"  */}
                             </GridRow>
 
-                            <GridRow style={{width: "100%", padding: 0, marginTop:"28px"}}>
+                            <GridRow style={{ width: "100%", padding: 0, marginTop: "28px" }}>
                                 <GridColumn width={1}></GridColumn>
-                                <GridColumn width={14}> 
-                                        <Grid> 
-                                            {this.createSessions(context.userSessions)} 
-                                        </Grid>
+                                <GridColumn width={14}>
+                                    <Grid>
+                                        {this.createSessions(context.userSessions)}
+                                    </Grid>
                                 </GridColumn>
                             </GridRow>
                         </Grid>
@@ -340,17 +354,17 @@ class Session extends React.Component<any, any> {
             <React.Fragment>
                 {dummyDataList.map(dummy =>
                     // <li key={dummy.sessionName}>
-                    <React.Fragment>
+                    <React.Fragment key={dummy.sessionName}>
                         <SessionRowContainer key={dummy.sessionName}>
-                            <GridColumn style={{display: "flex", alignItems: "center"}} width={3}>
+                            <GridColumn style={{ display: "flex", alignItems: "center" }} width={3}>
                                 <SessionNameText>{dummy.sessionName} </SessionNameText>
                             </GridColumn>
-                            
-                            <GridColumn style={{display:"flex", alignItems:"center"}} width={5}>
-                                {dummy.ongoing ? <OngoingLabel> Ongoing </OngoingLabel> : <div />}
-                            </GridColumn>   
 
-                            <GridColumn style={{display: "flex", alignItems: "center", justifyContent: "flex-end"}} width={8}>
+                            <GridColumn style={{ display: "flex", alignItems: "center" }} width={5}>
+                                {dummy.ongoing ? <OngoingLabel> Ongoing </OngoingLabel> : <div />}
+                            </GridColumn>
+
+                            <GridColumn style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }} width={8}>
                                 <StudentNumber isOnGoing={dummy.ongoing}> {dummy.studentNumber} Students </StudentNumber>
 
                                 <DashboardButton onClick={() => this.dashboardClick(dummy.sessionId)}>
@@ -369,24 +383,29 @@ class Session extends React.Component<any, any> {
                                     <ViewButtonText> Report </ViewButtonText>
                                 </ReportButton>
 
-                                <DeleteButton onClick={() => { this.props.deleteASession(dummy) }}>
+                                <EditButton onClick={() => this.modifyThisSession(dummy.sessionId)}>
+                                    <span>
+                                        <DeleteIcon key={"edit"} icon={["far", "edit"]} size="2x" />
+                                    </span>
+                                </EditButton>
+
+                                <DeleteButton onClick={() => this.props.deleteASession(dummy)}>
                                     <span>
                                         <DeleteIcon icon={["far", "trash-alt"]} size="2x" style={{ color: "red" }} />
                                     </span>
                                 </DeleteButton>
-                                
                             </GridColumn>
-                    
+
                         </SessionRowContainer>
-                        <Grid.Row style={{paddingTop: 0}}>
+                        <Grid.Row style={{ paddingTop: 0 }}>
                             <GridColumn>
                                 <SessionStartTimeText> {dummy.startTime} </SessionStartTimeText>
-                            </GridColumn>    
+                            </GridColumn>
                         </Grid.Row>
-                         {/* </li> */}
+                        {/* </li> */}
                     </React.Fragment>
                 )}
-             </React.Fragment>
+            </React.Fragment>
         )
     }
 
@@ -398,6 +417,11 @@ class Session extends React.Component<any, any> {
     private reportClick = (sessionId: string) => {
         this.props.changeCurrentSession(sessionId, "report")
         this.props.history.push("/livedashboard")
+    }
+
+    private modifyThisSession = (sessionId: string) => {
+        this.props.modifyOneSession(sessionId)
+        this.props.history.push("/modifysession")
     }
 }
 

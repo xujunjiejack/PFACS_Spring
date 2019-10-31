@@ -8,7 +8,7 @@
  **********************/
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faFileAlt, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
+import { faFileAlt, faTrashAlt, faEdit } from "@fortawesome/free-regular-svg-icons";
 import { faTachometerAlt } from '@fortawesome/free-solid-svg-icons'
 import { createBrowserHistory } from "history"
 import * as React from 'react';
@@ -17,6 +17,7 @@ import { Route, Router } from "react-router"
 import './App.css'
 import { initialUser, IUserContext, UserContext } from "./Context"
 import CreateSession from "./sessionManagement/CreateSession"
+import ModifySession from "./sessionManagement/ModifySession"
 import LoginPage from "./Login";
 import Session from "./sessionManagement/SessionManagementPage";
 import SessionView from "./specificSession/SpecificSessionView";
@@ -27,6 +28,7 @@ import { withCookies } from "react-cookie"
 library.add(faTachometerAlt)
 library.add(faFileAlt)
 library.add(faTrashAlt)
+library.add(faEdit)
 
 /***
  * Interface
@@ -35,7 +37,8 @@ library.add(faTrashAlt)
 interface IControlState {
   currentView: string,
   currentSessionId: string,
-  allUserData: Object[]
+  allUserData: Object[],
+  modificationSessionId: string,
 }
 
 interface IClassroomControl {
@@ -113,7 +116,8 @@ class App extends React.Component<any, IAppState> {
     const cookies = this.props.cookies;
     const userSessionCookie = cookies.get("userSessions")
     const userSessions = userSessionCookie !== undefined ? userSessionCookie : dummyData
-    this.state = { ...initialUser, userSessions, currentSessionId: "", currentView: "dashboard", classrooms: dummyClassroomData, allUserData: [] }
+    this.state = { ...initialUser, userSessions, currentSessionId: "", currentView: "dashboard", classrooms: dummyClassroomData,
+                  allUserData: [], modificationSessionId: "" }
   }
 
   public addNewSession = (newSession: ISessionData) => {
@@ -150,9 +154,10 @@ class App extends React.Component<any, IAppState> {
     const newUserSessionsWithoutOne = this.state.userSessions.filter( s => s.sessionId !== userSessionToBeDeleted.sessionId)
     const { cookies } = this.props;
     this.setState( {userSessions: newUserSessionsWithoutOne} )
-    cookies.set("userSessions", newUserSessionsWithoutOne, {path: "/"})
-    
+    cookies.set("userSessions", newUserSessionsWithoutOne, {path: "/"})  
   }
+
+  
 
   private setAllUserData = (data) => {
     const studentID = data.map(d => d.playerUniqueID)
@@ -179,14 +184,15 @@ class App extends React.Component<any, IAppState> {
     firebase.auth().signOut().then(() => { console.log("firebase logout successful") }).catch((e) => { console.log(e) })
   }
 
-  public setClassroom = (classroomInfo: IGoogleClassroomInfo[]) => {
-    this.setState({ classrooms: classroomInfo })
-  }
+  public setClassroom = (classroomInfo: IGoogleClassroomInfo[]) =>  this.setState({ classrooms: classroomInfo })
+  
 
   public historyPush(path: string) {
     history.push(path)
     return (<div> HELLLO </div>)
   }
+
+  public setClassForModified = (sessionId) => this.setState({modificationSessionId: sessionId})
 
   public render() {
     return (
@@ -216,7 +222,7 @@ class App extends React.Component<any, IAppState> {
               render={
                 props =>
                   <UserContext.Provider value={{ ...this.state }} >
-                    <Session history={props.history} setUser={this.setUser} changeCurrentSession={this.changeCurrentSession} logoutAction={this.logout} deleteASession={this.deleteUserSession}/>
+                    <Session history={props.history} setUser={this.setUser} changeCurrentSession={this.changeCurrentSession} logoutAction={this.logout} modifyOneSession={this.setClassForModified} deleteASession={this.deleteUserSession}/>
                   </UserContext.Provider>
               }
             />
@@ -238,9 +244,17 @@ class App extends React.Component<any, IAppState> {
                   </UserContext.Provider>
               }
             />
+
+            <Route exact={true} path="/modifysession"
+              render={
+                props => 
+                <UserContext.Provider value={{ ...this.state }}>
+                  <ModifySession history={props.history} setUser={this.setUser} modificationSessionID={this.state.modificationSessionId} logoutAction={this.logout}></ModifySession>
+                </UserContext.Provider>
+              }
+            />
           </div>
         </Router>
-
       </div>
     );
   }

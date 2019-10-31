@@ -101,7 +101,7 @@ export function StudentCurrentDetails(props: any) {
 
                     <Button style={{position:"absolute", right: "10%"}} onClick={props.onCloseOnASpecificStudentEvent}> Close </Button>
                 </Card.Header>
-                <Card.Content style={{overflowY:"scroll"}}>
+                <Card.Content style={{overflowY:"auto"}}>
                     <Grid>
                         <Grid.Row style={{ display: "flex" }}>
                             <Grid.Column width="8" style={{ paddingLeft: 0 }}>

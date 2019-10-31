@@ -9,7 +9,6 @@ import { UserContext } from '../Context';
 import * as firebase from "firebase"
 import { withCookies } from "react-cookie";
 import * as globalStyle from "../AppStyle";
-import { thisTypeAnnotation } from '@babel/types';
 
 /* CSS for the component */
 const CreateAssessmentLabel = styled(globalStyle.Header600)`
@@ -55,14 +54,14 @@ const ChooseStudentContainer = styled.div`
 `
 
 const BackgroundContainer = styled(Grid)`
-    position: absolute;
+    // position: absolute;
     width: 100vw;
     height: 100vh;
     // left: 121px;
-    top: 40px;
+    // top: 40px;
     background: transparent;
 `
-  
+
 const SessionTitleLabel = styled(globalStyle.Header500)`
     color: ${globalStyle.colors.baseBlueStone};
     display: flex; 
@@ -77,6 +76,27 @@ const StudentTitleLabel = styled(globalStyle.Header500)`
     margin-bottom: 10px
 `
 
+const ConfirmButton = styled(Button)`
+    &&& {
+        left: 0;
+        background: ${globalStyle.colors.basePacificBlue};
+        color: ${globalStyle.colors.baseDoctor};
+    }
+`
+
+const CancelButton = styled(Button)`
+        background: ${globalStyle.colors.lightNeutral50};
+        color: ${globalStyle.colors.baseBlueStone50};
+`
+
+const ConfirmButtonText = styled(globalStyle.Header500)`
+    color: ${globalStyle.colors.baseDoctor};
+`
+
+const CancelButtonText = styled(globalStyle.Header500)`
+    color: ${globalStyle.colors.baseBlueStone75};
+`
+
 /* Main Component */
 class CreateSession extends React.Component<any, any>{
 
@@ -88,28 +108,26 @@ class CreateSession extends React.Component<any, any>{
     public componentDidMount() {
         firebase.firestore().collection('users').get().then((snapshot) => {
             const docArray: Array<any> = []
-            snapshot.forEach((doc) => {
-                docArray.push(doc.data())
-            });
+            snapshot.forEach(doc => docArray.push(doc.data()))
 
             const studentID = docArray.map(d => d.playerUniqueID)
             const studentName = docArray.map(d => d.userEmail)
             const studentNameIDMap = {}
-            studentName.forEach((e, i) => {
-                studentNameIDMap[e] = studentID[i]
-            });
+            studentName.forEach((e, i) => studentNameIDMap[e] = studentID[i])
 
             const newClassroom: IGoogleClassroomInfo = { studentID, studentName, className: "Advisory Board", studentNameIDMap }
             const classrooms = [newClassroom]
+
+            // set up the student all student check status map
             let m = Map<string, boolean>()
             classrooms.forEach(
                 (d: IGoogleClassroomInfo) => {
-                    d.studentName.forEach(s => {
-                        m = m.set(s, false)
-                    })
+                    d.studentName.forEach(s =>
+                        m = m.set(s, false))
                 }
             )
 
+            // set up the name id map
             let m2 = Map<string, string>()
             classrooms.forEach(
                 (d: IGoogleClassroomInfo) => {
@@ -118,30 +136,28 @@ class CreateSession extends React.Component<any, any>{
             )
             this.setState({ allStudentCheckStatusMap: m, allStudentNameIDMap: m2, googleClassroomDataInfo: classrooms, isLoading: false })
         })
-        .catch((err) => {
-            console.log('Error ', err);
-        });
+            .catch((err) => {
+                console.log('Error ', err);
+            });
 
         const { cookies } = this.props;
-        if (cookies.get("userName") !== undefined && cookies.get("userAccessToken") !== undefined && cookies.get("userIdToken") !== undefined){
-            this.props.setUser( cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken"), cookies.get("userSessions") )    
+        if (cookies.get("userName") !== undefined && cookies.get("userAccessToken") !== undefined && cookies.get("userIdToken") !== undefined) {
+            this.props.setUser(cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken"), cookies.get("userSessions"))
         }
     }
 
-    
+
 
     public render() {
         const { cookies } = this.props;
         const cookieNotHasUserName = () => cookies.get("userName") === undefined || cookies.get("userName") === ""
-        
+
         return (
             <UserContext.Consumer>
                 {value => {
                     if (cookies !== undefined) {
                         if (cookieNotHasUserName()) {
-                            setTimeout(() => {
-                                this.props.history.push("/login")
-                            }, 3000)
+                            setTimeout(() => this.props.history.push("/login"), 3000)
                             return <div> Redirecting to login </div>
                         }
                     }
@@ -149,90 +165,102 @@ class CreateSession extends React.Component<any, any>{
                     return <Layout history={this.props.history} userName={value.userName} logoutAction={this.props.logoutAction}>
                         <BackgroundContainer >
                             <Grid.Row style={{}}>
-
-                            <Grid.Column width={1} />
-                            <Grid.Column width={14} style={{ background: "#FFFFFF", paddingRight: "40px" }} >
-                                <CreateAssessmentLabel>
-                                    Create a new assessment
+                                <Grid.Column width={1} />
+                                <Grid.Column width={14} style={{ background: "#FFFFFF", paddingRight: "40px" }} >
+                                    <CreateAssessmentLabel>
+                                        Create a new assessment
                                 </CreateAssessmentLabel>
+                                    <StyledForm>
+                                        {/* Session title */}
+                                        <Form.Field>
+                                            <SessionTitleLabel>Session Title</SessionTitleLabel>
+                                            <input placeholder='Session Title' value={this.state.title} name="title" onChange={this.formOnChange} style={{ width: "100%" }} />
+                                        </Form.Field>
 
-                                <StyledForm>
-                                    {/* Session title */}
-                                    <Form.Field>
-                                        <SessionTitleLabel>Session Title</SessionTitleLabel>
-                                        <input placeholder='Session Title' value={this.state.title} name="title" onChange={this.formOnChange} style={{ width: "100%" }} />
-                                    </Form.Field>
+                                        <div style={{ height: "24px" }} />
 
-                                   <div style={{ height: "24px" }} />
-
-                                    {/* Session check box */}
-                                    <Form.Field>
-                                        <StudentTitleLabel>
-                                            Students (From Google Classroom)
+                                        {/* Session check box */}
+                                        <Form.Field>
+                                            <StudentTitleLabel>
+                                                Students (From Google Classroom)
                                         </StudentTitleLabel>
 
-                                        {/* Given the data and generate it*/}
-                                        <ChooseStudentContainer>
-                                            {this.state.isLoading ?
-                                                <div>
-                                                    Data is loading
+                                            {/* Given the data and generate it*/}
+                                            <ChooseStudentContainer>
+                                                {this.state.isLoading ?
+                                                    <div>
+                                                        Data is loading
                                                 </div>
-                                                :
-                                                <Grid padded="horizontally" style={{ marginTop: 0 }}>
-                                                    {this.state.googleClassroomDataInfo.map(
-                                                        (data: IGoogleClassroomInfo) => {
-                                                            return <ChooseStudentsRow key={data.className} classInfo={data} allStudentsCheckitems={this.state.allStudentCheckStatusMap} setAllStudentCheckitems={this.setAllStudentItems} />
-                                                        }
-                                                    )}
-                                                </Grid>
-                                            }
-                                        </ChooseStudentContainer>
-                                    </Form.Field>
+                                                    :
+                                                    <Grid padded="horizontally" style={{ marginTop: 0 }}>
+                                                        {this.state.googleClassroomDataInfo.map(
+                                                            (data: IGoogleClassroomInfo) =>
+                                                                <ChooseStudentsRow key={data.className} classInfo={data}
+                                                                    allStudentsCheckitems={this.state.allStudentCheckStatusMap} setAllStudentCheckitems={this.setAllStudentItems} />
+                                                        )}
+                                                    </Grid>
+                                                }
+                                            </ChooseStudentContainer>
+                                        </Form.Field>
 
-                                    {/* Create Session */}
-                                    <Form.Field>
-                                        <Button disabled={ this.state.title === "" || this.noStudentIsSelected() } onClick={this.createSession} style={{ position: "absolute", left: `0px` }}>
-                                            Create Session
-                                        </Button>
-                                    </Form.Field>
-                                    
-                                </StyledForm>
-                            </Grid.Column>
+                                        {/* Create Session */}
+                                        <Form.Field>
+                                            <div style={{ display: "flex", flexDirection: "row" }}>
+                                                <ConfirmButton disabled={this.state.title === "" || this.noStudentIsSelected()} onClick={this.createSession} style={{ left: `0px` }}>
+                                                    <ConfirmButtonText>
+                                                        Create Session
+                                                </ConfirmButtonText>
+                                                </ConfirmButton>
+
+                                                <CancelButton onClick={this.cancelTheNewSession} style={{}}>
+                                                    <CancelButtonText>
+                                                        Cancel
+                                                </CancelButtonText>
+                                                </CancelButton>
+                                            </div>
+                                        </Form.Field>
+
+                                    </StyledForm>
+                                </Grid.Column>
                             </Grid.Row>
                         </BackgroundContainer>
                     </Layout>
-                }
-                }
+                }}
             </UserContext.Consumer>
         )
     }
 
-    private noStudentIsSelected = () => 
-        this.state.allStudentCheckStatusMap !== undefined ?  
-            this.state.allStudentCheckStatusMap.filter((checked) => checked).toArray() === 0 :
+    private noStudentIsSelected = () =>
+        this.state.allStudentCheckStatusMap !== undefined ?
+            this.state.allStudentCheckStatusMap.filter((checked) => checked === true).toArray() === 0 :
             true
 
-    private setAllStudentItems = (newAllStudentItems: Map<string, boolean>) =>  this.setState({ allStudentCheckStatusMap: newAllStudentItems })
+    private setAllStudentItems = (newAllStudentItems: Map<string, boolean>) => this.setState({ allStudentCheckStatusMap: newAllStudentItems })
 
     private formOnChange = (e: any) => this.setState({ [e.target.name]: e.target.value })
 
-    private timeStringFormat = (date : Date) => 
+    private timeStringFormat = (date: Date) =>
         `${date.getMonth() + 1}/${date.getDate()}, ${date.getFullYear()} - Started at ${date.getHours() > 12 ? date.getHours() - 12 : date.getHours()}:${date.getMinutes()}${date.getHours() >= 12 ? "pm" : "am"}`
 
     private formatCurrentTimeString = () => this.timeStringFormat(new Date())
+
+    private cancelTheNewSession = (event) => this.props.history.push("/sessions")
+
+    private splitTheNameFromEmail = (emailAddress) => emailAddress.split("@")[0]
+
+    private navigateToLiveDashboard = (sessionID) => {
+        this.props.changeCurrentSession(sessionID, "dashboard");
+        this.props.history.push("/livedashboard")
+    }
 
     private createSession = () => {
         const sessionName = this.state.title
         const studentMaps: Map<string, boolean> = this.state.allStudentCheckStatusMap
         const studentNames = studentMaps.filter((checked, studentName) => checked === true).keySeq().toArray()
-        const studentIds = studentNames.map(n => {
-            return this.state.allStudentNameIDMap[n]
-        })
+        const studentIds = studentNames.map(n => this.state.allStudentNameIDMap[n])
+
         const studentIDNamePair = {}
-        studentIds.forEach((id, i) => {
-            const name = studentNames[i].split("@")[0]
-            studentIDNamePair[id] = name
-        })
+        studentIds.forEach((id, i) => studentIDNamePair[id] = this.splitTheNameFromEmail(studentNames[i]))
 
         const studentNumber = studentIds.length
         const ongoing = true;
@@ -244,8 +272,7 @@ class CreateSession extends React.Component<any, any>{
         }
 
         this.props.addNewSession(newSessionEntry)
-        this.props.changeCurrentSession(sessionId, "dashboard")
-        this.props.history.push("/livedashboard")
+        this.navigateToLiveDashboard(sessionId)
     }
 }
 

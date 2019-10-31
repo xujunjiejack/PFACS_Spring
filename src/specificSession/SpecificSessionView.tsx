@@ -25,9 +25,10 @@ const HeaderContainer = styled.div`
   padding: 10px 20px 4px 20px;
 `
 
-const Title = styled(globalStyle.Header700)`
+const Title = styled(globalStyle.Header600)`
   text-align:left;
   color: ${globalStyle.colors.baseBlueStone};
+  margin-bottom: 8px;
 `
 
 const StartTime = styled(globalStyle.Header400)`
@@ -188,16 +189,16 @@ class SessionView extends React.Component <any, any> {
                   
                   return <Layout history={this.props.history} userName={value.userName} logoutAction={this.props.logoutAction}>
 
-                       <p style={{height: `5vh`}}>    
+                       {/* <p style={{height: `5vh`}}>     */}
                         {/*  */}
-                       </p>
+                       {/* </p> */}
                     
                       <Grid style={{position: "relative"}}>
                       <Grid.Row> 
                       <Grid.Column width="1"/>
                       <Grid.Column width="14">
                         <HeaderContainer>
-                          <div style={{position:"absolute", left: "8px", display: "flex", flexDirection:"column"}}>
+                          <div style={{position:"absolute", left: "0px", display: "flex", flexDirection:"column"}}>
                             <Title>
                               { this.getSessionTitle(value.userSessions, this.state.currentSessionId) }
                             </Title>
@@ -224,7 +225,7 @@ class SessionView extends React.Component <any, any> {
                         </HeaderContainer>
                         </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row style={{padding:"8px 8px 0 8px"}}>
+                        <Grid.Row style={{padding:"8px 8px 0 0"}}>
                           <Grid.Column width="1"/>
                           <Grid.Column width="14" >
                           <div style={{height:"1px", backgroundColor:"rgba(0, 0, 0, 0.08)", width:"100%"}}/>
@@ -279,9 +280,9 @@ class SessionView extends React.Component <any, any> {
         this.setState({currentView: "dashboard"})
       }
 
-      private reportClick = () =>{
-        this.setState({currentView: "report"})
-      }
+    private reportClick = () =>{
+      this.setState({currentView: "report"})
+    }
 
 }
 

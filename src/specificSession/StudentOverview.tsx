@@ -7,7 +7,7 @@ import * as _ from "lodash";
 interface IStudentOverviewProps {
     showDetailed: (studentId: string) => void,
     studentData: Student[],
-    onMouseOverASpecificStudentEvent: (studentData: Student)=> void
+    onMouseOverASpecificStudentEvent: (studentData: Student) => void
     onMouseOutASpecificStudentEvent: () => void
     onClickOnASpecificStudentEvent: (studentData: Student) => void
 }
@@ -16,7 +16,7 @@ interface IStudentOverviewProps {
 export class StudentOverview extends React.Component<IStudentOverviewProps, any> {
 
     // TODO: to create the design
-    private myRef ;
+    private myRef;
 
     public constructor(props: any) {
         super(props);
@@ -25,10 +25,10 @@ export class StudentOverview extends React.Component<IStudentOverviewProps, any>
 
     }
 
-    public componentDidMount(){
+    public componentDidMount() {
         const containerWidth = this.myRef.current.getBoundingClientRect().width
         const elementARow = Math.floor(containerWidth / 90)
-        if (this.state.studentData !== undefined){
+        if (this.state.studentData !== undefined) {
             const emptyBlockNum = this.state.studentData.length % elementARow
             if (emptyBlockNum !== 0) {
 
@@ -47,31 +47,28 @@ export class StudentOverview extends React.Component<IStudentOverviewProps, any>
 
         return (
             <React.Fragment>
-                <div 
+                <div
                     style={{
                         padding: "0px 0px 0px 0px",
                         display: "flex",
                         justifyContent: "flex-start",
                         flexWrap: "wrap",
                         alignContent: "flex-start",
-                        height: "100%"
-
+                        height: "100%",
+                        overflowY: "auto",
                     }} ref={this.myRef}>
 
                     {/* Create the status grid */}
                     {
-                        _.sortBy(this.state.studentData,'name').map((s: Student) => {
-                            return (
+                        _.sortBy(this.state.studentData, 'name').map((s: Student) => 
                                 <StudentStatusRect
                                     key={`student_${s.name}_rect`}
                                     showDetailed={this.props.showDetailed}
                                     student={s}
                                     onMouseOverASpecificStudentEvent={this.props.onMouseOverASpecificStudentEvent}
-                                    onMouseOutASpecificStudentEvent= {this.props.onMouseOutASpecificStudentEvent}
-                                    onClickOnASpecificStudentEvent = {this.props.onClickOnASpecificStudentEvent}
+                                    onMouseOutASpecificStudentEvent={this.props.onMouseOutASpecificStudentEvent}
+                                    onClickOnASpecificStudentEvent={this.props.onClickOnASpecificStudentEvent}
                                 />
-                            )
-                            }
                         )
                     }
 
