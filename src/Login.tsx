@@ -65,6 +65,7 @@ class LoginPage extends React.Component <any, ILoginProps> {
         if (result !== null){
           const credential = result.credential as any 
           const token = (result.credential as any).accessToken;
+          const idToken = (result.credential as any).idToken;
           const user = result.user;
           
           if (user !== null)           
@@ -72,6 +73,10 @@ class LoginPage extends React.Component <any, ILoginProps> {
           else 
             this.props.setUser("Dummy", token, credential.idToken) 
         
+          // Modify to talk to backend
+          axios.post("http://localhost:4000/verify_token", {accessToken: token, idToken}).then(res => console.log(res.data))
+          // axios.get("http://localhost:3001/test").then(()=>console.log("response"))
+          // axios.get("http://localhost:4000/")
           this.props.history.push("/")
         }
       }).catch(console.log);

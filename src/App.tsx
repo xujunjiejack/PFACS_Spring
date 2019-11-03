@@ -15,7 +15,7 @@ import * as React from 'react';
 import { Route, Router } from "react-router"
 
 import './App.css'
-import { initialUser, IUserContext, UserContext } from "./Context"
+import { initialUser, IUserContext, UserContext, ISession } from "./Context"
 import CreateSession from "./sessionManagement/CreateSession"
 import ModifySession from "./sessionManagement/ModifySession"
 import LoginPage from "./Login";
@@ -116,15 +116,17 @@ class App extends React.Component<any, IAppState> {
     const cookies = this.props.cookies;
     const userSessionCookie = cookies.get("userSessions")
     const userSessions = userSessionCookie !== undefined ? userSessionCookie : dummyData
-    this.state = { ...initialUser, userSessions, currentSessionId: "", currentView: "dashboard", classrooms: dummyClassroomData,
-                  allUserData: [], modificationSessionId: "" }
+    this.state = {
+      ...initialUser, userSessions, currentSessionId: "", currentView: "dashboard", classrooms: dummyClassroomData,
+      allUserData: [], modificationSessionId: ""
+    }
   }
 
   public addNewSession = (newSession: ISessionData) => {
     const userSessions = [...this.state.userSessions, newSession]
-    const { cookies } = this.props;
-
     this.setState({ userSessions })
+
+    const { cookies } = this.props;
     cookies.set("userSessions", userSessions, { path: "/" })
   }
 
@@ -149,15 +151,13 @@ class App extends React.Component<any, IAppState> {
     }
   }
 
-  public deleteUserSession = (userSessionToBeDeleted) =>{
+  public deleteUserSession = (userSessionToBeDeleted) => {
     console.log("deleting a user session")
-    const newUserSessionsWithoutOne = this.state.userSessions.filter( s => s.sessionId !== userSessionToBeDeleted.sessionId)
+    const newUserSessionsWithoutOne = this.state.userSessions.filter(s => s.sessionId !== userSessionToBeDeleted.sessionId)
     const { cookies } = this.props;
-    this.setState( {userSessions: newUserSessionsWithoutOne} )
-    cookies.set("userSessions", newUserSessionsWithoutOne, {path: "/"})  
+    this.setState({ userSessions: newUserSessionsWithoutOne })
+    cookies.set("userSessions", newUserSessionsWithoutOne, { path: "/" })
   }
-
-  
 
   private setAllUserData = (data) => {
     const studentID = data.map(d => d.playerUniqueID)
@@ -181,22 +181,22 @@ class App extends React.Component<any, IAppState> {
     cookies.remove("userSessions")
 
     this.setState({ userName: "", userAccessToken: "", userIdToken: "", userSessions: [] })
-    firebase.auth().signOut().then(() => { console.log("firebase logout successful") }).catch((e) => { console.log(e) })
+    firebase.auth().signOut().then(() => console.log("firebase logout successful")).catch(e => console.log(e))
   }
 
-  public setClassroom = (classroomInfo: IGoogleClassroomInfo[]) =>  this.setState({ classrooms: classroomInfo })
-  
+  public setClassroom = (classroomInfo: IGoogleClassroomInfo[]) => this.setState({ classrooms: classroomInfo })
+
 
   public historyPush(path: string) {
     history.push(path)
     return (<div> HELLLO </div>)
   }
 
-  public setClassForModified = (sessionId) => this.setState({modificationSessionId: sessionId})
+  public setClassForModified = (sessionId) => this.setState({ modificationSessionId: sessionId })
 
   public render() {
     return (
-      <div className="App" style={{background:"#ffffff", height:"100vh", width:"100vw"}}>
+      <div className="App" style={{ background: "#ffffff", height: "100vh", width: "100vw" }}>
         <Router history={history}>
           <div>
             <Route exact={true} path="/" render={
@@ -222,7 +222,7 @@ class App extends React.Component<any, IAppState> {
               render={
                 props =>
                   <UserContext.Provider value={{ ...this.state }} >
-                    <Session history={props.history} setUser={this.setUser} changeCurrentSession={this.changeCurrentSession} logoutAction={this.logout} modifyOneSession={this.setClassForModified} deleteASession={this.deleteUserSession}/>
+                    <Session history={props.history} setUser={this.setUser} changeCurrentSession={this.changeCurrentSession} logoutAction={this.logout} modifyOneSession={this.setClassForModified} deleteASession={this.deleteUserSession} />
                   </UserContext.Provider>
               }
             />
@@ -247,10 +247,10 @@ class App extends React.Component<any, IAppState> {
 
             <Route exact={true} path="/modifysession"
               render={
-                props => 
-                <UserContext.Provider value={{ ...this.state }}>
-                  <ModifySession history={props.history} setUser={this.setUser} modificationSessionID={this.state.modificationSessionId} logoutAction={this.logout}></ModifySession>
-                </UserContext.Provider>
+                props =>
+                  <UserContext.Provider value={{ ...this.state }}>
+                    <ModifySession history={props.history} setUser={this.setUser} modificationSessionID={this.state.modificationSessionId} logoutAction={this.logout} modifySession={this.modifySession}></ModifySession>
+                  </UserContext.Provider>
               }
             />
           </div>
@@ -259,15 +259,27 @@ class App extends React.Component<any, IAppState> {
     );
   }
 
+  private modifySession = (modifiedSession: ISession) => {
+    // first create a new array by filter for the new reference. Otherwise react will automatically render
+    const newSessionArray = this.state.userSessions.filter(s => s.sessionId !== modifiedSession.sessionId)
+    
+    // then splice based on the original position. 
+    const indexOfModifiedSession = this.state.userSessions.findIndex( s => s.sessionId === modifiedSession.sessionId )
+    newSessionArray.splice(indexOfModifiedSession, 0, modifiedSession)
+    this.setState( {userSessions:newSessionArray})
+
+    const { cookies } = this.props;
+    cookies.set("userSessions", newSessionArray, { path: "/" })
+  }
+
 
   private changeCurrentSession = (sessionId: string, sessionCurrentView: string) => {
     // This code will change the session id 
-    this.setState({
-      currentSessionId: sessionId, currentView: sessionCurrentView
-    })
-    const {cookies} = this.props
-    cookies.set( "sessionId",sessionId, {path:"/"} )
-    cookies.set( "sessionCurrentView", sessionCurrentView, {path:"/"} )
+    this.setState({currentSessionId: sessionId, currentView: sessionCurrentView})
+
+    const { cookies } = this.props
+    cookies.set("sessionId", sessionId, { path: "/" })
+    cookies.set("sessionCurrentView", sessionCurrentView, { path: "/" })
   }
 }
 

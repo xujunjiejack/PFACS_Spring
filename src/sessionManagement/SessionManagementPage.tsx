@@ -213,7 +213,6 @@ const SessionStartTimeText = styled(globalStyle.Header200)`
     width: 422px;
     height: 19px;
     top: 42px;
-    // margin-top: 15px;
 
     text-align: left;
 
@@ -224,7 +223,6 @@ const StudentNumber = styled(globalStyle.Header400) <{ isOnGoing: boolean }>`
     position: relative;
     width: 96.98px;
     height: 22px;
-    // left: ${ props => props.isOnGoing ? "110px" : 110 + 110 + "px"};
     top: 1px;
 
     color: ${globalStyle.colors.baseBlueStone};
@@ -233,7 +231,6 @@ const StudentNumber = styled(globalStyle.Header400) <{ isOnGoing: boolean }>`
 `
 
 const OngoingLabel = styled(globalStyle.Header300)`
-    // position: absolute;
     position: relative;
     height: 25px;
     left: 100px;

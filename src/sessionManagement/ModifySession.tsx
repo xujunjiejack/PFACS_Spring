@@ -11,6 +11,8 @@ import { withCookies } from "react-cookie";
 import * as globalStyle from "../AppStyle";
 import {ISession} from "../Context"
 
+// I need to create a better wrap. 
+
 /* CSS for the component */
 const CreateAssessmentLabel = styled(globalStyle.Header600)`
     position: relative;
@@ -28,9 +30,7 @@ const StyledForm = styled(Form)`
     position: relative;
     width: 100%;
     height: 19px;
-    // left: 318px;
     top: 70px;
-    // border-width: 0;
 
     font-family: Roboto;
     font-style: normal;
@@ -43,13 +43,11 @@ const StyledForm = styled(Form)`
 
 const ChooseStudentContainer = styled.div`
     position: relative;
-    // width: 816px;
     width: 100%;
     height: 448px;
     left: 0px;
     top: 0px;
 
-    // border: 1px solid #C8C8C8;
     box-sizing: border-box;
     overflow: scroll;
 `
@@ -86,8 +84,8 @@ const ConfirmButton = styled(Button)`
 `
 
 const CancelButton = styled(Button)`
-        background: ${globalStyle.colors.lightNeutral50};
-        color: ${globalStyle.colors.baseBlueStone50};
+    background: ${globalStyle.colors.lightNeutral50};
+    color: ${globalStyle.colors.baseBlueStone50};
 `
 
 const ConfirmButtonText = styled(globalStyle.Header500)`
@@ -100,8 +98,6 @@ const CancelButtonText = styled(globalStyle.Header500)`
 
 /* Main Component */
 class ModifySession extends React.Component<any, any>{
-
-
 
     public constructor(props: any) {
         super(props)
@@ -131,8 +127,7 @@ class ModifySession extends React.Component<any, any>{
             let m = Map<string, boolean>()
 
             // One problem I'm going to have is to have double name
-            if (this.currentSessionData)
-                console.log(this.currentSessionData.studentIds)
+            if (this.currentSessionData) console.log(this.currentSessionData.studentIds)
 
             classrooms.forEach(
                 (d: IGoogleClassroomInfo) => {
@@ -236,7 +231,7 @@ class ModifySession extends React.Component<any, any>{
                                     {/* Create Session */}
                                     <Form.Field>
                                         <div style={{display:"flex", flexDirection:"row"}}>
-                                            <ConfirmButton disabled={ this.state.title === "" || this.noStudentIsSelected() } onClick={this.createSession} style={{left: `0px` }}>
+                                            <ConfirmButton disabled={ this.state.title === "" || this.noStudentIsSelected() } onClick={this.modifySession} style={{left: `0px` }}>
                                                 <ConfirmButtonText>
                                                     Modify the Session
                                                 </ConfirmButtonText>
@@ -279,7 +274,32 @@ class ModifySession extends React.Component<any, any>{
 
     private cancelTheNewSession = (event) => {
         this.props.history.push("/sessions")
+    }
 
+    private modifySession = () => {
+        const sessionToBeModified = this.currentSessionData as ISession;
+        const sessionName = this.state.title
+        const studentMaps: Map<string, boolean> = this.state.allStudentCheckStatusMap
+        const studentNames = studentMaps.filter(checked => checked === true).keySeq().toArray()
+        const studentIds = studentNames.map(n => {
+            return this.state.allStudentNameIDMap[n]
+        })
+        const studentIDNamePair = {}
+        studentIds.forEach((id, i) => {
+            const name = studentNames[i].split("@")[0]
+            studentIDNamePair[id] = name
+        })
+
+        const studentNumber = studentIds.length
+        const ongoing = sessionToBeModified.ongoing;
+        const startTime = sessionToBeModified.startTime
+        const sessionId = sessionToBeModified.sessionId
+
+        const sessionModified = {
+            ongoing, startTime, studentNumber, studentNames, studentIds, sessionName, sessionId, studentIDNamePair
+        }
+        this.props.modifySession(sessionModified)
+        this.props.history.goBack()
     }
 
     private createSession = () => {
@@ -304,9 +324,6 @@ class ModifySession extends React.Component<any, any>{
             ongoing, startTime, studentNumber, studentNames, studentIds, sessionName, sessionId, studentIDNamePair
         }
 
-        // this.props.addNewSession(newSessionEntry)
-        // this.props.changeCurrentSession(sessionId, "dashboard")
-        // this.props.history.push("/livedashboard")
         this.props.history.goBack()
     }
 
