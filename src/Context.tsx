@@ -7,7 +7,7 @@ export interface ISession {
     studentIds: string[],
     studentNames?: string[],
     studentIDNamePair?: Object,
-    startTime: string,
+    startTime: Date,
     ongoing: boolean,
     sessionName: string,
     studentNumber: number,

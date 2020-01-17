@@ -150,7 +150,6 @@ export const RightSection = styled.div`
 
 export const TitleText= styled.div`
   position: absolute;
-  // width: 950px;
   height: 94px;
   left: 247px;
   top: 303px;

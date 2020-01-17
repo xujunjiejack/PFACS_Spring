@@ -7,7 +7,7 @@ import { Grid, GridColumn, GridRow, Icon } from "semantic-ui-react"
 import { withCookies } from "react-cookie";
 import * as globalStyle from "../AppStyle"
 import * as firebase from "firebase"
-import * as date from "date-fns"
+import {format} from "date-fns"
 
 /* CSS For the components */
 const DeleteIcon = styled(FontAwesomeIcon)`
@@ -277,8 +277,25 @@ class Session extends React.Component<any, any> {
 
     public componentDidMount() {
         const { cookies } = this.props;
-        if (cookies.get("userName") !== undefined && cookies.get("userAccessToken") !== undefined && cookies.get("userIdToken") !== undefined) {
-            this.props.setUser(cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken"), cookies.get("userSessions"))
+        console.log("Component did mount")
+        if (cookies.get("userName") !== undefined && cookies.get("userAccessToken") !== undefined && cookies.get("userIdToken") !== undefined && cookies.get("userEmail")!== undefined) {
+            this.props.setUser(cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken"), cookies.get("userEemail"), cookies.get("userKey"), cookies.get("userSessions"), false)
+            
+            // Testing code for grabbing sessions from the firebase. 
+            console.log(cookies.get("userKey"))
+            const sessions = firebase.firestore().collection("TeacherSessions").where("owner", "==", cookies.get("userKey")).get().then(
+                snapshot => {
+                    const sessionsImported = [] as any[]
+                    snapshot.forEach( doc => {
+                        const data = doc.data()
+                        console.log(doc.id)
+                        console.log(data)
+                        sessionsImported.push(data as any)
+                    })
+                    
+                }
+            )
+            
         }
     }
 
@@ -396,7 +413,7 @@ class Session extends React.Component<any, any> {
                         </SessionRowContainer>
                         <Grid.Row style={{ paddingTop: 0 }}>
                             <GridColumn>
-                                <SessionStartTimeText> {dummy.startTime} </SessionStartTimeText>
+                                <SessionStartTimeText> {format(dummy.startTime, "'Started at' hh:mmaaaa',' LL/dd/yyyy")} </SessionStartTimeText>
                             </GridColumn>
                         </Grid.Row>
                         {/* </li> */}

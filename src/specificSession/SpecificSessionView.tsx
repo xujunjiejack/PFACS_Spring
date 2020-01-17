@@ -11,6 +11,7 @@ import LiveDashboard from "./LiveDashboard";
 import {idNamesPair} from "./../studentsIDsName";
 import { withCookies } from "react-cookie";
 import * as globalStyle from "../AppStyle"
+import {format} from "date-fns"
 
 /* CSS For Component */
 const HeaderContainer = styled.div`
@@ -158,8 +159,8 @@ class SessionView extends React.Component <any, any> {
     
     public componentDidMount(){
       const { cookies } = this.props;
-        if (cookies.get("userName") !== undefined && cookies.get("userAccessToken") !== undefined && cookies.get("userIdToken") !== undefined){
-            this.props.setUser( cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken"), cookies.get("userSessions") )    
+        if (cookies.get("userName") !== undefined && cookies.get("userAccessToken") !== undefined && cookies.get("userIdToken") !== undefined && cookies.get("userEmail")!== undefined){
+            this.props.setUser( cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken"), cookies.get("userEmail"), cookies.get("userKey"),  cookies.get("userSessions") )    
         }
     }
 
@@ -270,7 +271,7 @@ class SessionView extends React.Component <any, any> {
     private getSessionTime = (allSessions: ISession[], currentSessionId: string) => {
       const currentSession = this.getSessionData(allSessions, this.state.currentSessionId) 
       if (currentSession){
-        return currentSession.startTime
+        return format(currentSession.startTime, "'Started at' hh:mmaaaa',' LL/dd/yyyy")
       }
       return "No session"
     }

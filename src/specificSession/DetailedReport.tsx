@@ -483,20 +483,19 @@ class DetailedReport extends React.Component<any, any> {
                 </OverallClassPerformanceContainer>
                 }
                 <DataTestGround>
-                <Button onClick={this.getGraphUsage}>
+                    <Button onClick={this.getGraphUsage}>
                         Click me to get data 
                     </Button>
-
-                <Label>
-                    {this.state.socketData}
-                </Label>
+                    <Label>
+                        {this.state.socketData}
+                    </Label>
                 </DataTestGround>
             </React.Fragment>
         )
     }
 
     private getGraphUsage = () =>{
-        axios.get("/mongodata/graphusage").then( res =>
+        axios.get("/mongodata/graphusage").then(res =>
             this.setState({socketData:JSON.stringify(res.data)}) 
         )
         return 

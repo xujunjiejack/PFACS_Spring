@@ -159,12 +159,11 @@ function IndividualTable(props) {
                 <Grid.Row>
                     <Grid.Column
                         width="5"
-                        style={{
-                            backgroundColor: "transparent",
-                        }}
+                        style={{ backgroundColor: "transparent" }}
                     >
                        <TableName> {_.startCase(data.tableName)} </TableName>
                     </Grid.Column>
+                    
                     <Grid.Column
                         width="11"
                         style={{

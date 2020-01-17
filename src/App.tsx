@@ -34,6 +34,7 @@ library.add(faEdit)
  * Interface
  */
 
+//  This interface is used to control the change of the state
 interface IControlState {
   currentView: string,
   currentSessionId: string,
@@ -48,7 +49,7 @@ interface IClassroomControl {
 type IAppState = IUserContext & IControlState & IClassroomControl;
 
 interface ISessionData {
-  startTime: string,
+  startTime: Date,
   ongoing: boolean,
   sessionName: string,
   studentNumber: number,
@@ -65,7 +66,7 @@ const history = createBrowserHistory()
 const dummyDataStudentIds = ["aee6c2569ea2cf8b88d79a7c36a90015", "403870ae4811bcb15dcdfe7f0c2ad3f8", "a47746fa74fe8f3823d48dfdcbc13618", "e311f1a829e27d2f8a4aef242ad0f71c", "fe185d1d04a7d905953ed7455f0561ca", "3242fe1dc946799d204984d330975432"]
 const dummyDataStudentIds2 = ["aee6c2569ea2cf8b88d79a7c36a90015", "403870ae4811bcb15dcdfe7f0c2ad3f8", "a47746fa74fe8f3823d48dfdcbc13618", "fe185d1d04a7d905953ed7455f0561ca", "3242fe1dc946799d204984d330975432"]
 const dummyData1: ISessionData = {
-  startTime: "23 July, 2017 - Started at 4:50pm",
+  startTime: new Date(2017,7,23,16,50),
   ongoing: true,
   sessionName: "Test Session",
   studentNumber: dummyDataStudentIds.length,
@@ -76,7 +77,7 @@ const dummyData1: ISessionData = {
 }
 
 const dummyData2: ISessionData = {
-  startTime: "1 June, 2019 - Started at 4:50pm",
+  startTime: new Date(2019,6,1,16,50),
   ongoing: false,
   sessionName: "Fall 2019 Math Assessment",
   studentNumber: dummyDataStudentIds.length,
@@ -122,31 +123,41 @@ class App extends React.Component<any, IAppState> {
     }
   }
 
-  public addNewSession = (newSession: ISessionData) => {
-    const userSessions = [...this.state.userSessions, newSession]
-    this.setState({ userSessions })
+  public setUserSessionsInCookie = (newUserSession: ISession[]) => this.props.cookies.set("userSessions", newUserSession, { path: "/" })
+  public appendNewUserSessionToExistingSessions = (newUserSession: ISession) => this.setState({ userSessions: [...this.state.userSessions, newUserSession] })
 
-    const { cookies } = this.props;
-    cookies.set("userSessions", userSessions, { path: "/" })
+  public addNewSession = (newUserSession: ISession) => {
+    const newUserSessions = [...this.state.userSessions, newUserSession]
+    this.appendNewUserSessionToExistingSessions(newUserSession)
+    this.setUserSessionsInCookie(newUserSessions)
   }
 
-  public setUser = (userName: string, userAccessToken: string, userIdToken: string, userSessions?) => {
+  public setUser = (userName: string, userAccessToken: string, userIdToken: string, userEmail?, userKey?,userSessions?, firstLogin: boolean = false,) => {
     const { cookies } = this.props;
 
     // Set the cookies
     cookies.set('userName', userName, { path: '/' });
     cookies.set('userAccessToken', userAccessToken, { path: '/' });
     cookies.set('userIdToken', userIdToken, { path: '/' });
-
-    // Determine whether the user sessions needs to be updated.
-    if (userSessions === undefined) {
-      userSessions = dummyData
-    } else {
-      cookies.set("userSessions", userSessions, { path: "/" })
+    cookies.set('userEmail', userEmail, { path: '/' });
+  
+    if (userKey === undefined && cookies.get('userKey') !== undefined){
+      cookies.set('userKey', cookies.get('userKey'), {path:"/"})
+    }else if (userKey !== undefined) {
+      cookies.set('userKey', userKey, {path:"/"})
     }
 
-    if (this.state.userName === "") {
-      // The default user name is state
+    // Determine whether the user sessions needs to be updated.
+    const userFirstSignIn = userSessions === undefined || firstLogin
+    if (userFirstSignIn) {
+      userSessions = dummyData
+    } else if (!userFirstSignIn){
+      this.setUserSessionsInCookie(userSessions)
+    }
+
+    const currentNoUserLoggedIn = this.state.userName === ""
+    if (currentNoUserLoggedIn) {
+      // Login 
       this.setState({ userName, userAccessToken, userIdToken, userSessions: userSessions })
     }
   }
@@ -154,9 +165,8 @@ class App extends React.Component<any, IAppState> {
   public deleteUserSession = (userSessionToBeDeleted) => {
     console.log("deleting a user session")
     const newUserSessionsWithoutOne = this.state.userSessions.filter(s => s.sessionId !== userSessionToBeDeleted.sessionId)
-    const { cookies } = this.props;
     this.setState({ userSessions: newUserSessionsWithoutOne })
-    cookies.set("userSessions", newUserSessionsWithoutOne, { path: "/" })
+    this.setUserSessionsInCookie(newUserSessionsWithoutOne)
   }
 
   private setAllUserData = (data) => {
@@ -186,11 +196,11 @@ class App extends React.Component<any, IAppState> {
 
   public setClassroom = (classroomInfo: IGoogleClassroomInfo[]) => this.setState({ classrooms: classroomInfo })
 
-
   public historyPush(path: string) {
     history.push(path)
     return (<div> HELLLO </div>)
   }
+ 
 
   public setClassForModified = (sessionId) => this.setState({ modificationSessionId: sessionId })
 
@@ -208,6 +218,8 @@ class App extends React.Component<any, IAppState> {
                 else { return this.historyPush("/login") }
               }
             } />
+
+            {/* Need 404 page. */}
 
             <Route exact={true} path="/login"
               render={

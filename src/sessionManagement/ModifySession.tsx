@@ -9,7 +9,7 @@ import { UserContext } from '../Context';
 import * as firebase from "firebase"
 import { withCookies } from "react-cookie";
 import * as globalStyle from "../AppStyle";
-import {ISession} from "../Context"
+import { ISession } from "../Context"
 
 // I need to create a better wrap. 
 
@@ -60,7 +60,7 @@ const BackgroundContainer = styled(Grid)`
     top: 40px;
     background: transparent;
 `
-  
+
 const SessionTitleLabel = styled(globalStyle.Header500)`
     color: ${globalStyle.colors.baseBlueStone};
     display: flex; 
@@ -96,6 +96,13 @@ const CancelButtonText = styled(globalStyle.Header500)`
     color: ${globalStyle.colors.baseBlueStone50};
 `
 
+const Loading = (props) => (
+    <div>
+        Data is loading
+    </div>
+)
+
+
 /* Main Component */
 class ModifySession extends React.Component<any, any>{
 
@@ -107,7 +114,6 @@ class ModifySession extends React.Component<any, any>{
     }
 
     public componentDidMount() {
-
 
         firebase.firestore().collection('users').get().then((snapshot) => {
             const docArray: Array<any> = []
@@ -132,13 +138,12 @@ class ModifySession extends React.Component<any, any>{
             classrooms.forEach(
                 (d: IGoogleClassroomInfo) => {
                     d.studentName.forEach(s => {
-                        if (this.currentSessionData){
-                            if (this.currentSessionData.studentNames){
+                        if (this.currentSessionData) {
+                            if (this.currentSessionData.studentNames) {
                                 m = m.set(s, this.currentSessionData.studentNames.includes(s))
-                                return       
+                                return
                             }
                         }
-                            
                         m = m.set(s, false)
                     })
                 }
@@ -150,26 +155,26 @@ class ModifySession extends React.Component<any, any>{
                     Object.keys(d.studentNameIDMap).forEach(k => m2[k] = d.studentNameIDMap[k])
                 }
             )
-            this.setState({ allStudentCheckStatusMap: m, allStudentNameIDMap: m2, googleClassroomDataInfo: classrooms, isLoading: false,  })
+            this.setState({ allStudentCheckStatusMap: m, allStudentNameIDMap: m2, googleClassroomDataInfo: classrooms, isLoading: false, })
         })
-        .catch((err) => {
-            console.log('Error ', err);
-        });
+            .catch((err) => {
+                console.log('Error ', err);
+            });
 
         const { cookies } = this.props;
-        if (cookies.get("userName") !== undefined && cookies.get("userAccessToken") !== undefined && cookies.get("userIdToken") !== undefined){
-            this.props.setUser( cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken"), cookies.get("userSessions") )    
+        if (cookies.get("userName") !== undefined && cookies.get("userAccessToken") !== undefined && cookies.get("userIdToken") !== undefined && cookies.get("userEmail")!==undefined) {
+            this.props.setUser(cookies.get("userName"), cookies.get("userAccessToken"), cookies.get("userIdToken"),  cookies.get("userEmail"), cookies.get("userKey"), cookies.get("userSessions"))
         }
 
         if (this.currentSessionData)
-            this.setState({title: this.currentSessionData.sessionName})
+            this.setState({ title: this.currentSessionData.sessionName })
     }
 
 
     public render() {
         const { cookies } = this.props;
         const cookieNotHasUserName = () => cookies.get("userName") === undefined || cookies.get("userName") === ""
-        
+
         return (
             <UserContext.Consumer>
                 {value => {
@@ -183,70 +188,67 @@ class ModifySession extends React.Component<any, any>{
                     }
 
                     this.currentSessionData = this.getSessionData(value.userSessions, this.props.modificationSessionID)
-                    
 
                     return <Layout history={this.props.history} userName={value.userName} logoutAction={this.props.logoutAction}>
                         <BackgroundContainer >
                             <Grid.Row style={{}}>
 
-                            <Grid.Column width={1} />
-                            <Grid.Column width={14} style={{ background: "#FFFFFF", paddingRight: "40px" }} >
-                                <CreateAssessmentLabel>
-                                    Modify an existing assessment
+                                <Grid.Column width={1} />
+                                <Grid.Column width={14} style={{ background: "#FFFFFF", paddingRight: "40px" }} >
+                                    <CreateAssessmentLabel>
+                                        Modify an existing assessment
                                 </CreateAssessmentLabel>
 
-                                <StyledForm>
-                                    {/* Session title */}
-                                    <Form.Field>
-                                        <SessionTitleLabel>Session Title</SessionTitleLabel>
-                                        <input placeholder='Session Title' value={this.state.title} name="title" onChange={this.formOnChange} style={{ width: "100%" }} />
-                                    </Form.Field>
+                                    <StyledForm>
+                                        {/* Session title */}
+                                        <Form.Field>
+                                            <SessionTitleLabel>Session Title</SessionTitleLabel>
+                                            <input placeholder='Session Title' value={this.state.title} name="title" onChange={this.formOnChange} style={{ width: "100%" }} />
+                                        </Form.Field>
 
-                                   <div style={{ height: "24px" }} />
+                                        <div style={{ height: "24px" }} />
 
-                                    {/* Session check box */}
-                                    <Form.Field>
-                                        <StudentTitleLabel>
-                                            Students (From Google Classroom)
-                                        </StudentTitleLabel>
+                                        {/* Session check box */}
+                                        <Form.Field>
+                                            <StudentTitleLabel>
+                                                Students (From Google Classroom)
+                                            </StudentTitleLabel>
 
-                                        {/* Given the data and generate it*/}
-                                        <ChooseStudentContainer>
-                                            {this.state.isLoading ?
-                                                <div>
-                                                    Data is loading
-                                                </div>
-                                                :
-                                                <Grid padded="horizontally" style={{ marginTop: 0 }}>
-                                                    {this.state.googleClassroomDataInfo.map(
-                                                        (data: IGoogleClassroomInfo) => {
-                                                            return <ChooseStudentsRow key={data.className} classInfo={data} allStudentsCheckitems={this.state.allStudentCheckStatusMap} setAllStudentCheckitems={this.setAllStudentItems} />
-                                                        }
-                                                    )}
-                                                </Grid>
-                                            }
-                                        </ChooseStudentContainer>
-                                    </Form.Field>
+                                            {/* Given the data and generate it*/}
+                                            <ChooseStudentContainer>
+                                                {this.state.isLoading ?
+                                                    <Loading/>
+                                                    :
+                                                    <Grid padded="horizontally" style={{ marginTop: 0 }}>
+                                                        {this.state.googleClassroomDataInfo.map(
+                                                            (data: IGoogleClassroomInfo) => {
+                                                                return <ChooseStudentsRow key={data.className} classInfo={data} allStudentsCheckitems={this.state.allStudentCheckStatusMap} setAllStudentCheckitems={this.setAllStudentItems} />
+                                                            }
+                                                        )}
+                                                    </Grid>
+                                                }
+                                            </ChooseStudentContainer>
+                                        </Form.Field>
 
-                                    {/* Create Session */}
-                                    <Form.Field>
-                                        <div style={{display:"flex", flexDirection:"row"}}>
-                                            <ConfirmButton disabled={ this.state.title === "" || this.noStudentIsSelected() } onClick={this.modifySession} style={{left: `0px` }}>
-                                                <ConfirmButtonText>
-                                                    Modify the Session
+                                        {/* Create Session */}
+                                        <Form.Field>
+                                            <div style={{ display: "flex", flexDirection: "row" }}>
+                                                <ConfirmButton disabled={this.state.title === "" || this.noStudentIsSelected()} onClick={this.modifySession} style={{ left: `0px` }}>
+                                                    <ConfirmButtonText>
+                                                        Modify the Session
                                                 </ConfirmButtonText>
-                                            </ConfirmButton>
+                                                </ConfirmButton>
 
-                                            <CancelButton onClick={this.cancelTheNewSession} style={{}}>
-                                                <CancelButtonText>
-                                                    Cancel
+                                                <CancelButton onClick={this.cancelTheNewSession} style={{}}>
+                                                    <CancelButtonText>
+                                                        Cancel
                                                 </CancelButtonText>
-                                            </CancelButton>
-                                        </div>
-                                    </Form.Field>
-                                    
-                                </StyledForm>
-                            </Grid.Column>
+                                                </CancelButton>
+                                            </div>
+                                        </Form.Field>
+
+                                    </StyledForm>
+                                </Grid.Column>
                             </Grid.Row>
                         </BackgroundContainer>
                     </Layout>
@@ -256,18 +258,18 @@ class ModifySession extends React.Component<any, any>{
         )
     }
 
-    private currentSessionData: ISession|undefined
+    private currentSessionData: ISession | undefined
 
-    private noStudentIsSelected = () => 
-        this.state.allStudentCheckStatusMap !== undefined ?  
+    private noStudentIsSelected = () =>
+        this.state.allStudentCheckStatusMap !== undefined ?
             this.state.allStudentCheckStatusMap.filter((checked) => checked === true).toArray() === 0 :
             true
 
-    private setAllStudentItems = (newAllStudentItems: Map<string, boolean>) =>  this.setState({ allStudentCheckStatusMap: newAllStudentItems })
+    private setAllStudentItems = (newAllStudentItems: Map<string, boolean>) => this.setState({ allStudentCheckStatusMap: newAllStudentItems })
 
     private formOnChange = (e: any) => this.setState({ [e.target.name]: e.target.value })
 
-    private timeStringFormat = (date : Date) => 
+    private timeStringFormat = (date: Date) =>
         `${date.getMonth() + 1}/${date.getDate()}, ${date.getFullYear()} - Started at ${date.getHours() > 12 ? date.getHours() - 12 : date.getHours()}:${date.getMinutes()}${date.getHours() >= 12 ? "pm" : "am"}`
 
     private formatCurrentTimeString = () => this.timeStringFormat(new Date())
@@ -327,8 +329,8 @@ class ModifySession extends React.Component<any, any>{
         this.props.history.goBack()
     }
 
-    private getSessionData = (allSessions: ISession[], currentSessionId: string) : ISession|undefined => {
-        return allSessions.find( s => s.sessionId === currentSessionId)
+    private getSessionData = (allSessions: ISession[], currentSessionId: string): ISession | undefined => {
+        return allSessions.find(s => s.sessionId === currentSessionId)
     }
 }
 

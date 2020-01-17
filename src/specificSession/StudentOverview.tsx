@@ -61,14 +61,14 @@ export class StudentOverview extends React.Component<IStudentOverviewProps, any>
                     {/* Create the status grid */}
                     {
                         _.sortBy(this.state.studentData, 'name').map((s: Student) => 
-                                <StudentStatusRect
-                                    key={`student_${s.name}_rect`}
-                                    showDetailed={this.props.showDetailed}
-                                    student={s}
-                                    onMouseOverASpecificStudentEvent={this.props.onMouseOverASpecificStudentEvent}
-                                    onMouseOutASpecificStudentEvent={this.props.onMouseOutASpecificStudentEvent}
-                                    onClickOnASpecificStudentEvent={this.props.onClickOnASpecificStudentEvent}
-                                />
+                            <StudentStatusRect
+                                key={`student_${s.name}_rect`}
+                                showDetailed={this.props.showDetailed}
+                                student={s}
+                                onMouseOverASpecificStudentEvent={this.props.onMouseOverASpecificStudentEvent}
+                                onMouseOutASpecificStudentEvent={this.props.onMouseOutASpecificStudentEvent}
+                                onClickOnASpecificStudentEvent={this.props.onClickOnASpecificStudentEvent}
+                            />
                         )
                     }
 

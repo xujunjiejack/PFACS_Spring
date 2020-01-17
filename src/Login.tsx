@@ -7,10 +7,10 @@ import {TitleText} from "./AppStyle";
 import {UserContext} from "./Context"
 import {IGoogleClassroomInfo} from "./data_structure/GoogleClassroomInfo";
 import * as firebase from "firebase"
-import {Button} from "semantic-ui-react"
+import {Button, Grid, GridRow} from "semantic-ui-react"
 import {withCookies} from 'react-cookie';
 import * as globalStyles from "./AppStyle"
-import { async } from 'q';
+import loginImage from "./LoginImage.png";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAbY4nV71yiRKOo83KAv0c2xm-IV5fmH6k",
@@ -31,17 +31,18 @@ provider.addScope("https://www.googleapis.com/auth/classroom.courses.readonly ht
 /* CSS For different componenets*/
 const FirebaseLoginButton = styled(Button)`
     &&& {
-        position: absolute;
-        width: 508px;
-        height: 97px;
-        left: 468px;
-        top: 495px;
-        justify-content: center;
+        // position: absolute;
+        width: 209px;
+        height: 55px;
+        text-align: left;
+        // left: 468px;
+        // top: 495px;
+        justify-content: left;
         background-color: ${globalStyles.colors.basePacificBlue}
     }
 `
 
-const LoginButtonText = styled(globalStyles.Header800)`
+const LoginButtonText = styled(globalStyles.Header500)`
     color: ${globalStyles.colors.baseDoctor}
 `
 
@@ -50,7 +51,7 @@ interface ILoginProps {
     studentChosen?: string ,
     response?: GoogleLoginResponse,
     accessToken? : string,
-  }
+}
 
 /* Main Component Class*/
 class LoginPage extends React.Component <any, ILoginProps> {
@@ -61,22 +62,34 @@ class LoginPage extends React.Component <any, ILoginProps> {
     }
 
     public firebaseLogin = async () => {
-      firebase.auth().signInWithPopup(provider).then( (result : firebase.auth.UserCredential) =>  {
+      firebase.auth().signInWithPopup(provider).then( async (result : firebase.auth.UserCredential) =>  {
         if (result !== null){
           const credential = result.credential as any 
           const token = (result.credential as any).accessToken;
           const idToken = (result.credential as any).idToken;
           const user = result.user;
           
-          if (user !== null)           
-            this.props.setUser(user.displayName, token, credential.idToken) 
-          else 
-            this.props.setUser("Dummy", token, credential.idToken) 
+          if (user !== null){           
+            
+            const snapshot = await firebase.firestore().collection("users").where("userEmail", "==", user.email).get()
+            let userKey = null
+            
+            snapshot.forEach(
+                doc => {
+                  const data = doc.data()
+                  userKey = data.userKey
+                }
+            )
+            
+            this.props.setUser(user.displayName, token, credential.idToken,user.email,userKey, undefined, true) 
+          }
+          else { 
+            this.props.setUser("Dummy", token, credential.idToken, "dummy@gmail.com",null, undefined, true) 
+          }
         
           // Modify to talk to backend
           axios.post("http://localhost:4000/verify_token", {accessToken: token, idToken}).then(res => console.log(res.data))
-          // axios.get("http://localhost:3001/test").then(()=>console.log("response"))
-          // axios.get("http://localhost:4000/")
+
           this.props.history.push("/")
         }
       }).catch(console.log);
@@ -100,13 +113,30 @@ class LoginPage extends React.Component <any, ILoginProps> {
                   }
                   return (
                     <React.Fragment>
-                      <TitleText>
-                          PFACS Teacher Dashboard
-                      </TitleText>
-                    
-                      <FirebaseLoginButton onClick={ this.firebaseLogin }>
-                        <LoginButtonText>Log in with Google</LoginButtonText>
-                      </FirebaseLoginButton>
+                      <Grid>
+                        <Grid.Row style={{height: "100vh", width: "100vw"}}>
+                          <Grid.Column width="7" style={{alignItems:"center", display:"flex", justifyContent:"center", paddingLeft:"80px", paddingRight:"80px"}}> 
+                          <div style={{display:"flex", flexDirection:"column"}}>
+                            <globalStyles.Header900 style={{textAlign:"left"}}>
+                                Welcome to Beats Empire Teacher Dashboard
+                            </globalStyles.Header900>
+
+                           {/* <TitleText >
+                                PFACS Teacher Dashboard
+                            </TitleText>
+                           */}
+
+                            <FirebaseLoginButton onClick={ this.firebaseLogin }>
+                              <LoginButtonText>Log in with Google</LoginButtonText>
+                            </FirebaseLoginButton>
+                            </div>
+                          </Grid.Column>
+                          <Grid.Column width="9" style={{display:"flex",alignItems:"center", justifyContent:"center"}}>
+                            <img src={loginImage}></img>
+                          </Grid.Column>
+                        </Grid.Row>                  
+
+                      </Grid>
                     </React.Fragment>
                   )
                 }
@@ -133,7 +163,7 @@ class LoginPage extends React.Component <any, ILoginProps> {
 
     // use this to get data https://developers.google.com/classroom/reference/rest/
     private onSuccess = async (response: any) => {
-      this.props.setUser(response.getId, response.getAuthResponse().access_token, response.getAuthResponse().id_token);
+      this.props.setUser(response.getId, response.getAuthResponse().access_token, response.getAuthResponse().id_token, );
       this.props.history.push("/");
     }
   

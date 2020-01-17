@@ -137,16 +137,17 @@ export class ChooseStudentsRow extends React.Component<IChooseStudentContainerPr
                     />
                 </ClassroomHeader>
                 
+                {/* Student check */}
                 <GridRow style={{marginTop: 0}}>
                     {
                         this.props.classInfo.studentName.map(
-                        (s,i) => { 
-                            return (
-                            <GridColumn width="4" key={`${s}_${i}`} textAlign="left" style={{marginBottom: "10px"}}> 
-                                <StudentCheckbox key={`${s}_${i}`} label={s} checked={this.state.studentCheckbox.get(s)} 
-                                    onChange={this.changeSpecificStudent}/>
-                            </GridColumn>
-                        )
+                            (s,i) => { 
+                                return (
+                                <GridColumn width="4" key={`${s}_${i}`} textAlign="left" style={{marginBottom: "10px"}}> 
+                                    <StudentCheckbox key={`${s}_${i}`} label={s} checked={this.state.studentCheckbox.get(s)} 
+                                        onChange={this.changeSpecificStudent}/>
+                                </GridColumn>
+                            )
                         })
                     }
                 </GridRow>
