@@ -30,3 +30,13 @@
   to { transform: rotate(360deg); }
 }
 
+.ui.grid.grid-gutter-hack>.column:not(.row) {
+  background: "red";
+  padding-left:0;
+  padding-right:0;
+}
+
+/* div .active {
+  transform: translate(0,0);   
+  background-color: red;
+} */

@@ -24,6 +24,8 @@ import SessionView from "./specificSession/SpecificSessionView";
 import { IGoogleClassroomInfo } from "./data_structure/GoogleClassroomInfo"
 import * as firebase from "firebase"
 import { withCookies } from "react-cookie"
+import { SiteStructure  } from "./dashboard-jj-new-design-needs-integration-later/SiteStructure";
+
 
 library.add(faTachometerAlt)
 library.add(faFileAlt)
@@ -226,6 +228,15 @@ class App extends React.Component<any, IAppState> {
                 props =>
                   <UserContext.Provider value={{ ...this.state }} >
                     <LoginPage history={props.history} setUser={this.setUser} setClassroom={this.setClassroom} setAllUserData={this.setAllUserData} />
+                  </UserContext.Provider>
+              }
+            />
+
+            <Route exact={true} path="/improve"
+              render={
+                props =>
+                  <UserContext.Provider value={{ ...this.state }} >
+                    <SiteStructure history={props.history} setUser={this.setUser} setClassroom={this.setClassroom} setAllUserData={this.setAllUserData} />
                   </UserContext.Provider>
               }
             />
