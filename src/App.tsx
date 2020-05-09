@@ -16,11 +16,11 @@ import { Route, Router } from "react-router"
 
 import './App.css'
 import { initialUser, IUserContext, UserContext, ISession } from "./Context"
-import CreateSession from "./sessionManagement/CreateSession"
-import ModifySession from "./sessionManagement/ModifySession"
-import LoginPage from "./Login";
-import Session from "./sessionManagement/SessionManagementPage";
-import SessionView from "./specificSession/SpecificSessionView";
+import CreateSession from "./CreateSession/CreateSession"
+import ModifySession from "./Session/Containers/ModifySession"
+import LoginPage from "./Login/Login";
+import Session from "./Session/Containers/SessionManagementPage";
+import SessionView from "./LiveDashboard/Containers/SpecificSessionView";
 import { IGoogleClassroomInfo } from "./data_structure/GoogleClassroomInfo"
 import * as firebase from "firebase"
 import { withCookies } from "react-cookie"

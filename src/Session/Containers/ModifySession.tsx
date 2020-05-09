@@ -3,13 +3,13 @@ import * as React from "react";
 import { Button, Form, Grid } from 'semantic-ui-react'
 import styled from "styled-components"
 import { ChooseStudentsRow } from "./ChooseStudentContainer"
-import { Layout } from "../Layout"
-import { IGoogleClassroomInfo } from "../data_structure/GoogleClassroomInfo"
-import { UserContext } from '../Context';
+import { Layout } from "../../Layout"
+import { IGoogleClassroomInfo } from "../../data_structure/GoogleClassroomInfo"
+import { UserContext } from '../../Context';
 import * as firebase from "firebase"
 import { withCookies } from "react-cookie";
-import * as globalStyle from "../AppStyle";
-import { ISession } from "../Context"
+import * as globalStyle from "../../AppStyle";
+import { ISession } from "../../Context"
 
 // I need to create a better wrap. 
 

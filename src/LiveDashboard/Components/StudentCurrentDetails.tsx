@@ -5,7 +5,7 @@ import styled from "styled-components"
 import * as _ from "lodash"
 // import { StudentStatus } from 'src/data_structure/Student';
 
-import { StudentStatus, Student } from '../data_structure/Student';
+import { StudentStatus, Student } from '../../data_structure/Student';
 
 // the idea is that when the user clicks, the right will be locked. The data will not change unless the user clicks on close icon on the top right
 // or click on another students. 

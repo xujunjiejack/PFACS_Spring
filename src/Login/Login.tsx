@@ -2,15 +2,18 @@ import axios from "axios";
 import * as React from "react";
 // import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
 import {GoogleLoginResponse} from "react-google-login"
-import styled from "styled-components";
-import {TitleText} from "./AppStyle";
-import {UserContext} from "./Context"
-import {IGoogleClassroomInfo} from "./data_structure/GoogleClassroomInfo";
+import {TitleText} from "../AppStyle";
+import {UserContext} from "../Context"
+import {IGoogleClassroomInfo} from "../data_structure/GoogleClassroomInfo";
 import * as firebase from "firebase"
-import {Button, Grid, GridRow} from "semantic-ui-react"
+import {Grid, GridRow} from "semantic-ui-react"
 import {withCookies} from 'react-cookie';
-import * as globalStyles from "./AppStyle"
-import loginImage from "./LoginImage.png";
+import * as globalStyles from "../AppStyle"
+import loginImage from "./assets/LoginImage.png";
+import {
+  FirebaseLoginButton,
+  LoginButtonText
+} from './LoginStyledComponents';
 
 /**
  * TODO: Don't really like the idea of this being hardcoded it is very insecure
@@ -26,37 +29,18 @@ const firebaseConfig = {
   appId: "1:908046556011:web:917ef33f5fc776aa1f4a2e"
 };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const provider = new firebase.auth.GoogleAuthProvider();
-provider.addScope("https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.rosters.readonly")
-
-
-// TODO move styled components into their own file
-/* CSS For different componenets*/
-const FirebaseLoginButton = styled(Button)`
-    &&& {
-        // position: absolute;
-        width: 209px;
-        height: 55px;
-        text-align: left;
-        // left: 468px;
-        // top: 495px;
-        justify-content: left;
-        background-color: ${globalStyles.colors.basePacificBlue}
-    }
-`
-
-const LoginButtonText = styled(globalStyles.Header500)`
-    color: ${globalStyles.colors.baseDoctor}
-`
-
 /* Interface */
 interface ILoginProps {
     studentChosen?: string ,
     response?: GoogleLoginResponse,
     accessToken? : string,
-}
+};
+
+// Initialize Firebase
+// TODO Should this be done here or in App.tsx?
+firebase.initializeApp(firebaseConfig);
+const provider = new firebase.auth.GoogleAuthProvider();
+provider.addScope("https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.rosters.readonly");
 
 /* Main Component Class*/
 class LoginPage extends React.Component <any, ILoginProps> {

@@ -3,7 +3,7 @@ import * as React from "react";
 import { Card, CardHeader, Grid, Table} from "semantic-ui-react";
 import styled from "styled-components";
 import * as _ from "lodash"
-import * as globalStyle from "../AppStyle"
+import * as globalStyle from "../../AppStyle"
 import { globalAgent } from 'https';
 
 /* CSS For Component */

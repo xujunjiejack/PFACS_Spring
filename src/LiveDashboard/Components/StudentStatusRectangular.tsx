@@ -3,8 +3,8 @@ import * as React from "react";
 import ReactToolTip from "react-tooltip";
 // import {Grid, GridColumn, GridRow} from "semantic-ui-react";
 import styled from "styled-components";
-import {Student, StudentStatus} from "../data_structure/Student";
-import * as globalStyle from "../AppStyle"
+import {Student, StudentStatus} from "../../data_structure/Student";
+import * as globalStyle from "../../AppStyle"
 
 function generateColorBasedOnStatus(status: StudentStatus){
     switch (status) {

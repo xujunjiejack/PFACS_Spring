@@ -1,122 +1,38 @@
 import { Map } from "immutable";
 import * as React from "react";
-import { Button, Form, Grid } from 'semantic-ui-react'
-import styled from "styled-components"
-import { ChooseStudentsRow } from "./ChooseStudentContainer"
-import { Layout } from "../Layout"
-import { IGoogleClassroomInfo } from "../data_structure/GoogleClassroomInfo"
+import { Form, Grid } from 'semantic-ui-react';
+import { ChooseStudentsRow } from "../Session/Containers/ChooseStudentContainer";
+import { Layout } from "../Layout";
+import { IGoogleClassroomInfo } from "../data_structure/GoogleClassroomInfo";
 import { UserContext } from '../Context';
-import * as firebase from "firebase"
+import * as firebase from "firebase";
 import { withCookies } from "react-cookie";
-import * as globalStyle from "../AppStyle";
-import {format} from "date-fns"
-
-/* CSS for the component */
-const CreateAssessmentLabel = styled(globalStyle.Header600)`
-    position: relative;
-    width: 842px;
-    height: 30px;
-    top: 40px;
-
-    color: ${globalStyle.colors.baseBlueStone};
-    display: flex;
-    justify-content: left;
-    align-items:center;
-`
-
-const StyledForm = styled(Form)`
-    position: relative;
-    width: 100%;
-    height: 19px;
-    top: 70px;
-
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: normal;
-
-    color: #000000;
-`
-
-const ChooseStudentContainer = styled.div`
-    position: relative;
-    width: 100%;
-    height: 448px;
-    left: 0px;
-    top: 0px;
-
-    box-sizing: border-box;
-    overflow: scroll;
-`
-
-const BackgroundContainer = styled(Grid)`
-    // position: absolute;
-    width: 100vw;
-    height: 100vh;
-    // left: 121px;
-    // top: 40px;
-    background: transparent;
-`
-
-const SessionTitleLabel = styled(globalStyle.Header500)`
-    color: ${globalStyle.colors.baseBlueStone};
-    display: flex; 
-    justify-content: left;
-    margin-bottom: 10px
-`
-
-const StudentTitleLabel = styled(globalStyle.Header500)`
-    color: ${globalStyle.colors.baseBlueStone};
-    display: flex; 
-    justify-content: left;
-    margin-bottom: 10px
-`
-
-const ConfirmButton = styled(Button)`
-    &&& {
-        left: 0;
-        background: ${globalStyle.colors.basePacificBlue};
-        color: ${globalStyle.colors.baseDoctor};
-    }
-`
-
-const CancelButton = styled(Button)`
-        background: ${globalStyle.colors.lightNeutral50};
-        color: ${globalStyle.colors.baseBlueStone50};
-`
-
-const ConfirmButtonText = styled(globalStyle.Header500)`
-    color: ${globalStyle.colors.baseDoctor};
-`
-
-const CancelButtonText = styled(globalStyle.Header500)`
-    color: ${globalStyle.colors.baseBlueStone75};
-`
+import { format } from "date-fns";
+import * as StyledComponents from './CreateSessionStyledComponents';
 
 /* Sub Component */
 const RedirectingPage = () => ( <div> Redirecting to login </div> )
 const LoadingPage = () => ( <div> Data is loading </div> )
 
 const CancelButtonComponent = ( {...prop} ) => (
-    <CancelButton {...prop} style={{}}>
-        <CancelButtonText>
+    <StyledComponents.CancelButton {...prop} style={{}}>
+        <StyledComponents.CancelButtonText>
             Cancel
-        </CancelButtonText>
-    </CancelButton>
+        </StyledComponents.CancelButtonText>
+    </StyledComponents.CancelButton>
 )
 
 const ConfirmButtonComponent = ({...prop}) =>(
-    <ConfirmButton {...prop}>
-        <ConfirmButtonText>
+    <StyledComponents.ConfirmButton {...prop}>
+        <StyledComponents.ConfirmButtonText>
             Create Session
-        </ConfirmButtonText>
-    </ConfirmButton>
+        </StyledComponents.ConfirmButtonText>
+    </StyledComponents.ConfirmButton>
 )
 
 const SessionTitleInputComponent = ({sessionTitleLabel = "Session Title", ...props}) => (
     <React.Fragment>
-        <SessionTitleLabel>{sessionTitleLabel}</SessionTitleLabel>
+        <StyledComponents.SessionTitleLabel>{sessionTitleLabel}</StyledComponents.SessionTitleLabel>
         <input placeholder='Session Title' {...props} style={{ width: "100%" }}/>
     </React.Fragment>
 )
@@ -124,12 +40,12 @@ const SessionTitleInputComponent = ({sessionTitleLabel = "Session Title", ...pro
 const ChooseStudentComponent = ( {isLoading, studentTitleLabel="Students (From Google Classroom)", 
             googleClassroomDataInfo, allStudentCheckStatusMap, setAllStudentItems } ) =>(
     <React.Fragment>
-        <StudentTitleLabel>
+        <StyledComponents.StudentTitleLabel>
             {studentTitleLabel}
-        </StudentTitleLabel>
+        </StyledComponents.StudentTitleLabel>
 
         {/* Given the data and generate it*/}
-        <ChooseStudentContainer>
+        <StyledComponents.ChooseStudentContainer>
             {isLoading ?
                 <LoadingPage/>
                 :
@@ -141,7 +57,7 @@ const ChooseStudentComponent = ( {isLoading, studentTitleLabel="Students (From G
                     )}
                 </Grid>
             }
-        </ChooseStudentContainer>
+        </StyledComponents.ChooseStudentContainer>
     </React.Fragment>   
  )
 
@@ -222,16 +138,16 @@ class CreateSession extends React.Component<any, any>{
                     }
 
                     return <Layout history={this.props.history} userName={value.userName} logoutAction={this.props.logoutAction}>
-                        <BackgroundContainer >
+                        <StyledComponents.BackgroundContainer >
                             <Grid.Row>
                                 <Grid.Column width={1} />
                                 {/* Why padding 40? */}
                                 <Grid.Column width={14} style={{ background: "#FFFFFF", paddingRight: "40px" }} >
-                                    <CreateAssessmentLabel>
+                                    <StyledComponents.CreateAssessmentLabel>
                                         Create a new assessment
-                                    </CreateAssessmentLabel>
+                                    </StyledComponents.CreateAssessmentLabel>
 
-                                    <StyledForm>
+                                    <StyledComponents.StyledForm>
                                         <Form.Field style={{marginBottom: "24px"}}>
                                             <SessionTitleInputComponent placeholder='Session Title' value={this.state.title} name="title" onChange={this.formOnChange}/>
                                         </Form.Field>
@@ -247,10 +163,10 @@ class CreateSession extends React.Component<any, any>{
                                                 <ConfirmButtonComponent disabled={this.state.title === "" || this.noStudentIsSelected()} onClick={this.createSession} style={{ left: `0px` }}/>  
                                                 <CancelButtonComponent onClick={this.cancelTheNewSession}/>
                                         </Form.Field>
-                                    </StyledForm>
+                                    </StyledComponents.StyledForm>
                                 </Grid.Column>
                             </Grid.Row>
-                        </BackgroundContainer>
+                        </StyledComponents.BackgroundContainer>
                     </Layout>
                 }}
             </UserContext.Consumer>

@@ -3,9 +3,9 @@ import { Map } from "immutable";
 import * as React from "react";
 import { Checkbox, GridColumn, GridRow} from 'semantic-ui-react'
 
-import {IGoogleClassroomInfo} from "../data_structure/GoogleClassroomInfo"
+import {IGoogleClassroomInfo} from "../../data_structure/GoogleClassroomInfo"
 import styled from "styled-components"
-import * as globalStyle from "../AppStyle"
+import * as globalStyle from "../../AppStyle"
 
 const ClassroomHeader = styled(GridRow)`
     &&& {
