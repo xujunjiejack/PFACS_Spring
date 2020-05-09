@@ -4,7 +4,7 @@ import { Grid } from "semantic-ui-react"
 import {ISession, UserContext} from "../../Context"
 import {Student, StudentStatus} from '../../data_structure/Student';
 import DetailedReport from "./DetailedReport"
-import {Layout} from "../../Layout"
+import {Layout} from "../../UI/Layout"
 import LiveDashboard from "./LiveDashboard";  
 // import * as openSocket from 'socket.io-client'; 
 import {idNamesPair} from "../../studentsIDsName";

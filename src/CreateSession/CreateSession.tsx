@@ -2,7 +2,7 @@ import { Map } from "immutable";
 import * as React from "react";
 import { Form, Grid } from 'semantic-ui-react';
 import { ChooseStudentsRow } from "../Session/Containers/ChooseStudentContainer";
-import { Layout } from "../Layout";
+import { Layout } from "../UI/Layout";
 import { IGoogleClassroomInfo } from "../data_structure/GoogleClassroomInfo";
 import { UserContext } from '../Context';
 import * as firebase from "firebase";

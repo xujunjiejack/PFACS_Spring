@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ISession, UserContext } from "../../Context";
-import { Layout } from "../../Layout";
+import { Layout } from "../../UI/Layout";
 import { Grid, GridColumn, GridRow, Icon } from "semantic-ui-react";
 import { withCookies } from "react-cookie";
 import * as firebase from "firebase";

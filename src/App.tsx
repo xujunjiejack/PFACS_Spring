@@ -14,7 +14,6 @@ import { createBrowserHistory } from "history"
 import * as React from 'react';
 import { Route, Router } from "react-router"
 
-import './App.css'
 import { initialUser, IUserContext, UserContext, ISession } from "./Context"
 import CreateSession from "./CreateSession/CreateSession"
 import ModifySession from "./Session/Containers/ModifySession"
