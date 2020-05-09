@@ -211,6 +211,7 @@ class App extends React.Component<any, IAppState> {
           <div>
             <Route exact={true} path="/" render={
               props => {
+                // TODO: Is this the best way to allow a user back into a session? What about using cookies?
                 if (this.state.userName !== "") {
                   this.historyPush("/sessions")
                   return <div>Welcome</div>

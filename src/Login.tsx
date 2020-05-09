@@ -12,6 +12,10 @@ import {withCookies} from 'react-cookie';
 import * as globalStyles from "./AppStyle"
 import loginImage from "./LoginImage.png";
 
+/**
+ * TODO: Don't really like the idea of this being hardcoded it is very insecure
+ * Is there a way to set this up using environment variables?
+ */
 const firebaseConfig = {
   apiKey: "AIzaSyAbY4nV71yiRKOo83KAv0c2xm-IV5fmH6k",
   authDomain: "test-pfacs.firebaseapp.com",
@@ -28,6 +32,7 @@ const provider = new firebase.auth.GoogleAuthProvider();
 provider.addScope("https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.rosters.readonly")
 
 
+// TODO move styled components into their own file
 /* CSS For different componenets*/
 const FirebaseLoginButton = styled(Button)`
     &&& {
@@ -62,6 +67,7 @@ class LoginPage extends React.Component <any, ILoginProps> {
     }
 
     public firebaseLogin = async () => {
+      // TODO Refactor to actually make use of Async/Await
       firebase.auth().signInWithPopup(provider).then( async (result : firebase.auth.UserCredential) =>  {
         if (result !== null){
           const credential = result.credential as any 
@@ -92,7 +98,11 @@ class LoginPage extends React.Component <any, ILoginProps> {
 
           this.props.history.push("/")
         }
-      }).catch(console.log);
+      }).catch(
+        // TODO Should have component here that indicates to user that login failed
+        // Also not even sure that this is will actually do anything...
+        console.log
+        );
     }
 
     public render(){
@@ -112,6 +122,7 @@ class LoginPage extends React.Component <any, ILoginProps> {
                       }
                   }
                   return (
+                    // TODO no inline styles
                     <React.Fragment>
                       <Grid>
                         <Grid.Row style={{height: "100vh", width: "100vw"}}>
