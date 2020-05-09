@@ -24,6 +24,9 @@ import { IGoogleClassroomInfo } from "./data_structure/GoogleClassroomInfo"
 import * as firebase from "firebase"
 import { withCookies } from "react-cookie"
 
+import mockSessionData from './MockData/MockSessionData';
+import mockClassroomData from './MockData/MockClassroomData';
+
 library.add(faTachometerAlt)
 library.add(faFileAlt)
 library.add(faTrashAlt)
@@ -47,7 +50,8 @@ interface IClassroomControl {
 
 type IAppState = IUserContext & IControlState & IClassroomControl;
 
-interface ISessionData {
+// TODO Don't export this once we no longer need mock data
+export interface ISessionData {
   startTime: Date,
   ongoing: boolean,
   sessionName: string,
@@ -58,53 +62,6 @@ interface ISessionData {
 }
 
 const history = createBrowserHistory()
-/*** 
- * Dummy data two for sessions 
- */
-// {"aee6c2569ea2cf8b88d79a7c36a90015": "JJ", "403870ae4811bcb15dcdfe7f0c2ad3f8": "Vishesh", "a47746fa74fe8f3823d48dfdcbc13618": "Nathan", "e311f1a829e27d2f8a4aef242ad0f71c": "Matthew", "fe185d1d04a7d905953ed7455f0561ca": "Reina", "3242fe1dc946799d204984d330975432": "Daisy"};
-const dummyDataStudentIds = ["aee6c2569ea2cf8b88d79a7c36a90015", "403870ae4811bcb15dcdfe7f0c2ad3f8", "a47746fa74fe8f3823d48dfdcbc13618", "e311f1a829e27d2f8a4aef242ad0f71c", "fe185d1d04a7d905953ed7455f0561ca", "3242fe1dc946799d204984d330975432"]
-const dummyDataStudentIds2 = ["aee6c2569ea2cf8b88d79a7c36a90015", "403870ae4811bcb15dcdfe7f0c2ad3f8", "a47746fa74fe8f3823d48dfdcbc13618", "fe185d1d04a7d905953ed7455f0561ca", "3242fe1dc946799d204984d330975432"]
-const dummyData1: ISessionData = {
-  startTime: new Date(2017,7,23,16,50),
-  ongoing: true,
-  sessionName: "Test Session",
-  studentNumber: dummyDataStudentIds.length,
-  studentIds: dummyDataStudentIds,
-  sessionId: Math.random().toString(36),
-  emails: ["jj@gmail", "vishesh@gmail.com", "nathan@gmail.com", "matthew@gmail.com", "reina@gmail.com", "daisy@gmail.com"]
-
-}
-
-const dummyData2: ISessionData = {
-  startTime: new Date(2019,6,1,16,50),
-  ongoing: false,
-  sessionName: "Fall 2019 Math Assessment",
-  studentNumber: dummyDataStudentIds.length,
-  studentIds: dummyDataStudentIds2,
-  sessionId: Math.random().toString(36),
-  emails: ["jj@gmail", "vishesh@gmail.com", "nathan@gmail.com", "matthew@gmail.com", "reina@gmail.com"]
-}
-
-const dummyData = [dummyData1, dummyData2]
-
-/*** 
- * Dummy data two for Google classroom
- */
-
-const dummyClassroomData1: IGoogleClassroomInfo = {
-  className: "2018 Spring",
-  studentName: ["Mike", "Charles", "Anna", "Dan", "Dan", "Dan", "Ben", "Anna"],
-  studentNameIDMap: {}
-}
-
-const dummyClassroomData2: IGoogleClassroomInfo = {
-  className: "Fall 2018 Math",
-  studentName: ["Anna", "Charles", "Steve", "Jack"],
-  studentNameIDMap: {}
-}
-
-const dummyClassroomData = [dummyClassroomData1, dummyClassroomData2]
-
 
 /***
  * Main class
@@ -115,9 +72,9 @@ class App extends React.Component<any, IAppState> {
     super(props)
     const cookies = this.props.cookies;
     const userSessionCookie = cookies.get("userSessions")
-    const userSessions = userSessionCookie !== undefined ? userSessionCookie : dummyData
+    const userSessions = userSessionCookie !== undefined ? userSessionCookie : mockSessionData
     this.state = {
-      ...initialUser, userSessions, currentSessionId: "", currentView: "dashboard", classrooms: dummyClassroomData,
+      ...initialUser, userSessions, currentSessionId: "", currentView: "dashboard", classrooms: mockClassroomData,
       allUserData: [], modificationSessionId: ""
     }
   }
@@ -149,7 +106,7 @@ class App extends React.Component<any, IAppState> {
     // Determine whether the user sessions needs to be updated.
     const userFirstSignIn = userSessions === undefined || firstLogin
     if (userFirstSignIn) {
-      userSessions = dummyData
+      userSessions = mockSessionData
     } else if (!userFirstSignIn){
       this.setUserSessionsInCookie(userSessions)
     }

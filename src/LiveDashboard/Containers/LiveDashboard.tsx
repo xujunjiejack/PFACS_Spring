@@ -8,7 +8,7 @@ import {StudentOverview} from "./StudentOverview";
 import socketIOClient from 'socket.io-client'; 
 import * as StyledComponents from '../StyledComponents/LiveDashboardStyledComponents';
 import {StudentCurrentDetails} from "../Components/StudentCurrentDetails";
-import {idNamesPair} from "../../studentsIDsName";
+import {idNamesPair} from "../../MockData/studentsIDsName";
 
 
 // const socket = openSocket("http://127.0.0.1:3001/studentstatus")

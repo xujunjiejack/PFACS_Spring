@@ -7,7 +7,7 @@ import DetailedReport from "./DetailedReport"
 import {Layout} from "../../UI/Layout"
 import LiveDashboard from "./LiveDashboard";  
 // import * as openSocket from 'socket.io-client'; 
-import {idNamesPair} from "../../studentsIDsName";
+import {idNamesPair} from "../../MockData/studentsIDsName";
 import { withCookies } from "react-cookie";
 import {format} from "date-fns";
 import * as StyledComponents from '../StyledComponents/SessionViewStyledComponents';
