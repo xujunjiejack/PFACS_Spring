@@ -1,83 +1,21 @@
 import * as React from 'react';
 import {GoogleLoginResponse} from "react-google-login";
 import {Card, CardContent,CardHeader, Grid, Button} from "semantic-ui-react";
-import styled from "styled-components";
-import {Student, StudentStatus} from '../data_structure/Student';
-import {ISession, UserContext} from "../Context"
-import StudentGraphUsage from "./StudentGraphUsage";
+import {Student, StudentStatus} from '../../data_structure/Student';
+import {ISession, UserContext} from "../../Context"
+import StudentGraphUsage from "../Components/StudentGraphUsage";
 import {StudentOverview} from "./StudentOverview"; 
 import socketIOClient from 'socket.io-client'; 
+import * as StyledComponents from '../StyledComponents/LiveDashboardStyledComponents';
+import {StudentCurrentDetails} from "../Components/StudentCurrentDetails";
+import {idNamesPair} from "../../MockData/studentsIDsName";
 
-import {StudentCurrentDetails} from "./StudentCurrentDetails";
-import {idNamesPair} from "./../studentsIDsName";
-import * as globalStyle from "../AppStyle"
 
 // const socket = openSocket("http://127.0.0.1:3001/studentstatus")
 // console.log("socket ip " + process.env.SOCKETIP);
 // const BACKEND = 'http://localhost';
 const BACKEND = window.location.hostname;
 const socket = socketIOClient(BACKEND + ":3001/studentstatus");
-
-/* CSS for components */
-const GridHeaderStyle = {
-  // paddingLeft: "8px",
-  paddingTop: "16px",
-  fontFamily: "Roboto",
-  fontStyle: "normal",
-  fontWeight: "normal",
-  height: "60px",
-  color: "#000000",
-  borderWidth:"0px"
-}
-
-const TotalStudentLabel = styled(globalStyle.Header400)`
-  color: ${globalStyle.colors.baseBlueStone50};
-
-  display: inline;
-  right: 50px;
-  position: absolute
-`
-
-const Rect = styled.div <{status: StudentStatus}> `
-    &:first-of-type{
-      margin-left:4px;
-    }
-
-    width:15px;
-    height:15px;
-    background-color: ${props=>generateColorBasedOnStatus(props.status)};
-    margin-right: 6px;
-    margin-left: 30px;
-    display: inline-block;   
-`
-
-const StatusInstruction = styled(globalStyle.Header400)`
-    color: ${globalStyle.colors.baseBlueStone}
-`
-
-const StudentLabel = styled(globalStyle.Header500)`
-    color: ${globalStyle.colors.baseBlueStone};
-    display: inline
-`
-
-function generateColorBasedOnStatus(status: StudentStatus){
-    switch (status) {
-      case StudentStatus.InProgress:
-        return "#DAF8FF";
-
-      case StudentStatus.Idle:
-        return "#EFEFEF";
-
-      case StudentStatus.Absent:
-        return "#EFEFEF";  
-
-      case StudentStatus.Stuck: 
-        return "#E2DAFF";
-
-      default:
-        return "#000000";
-    }
-} 
 
 /* Interface for the state */
 interface ILiveDashboardState {
@@ -269,9 +207,9 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
                   <Grid.Column width="1"/>
                     <Grid.Column width="7">
                         <Card style={styles.leftCardStyle}>
-                          <CardHeader textAlign="left" style={GridHeaderStyle}>
-                              <StudentLabel> Students </StudentLabel>
-                              <TotalStudentLabel> 24 Total students</TotalStudentLabel>
+                          <CardHeader textAlign="left" style={StyledComponents.GridHeaderStyle}>
+                              <StyledComponents.StudentLabel> Students </StyledComponents.StudentLabel>
+                              <StyledComponents.TotalStudentLabel> 24 Total students</StyledComponents.TotalStudentLabel>
                           </CardHeader>
 
                           <CardContent style={{padding: "0px 20px 0px 0px", borderWidth:"0px",}}>
@@ -284,24 +222,24 @@ class LiveDashboard extends React.Component  <any, ILiveDashboardState>{
 
                           <div style={{fontSize: "16px", textAlign: "left", position:"absolute", bottom:"16px", display: "flex"}}>
                               <div style={{display:"flex", flexDirection:"row", alignItems:"center"}}>
-                                <Rect status={StudentStatus.InProgress}/>
-                                <StatusInstruction>
+                                <StyledComponents.Rect status={StudentStatus.InProgress}/>
+                                <StyledComponents.StatusInstruction>
                                   Engaged
-                                </StatusInstruction>
+                                </StyledComponents.StatusInstruction>
                               </div>
                               
                               <div style={{display:"flex", flexDirection:"row", marginLeft: "16px", alignItems:"center"}}>
-                                  <Rect status={StudentStatus.Stuck}/>
-                                  <StatusInstruction>
+                                  <StyledComponents.Rect status={StudentStatus.Stuck}/>
+                                  <StyledComponents.StatusInstruction>
                                     Idle for 2 minutes
-                                  </StatusInstruction>
+                                  </StyledComponents.StatusInstruction>
                               </div>
                               
                               <div style={{display:"flex", flexDirection:"row", marginLeft: "16px", alignItems:"center"}}>
-                              <Rect status={StudentStatus.Absent}/>
-                                <StatusInstruction>
+                              <StyledComponents.Rect status={StudentStatus.Absent}/>
+                                <StyledComponents.StatusInstruction>
                                   Idle for 5 minutes
-                                </StatusInstruction>
+                                </StyledComponents.StatusInstruction>
                               </div>
                           </div>
                           <div style={{height: "100%", width: "1px", backgroundColor:"rgba(0, 0, 0, 0.10)", position:"absolute", right:"0", top:"0" }}>  </div>

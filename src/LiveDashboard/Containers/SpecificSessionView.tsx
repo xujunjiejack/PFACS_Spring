@@ -1,142 +1,16 @@
 // import axios from "axios"
 import * as React from 'react';
-import {Button, ButtonGroup, Grid } from "semantic-ui-react"
-import styled from "styled-components";
-import {ISession, UserContext} from "../Context"
-import {Student, StudentStatus} from '../data_structure/Student';
+import { Grid } from "semantic-ui-react"
+import {ISession, UserContext} from "../../Context"
+import {Student, StudentStatus} from '../../data_structure/Student';
 import DetailedReport from "./DetailedReport"
-import {Layout} from "../Layout"
+import {Layout} from "../../UI/Layout"
 import LiveDashboard from "./LiveDashboard";  
 // import * as openSocket from 'socket.io-client'; 
-import {idNamesPair} from "./../studentsIDsName";
+import {idNamesPair} from "../../MockData/studentsIDsName";
 import { withCookies } from "react-cookie";
-import * as globalStyle from "../AppStyle"
-import {format} from "date-fns"
-
-/* CSS For Component */
-const HeaderContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 80px;
-  top: 0px;
-  display: flex;
-  align-items: center;
-  background: #FFFFFF;
-  justify-content: flex-end;  
-  padding: 10px 20px 4px 20px;
-`
-
-const Title = styled(globalStyle.Header600)`
-  text-align:left;
-  color: ${globalStyle.colors.baseBlueStone};
-  margin-bottom: 8px;
-`
-
-const StartTime = styled(globalStyle.Header400)`
-  text-align: left;
-  
-  color: ${globalStyle.colors.baseBlueStone50}
-`
-
-const StyledButtonGroup = styled(ButtonGroup)`
-  && {
-    height: 62px;
-    width: 400px;
-  }
-`
-
-
-const DashboardButtonText = styled(globalStyle.Header600)`
-    color: ${globalStyle.colors.baseBlueStone} 
-    
-    &.active {
-     
-      :hover{
-        color: ${globalStyle.colors.baseDoctor} ;
-      }
-      
-      color: ${globalStyle.colors.baseDoctor};
-    }   
-`
-
-const DashboardButton = styled(Button)`
-  && {
-    background: ${globalStyle.colors.lightNeutral25};
-    border-radius: 6px;
-
-    display: flex;
-    justify-content: center;
-    align-items:center;
-    cursor: pointer;
-
-    :hover{
-      background-color: ${globalStyle.colors.basePacificBlue};
-    }
-
-    &.active  ${DashboardButtonText},  &:hover ${DashboardButtonText}  {
-      color: ${globalStyle.colors.baseDoctor}
-    }
-    
-    &.active {
-     
-      :hover{
-        background-color: ${globalStyle.colors.basePacificBlueActive};
-      }
-
-      background-color: ${globalStyle.colors.basePacificBlue};
-    }
-  }
-`
-
-const ReportButtonText = styled(globalStyle.Header600)`
-    color: ${globalStyle.colors.baseBlueStone} 
-    
-    &.active {
-      :hover{
-        color: ${globalStyle.colors.baseDoctor} ;
-      }
-      
-      color: ${globalStyle.colors.baseDoctor};
-    }   
-`
-
-
-const EndSessionButton = styled(Button)`
-  && {
-    background: ${globalStyle.colors.lightNeutral25};
-    border-radius: 4px;
-
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 20px;
-    line-height: normal;
-    text-align: center;
-
-    display: flex;
-    justify-content: center;
-    align-items:center;
-    cursor: pointer;
-
-    :hover{
-      background-color: ${globalStyle.colors.basePacificBlue};
-    }
-
-    &.active  ${ReportButtonText}, &:hover ${ReportButtonText} {
-      color: ${globalStyle.colors.baseDoctor}
-    }
-
-    &.active {
-      
-      :hover{
-        background-color: ${globalStyle.colors.basePacificBlueActive};
-      }
-
-      background-color: ${globalStyle.colors.basePacificBlue};
-    }
-  }
-`
-
+import {format} from "date-fns";
+import * as StyledComponents from '../StyledComponents/SessionViewStyledComponents';
 
 /* Main Component */
 class SessionView extends React.Component <any, any> {
@@ -198,32 +72,32 @@ class SessionView extends React.Component <any, any> {
                       <Grid.Row> 
                       <Grid.Column width="1"/>
                       <Grid.Column width="14">
-                        <HeaderContainer>
+                        <StyledComponents.HeaderContainer>
                           <div style={{position:"absolute", left: "0px", display: "flex", flexDirection:"column"}}>
-                            <Title>
+                            <StyledComponents.Title>
                               { this.getSessionTitle(value.userSessions, this.state.currentSessionId) }
-                            </Title>
+                            </StyledComponents.Title>
         
-                            <StartTime>
+                            <StyledComponents.StartTime>
                               { this.getSessionTime(value.userSessions, this.state.currentSessionId) }
-                            </StartTime>
+                            </StyledComponents.StartTime>
                           </div>
 
-                          <StyledButtonGroup>                              
-                            <DashboardButton style={{fontSize: "20px", width:"200px"}} onClick={this.dashboardClick} className={ this.state.currentView === "dashboard" ? "active": "" }>
-                              <DashboardButtonText>
+                          <StyledComponents.StyledButtonGroup>                              
+                            <StyledComponents.DashboardButton style={{fontSize: "20px", width:"200px"}} onClick={this.dashboardClick} className={ this.state.currentView === "dashboard" ? "active": "" }>
+                              <StyledComponents.DashboardButtonText>
                                 Dashboard
-                              </DashboardButtonText>
-                            </DashboardButton>
+                              </StyledComponents.DashboardButtonText>
+                            </StyledComponents.DashboardButton>
         
-                            <EndSessionButton style={{fontSize: "20px", width:"200px"}} onClick={this.reportClick} className={this.state.currentView === "report" ? "active": ""}>
-                              <ReportButtonText>
+                            <StyledComponents.EndSessionButton style={{fontSize: "20px", width:"200px"}} onClick={this.reportClick} className={this.state.currentView === "report" ? "active": ""}>
+                              <StyledComponents.ReportButtonText>
                                 Report
-                              </ReportButtonText>
-                            </EndSessionButton>
-                          </StyledButtonGroup>
+                              </StyledComponents.ReportButtonText>
+                            </StyledComponents.EndSessionButton>
+                          </StyledComponents.StyledButtonGroup>
 
-                        </HeaderContainer>
+                        </StyledComponents.HeaderContainer>
                         </Grid.Column>
                         </Grid.Row>
                         <Grid.Row style={{padding:"8px 8px 0 0"}}>

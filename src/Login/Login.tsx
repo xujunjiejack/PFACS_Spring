@@ -2,16 +2,23 @@ import axios from "axios";
 import * as React from "react";
 // import {GoogleLogin, GoogleLoginResponse} from "react-google-login"
 import {GoogleLoginResponse} from "react-google-login"
-import styled from "styled-components";
-import {TitleText} from "./AppStyle";
-import {UserContext} from "./Context"
-import {IGoogleClassroomInfo} from "./data_structure/GoogleClassroomInfo";
+import {TitleText} from "../AppStyle";
+import {UserContext} from "../Context"
+import {IGoogleClassroomInfo} from "../data_structure/GoogleClassroomInfo";
 import * as firebase from "firebase"
-import {Button, Grid, GridRow} from "semantic-ui-react"
+import {Grid, GridRow} from "semantic-ui-react"
 import {withCookies} from 'react-cookie';
-import * as globalStyles from "./AppStyle"
-import loginImage from "./LoginImage.png";
+import * as globalStyles from "../AppStyle"
+import loginImage from "./assets/LoginImage.png";
+import {
+  FirebaseLoginButton,
+  LoginButtonText
+} from './LoginStyledComponents';
 
+/**
+ * TODO: Don't really like the idea of this being hardcoded it is very insecure
+ * Is there a way to set this up using environment variables?
+ */
 const firebaseConfig = {
   apiKey: "AIzaSyAbY4nV71yiRKOo83KAv0c2xm-IV5fmH6k",
   authDomain: "test-pfacs.firebaseapp.com",
@@ -22,36 +29,18 @@ const firebaseConfig = {
   appId: "1:908046556011:web:917ef33f5fc776aa1f4a2e"
 };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const provider = new firebase.auth.GoogleAuthProvider();
-provider.addScope("https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.rosters.readonly")
-
-
-/* CSS For different componenets*/
-const FirebaseLoginButton = styled(Button)`
-    &&& {
-        // position: absolute;
-        width: 209px;
-        height: 55px;
-        text-align: left;
-        // left: 468px;
-        // top: 495px;
-        justify-content: left;
-        background-color: ${globalStyles.colors.basePacificBlue}
-    }
-`
-
-const LoginButtonText = styled(globalStyles.Header500)`
-    color: ${globalStyles.colors.baseDoctor}
-`
-
 /* Interface */
 interface ILoginProps {
     studentChosen?: string ,
     response?: GoogleLoginResponse,
     accessToken? : string,
-}
+};
+
+// Initialize Firebase
+// TODO Should this be done here or in App.tsx?
+firebase.initializeApp(firebaseConfig);
+const provider = new firebase.auth.GoogleAuthProvider();
+provider.addScope("https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.rosters.readonly");
 
 /* Main Component Class*/
 class LoginPage extends React.Component <any, ILoginProps> {
@@ -62,6 +51,7 @@ class LoginPage extends React.Component <any, ILoginProps> {
     }
 
     public firebaseLogin = async () => {
+      // TODO Refactor to actually make use of Async/Await
       firebase.auth().signInWithPopup(provider).then( async (result : firebase.auth.UserCredential) =>  {
         if (result !== null){
           const credential = result.credential as any 
@@ -92,7 +82,11 @@ class LoginPage extends React.Component <any, ILoginProps> {
 
           this.props.history.push("/")
         }
-      }).catch(console.log);
+      }).catch(
+        // TODO Should have component here that indicates to user that login failed
+        // Also not even sure that this is will actually do anything...
+        console.log
+        );
     }
 
     public render(){
@@ -112,6 +106,7 @@ class LoginPage extends React.Component <any, ILoginProps> {
                       }
                   }
                   return (
+                    // TODO no inline styles
                     <React.Fragment>
                       <Grid>
                         <Grid.Row style={{height: "100vh", width: "100vw"}}>

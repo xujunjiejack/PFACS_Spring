@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Student } from "../data_structure/Student";
-import StudentStatusRect from './StudentStatusRectangular';
+import { Student } from "../../data_structure/Student";
+import StudentStatusRect from '../Components/StudentStatusRectangular';
 import * as _ from "lodash";
 
 /* Interface */
