@@ -13,13 +13,7 @@ import * as globalStyles from "./AppStyle"
 import loginImage from "./LoginImage.png";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAbY4nV71yiRKOo83KAv0c2xm-IV5fmH6k",
-  authDomain: "test-pfacs.firebaseapp.com",
-  databaseURL: "https://test-pfacs.firebaseio.com",
-  projectId: "test-pfacs",
-  storageBucket: "test-pfacs.appspot.com",
-  messagingSenderId: "908046556011",
-  appId: "1:908046556011:web:917ef33f5fc776aa1f4a2e"
+  env.firebaseConfig
 };
 
 // Initialize Firebase
