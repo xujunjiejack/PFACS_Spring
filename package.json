@@ -15,7 +15,7 @@
     "@types/socket.io": "^2.1.2",
     "@types/socket.io-client": "^1.4.32",
     "@types/styled-components": "^4.1.8",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "chance": "^1.0.18",
     "date-fns": "^2.6.0",
     "firebase": "^6.6.0",
